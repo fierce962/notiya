@@ -6,18 +6,24 @@
 
 <ion-content color="light">
   <div class="content">
-    <form class="content__form">
+    <form class="content__form" [formGroup]="loginForm">
       <ion-item class="content__input">
         <ion-label position="floating">Email</ion-label>
-        <ion-input></ion-input>
+        <ion-input formControlName="email"></ion-input>
+        <div class="content__error" *ngIf="!loginForm.controls.email.valid">
+          Correo Incorrecto
+        </div>
       </ion-item>
       <ion-item class="content__input">
         <ion-label position="floating">Password</ion-label>
-        <ion-input></ion-input>
+        <ion-input formControlName="password"></ion-input>
+        <div class="content__error" *ngIf="!loginForm.controls.password.valid">
+          Clave Incorrecto
+        </div>
       </ion-item>
     </form>
     <div class="content__btn-zone">
-      <ion-button class="content__btn" color="secondary">Iniciar Session</ion-button>
+      <ion-button class="content__btn" color="secondary" (click)="signOut()">Iniciar Session</ion-button>
       <ion-button class="content__btn" color="primary" (click)="register()">Registrarse</ion-button>
       <ion-button class="content__btn content__btn-google" color="medium" (click)="loginWithGoogle()">
         <img class="content__logo-google" src="../../assets/icon/google logo.png" alt=""> iniciar session

@@ -10,6 +10,7 @@
         box-sizing: border-box;
     }
     &__input{
+        border-radius: 15px;
         margin: 5px 0px;
     }
     &__btn-zone{
@@ -21,5 +22,8 @@
     &__btn{
         width: calc(50% - 14px);
         margin: 10px 7px;
+    }
+    &__error{
+        color: red;
     }
 }

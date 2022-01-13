@@ -12,19 +12,22 @@ export class AuthServiceService {
   constructor(private afAuth: Auth) { }
 
   async register(email: string, password: string): Promise<User>{
-    try{
-      const { user } = await createUserWithEmailAndPassword(this.afAuth, email, password);
-      await this.verifiedEmail();
-      return user;
-    }
-    catch(error){
-      console.log('no se pudo registrar', error);
-    }
+    return new Promise((resolve, reject)=>{
+      createUserWithEmailAndPassword(this.afAuth, email, password)
+      .then(userRegister =>{
+        const user: User = {
+          uid: userRegister.user.uid,
+          displayName: userRegister.user.displayName,
+          email: userRegister.user.email,
+          emailVerified: userRegister.user.emailVerified
+        };
+        resolve(user);
+      })
+      .catch(error=>{
+        reject(error.code);
+      });
+    });
   };
-
-  async verifiedEmail(){
-    await sendEmailVerification(this.afAuth.currentUser);
-  }
 
   async resetPassword(newPassword: string): Promise<void>{
     try{
@@ -35,12 +38,21 @@ export class AuthServiceService {
   }
 
   async loginEmail(email: string, password: string): Promise<User>{
-    try{
-      const { user } = await signInWithEmailAndPassword(this.afAuth, email, password);
-      return user;
-    }catch(error){
-      console.log('login error', error);
-    }
+    return new Promise((resolve, reject)=>{
+      signInWithEmailAndPassword(this.afAuth, email, password)
+      .then(userLogin=>{
+        const user: User = {
+          uid: userLogin.user.uid,
+          displayName: userLogin.user.displayName,
+          email: userLogin.user.email,
+          emailVerified: userLogin.user.emailVerified
+        };
+        resolve(user);
+      }).catch(error =>{
+        reject(error.code);
+      });
+    });
+
   }
 
   async loginGoogle(): Promise<User>{
