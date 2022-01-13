@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "notiya-866e0": {
+      "hosting": {
+        "app": [
+          "notiya-866e0"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "notiya-866e0"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "10474504982",
+    "firebase_url": "https://notiya-866e0.firebaseio.com",
+    "project_id": "notiya-866e0",
+    "storage_bucket": "notiya-866e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10474504982:android:9233a91ad322234831c637",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10474504982-k5pvf05i0rj5lv2c10a09lsf6fj58mpg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtZQ79bf1-wW3z-CG_XFmIVHRL3RMlMKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10474504982-k5pvf05i0rj5lv2c10a09lsf6fj58mpg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

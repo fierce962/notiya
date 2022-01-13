@@ -1,0 +1,7 @@
+{
+  "name": "notiya",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
