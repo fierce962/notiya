@@ -45,8 +45,16 @@ export class AuthServiceService {
 
   async loginGoogle(): Promise<User>{
     try{
-      const { user } = await signInWithPopup(this.afAuth, new GoogleAuthProvider());
-      return user;
+      return await signInWithPopup(this.afAuth, new GoogleAuthProvider())
+      .then(resUser=>{
+        const user: User = {
+          uid: resUser.user.uid,
+          displayName: resUser.user.displayName,
+          email: resUser.user.email,
+          emailVerified: resUser.user.emailVerified
+        };
+        return user;
+      });
     }catch(error){
       console.log('error in register google', error);
     };

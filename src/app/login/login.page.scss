@@ -1,0 +1,30 @@
+.content{
+    height: calc(100vh - 44px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    &__form{
+        width: 100%;
+        padding: 0px 20px;
+    }
+    &__input{
+        margin: 5px 0px;
+    }
+    &__btn-zone{
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    &__btn{
+        width: calc(50% - 14px);
+        margin: 10px 7px;
+    }
+    &__btn-google{
+        width: auto;
+        color: black;
+    }
+    &__logo-google{
+        width: 60px;
+    }
+}

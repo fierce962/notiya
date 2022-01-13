@@ -38,13 +38,12 @@ export class NotificationPushService {
     PushNotifications.addListener('pushNotificationReceived',
     (notification: PushNotificationSchema) => {
       console.log('nueva', notification);
-      this.storage.saveNotification('notification', notification.data.save);
     });
 
     PushNotifications.addListener('pushNotificationActionPerformed',
     (notification: ActionPerformed) => {
       console.log('nueva2', notification);
-      this.storage.saveNotification('notification', notification.notification.data.save);
+      //notification.notification.data.save
     });
   }
 

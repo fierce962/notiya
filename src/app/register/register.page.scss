@@ -1,0 +1,25 @@
+.content{
+    height: calc(100vh - 44px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    &__form{
+        width: 100%;
+        padding: 0px 10px;
+        box-sizing: border-box;
+    }
+    &__input{
+        margin: 5px 0px;
+    }
+    &__btn-zone{
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    &__btn{
+        width: calc(50% - 14px);
+        margin: 10px 7px;
+    }
+}
