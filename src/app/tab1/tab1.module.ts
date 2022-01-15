@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Tab1Page } from './tab1.page';
 import { Tab1PageRoutingModule } from './tab1-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { NotificationsModule } from '../component/notifications/notifications.module';
 @NgModule({
@@ -12,7 +13,8 @@ import { NotificationsModule } from '../component/notifications/notifications.mo
     CommonModule,
     FormsModule,
     Tab1PageRoutingModule,
-    NotificationsModule
+    NotificationsModule,
+    ReactiveFormsModule
   ],
   declarations: [Tab1Page]
 })

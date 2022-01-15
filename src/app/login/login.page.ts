@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { AuthServiceService } from '../services/authService/auth-service.service';
-import { User } from '../models/interface';
 import { StorageService } from '../services/storage/storage.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
+import { DatabaseService } from '../services/dataBase/database.service';
+import { User, UserData } from '../models/interface';
 
 @Component({
   selector: 'app-login',
@@ -16,15 +17,40 @@ export class LoginPage implements OnInit {
     email: new FormControl(''),
     password: new FormControl('')
   });
+  user: User;
 
-  constructor(private auth: AuthServiceService, private storage: StorageService, private router: Router) { }
+  modalUserName = false;
+
+  constructor(private auth: AuthServiceService,
+    private storage: StorageService,
+    private router: Router,
+    private database: DatabaseService) { }
 
   ngOnInit() {
   }
 
   async loginWithGoogle(): Promise<void>{
-    const user: User = await this.auth.loginGoogle();
-    this.storage.setItemStore('user', JSON.stringify(user));
+    this.user = await this.auth.loginGoogle();
+    const userData: UserData = await this.database.getUserData(this.user);
+    if(userData.uid === undefined){
+      this.modalUserName = true;
+    }else{
+      this.user.displayName = userData.userName[0];
+      this.setUserStore();
+    }
+  }
+
+  setUsername(userName: string): void{
+    if(userName !== ''){
+      this.user.displayName = userName;
+      this.database.setUserData(this.user, userName);
+      this.modalUserName = false;
+      this.setUserStore();
+    };
+  }
+
+  setUserStore(): void{
+    this.storage.setItemStore('user', JSON.stringify(this.user));
     this.router.navigate(['']);
   }
 
@@ -36,8 +62,11 @@ export class LoginPage implements OnInit {
     await this.auth.loginEmail(this.loginForm.controls.email.value,
         this.loginForm.controls.password.value)
         .then(user=>{
-          this.storage.setItemStore('user', JSON.stringify(user));
-          this.router.navigate(['']);
+          this.user = user;
+          this.database.getUserData(this.user).then(userData => {
+            this.user.displayName = userData.userName[0];
+            this.setUserStore();
+          });
         }).catch(error=>{
           if(error === 'auth/user-not-found'){
             this.loginForm.controls.email.setErrors({ emailError: true });

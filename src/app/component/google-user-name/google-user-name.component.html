@@ -1,0 +1,11 @@
+<ion-content>
+  <ion-item class="content__input">
+    <ion-label position="floating">Nombre de usuario</ion-label>
+    <ion-input [formControl]="userName"></ion-input>
+    <!-- <div class="content__error" *ngIf="!loginForm.controls.email.valid">
+      Correo Incorrecto
+    </div> -->
+  </ion-item>
+  <ion-button class="content__btn" color="secondary" (click)="sendUserName()">Crear</ion-button>
+  <ion-button class="content__btn" color="danger">Cancelar</ion-button>
+</ion-content>

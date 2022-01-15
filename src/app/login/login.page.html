@@ -30,4 +30,11 @@
       </ion-button>
     </div>
   </div>
+
+  <ion-modal
+    [isOpen]="modalUserName">
+    <ng-template>
+      <app-google-user-name (user)="setUsername($event)"></app-google-user-name>
+    </ng-template>
+  </ion-modal>
 </ion-content>

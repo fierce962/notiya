@@ -4,3 +4,10 @@ export interface User{
     displayName: string;
     emailVerified: boolean;
 }
+
+export interface UserData{
+    uid: string;
+    fullName: string;
+    userName: string[];
+    subsCriptions: number;
+}

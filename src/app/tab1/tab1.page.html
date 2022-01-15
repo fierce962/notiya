@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
-    <ion-searchbar></ion-searchbar>
+    <ion-searchbar [formControl]="searchInput" (keyup)="search($event)"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 

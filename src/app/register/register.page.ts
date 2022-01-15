@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthServiceService } from '../services/authService/auth-service.service';
 import { StorageService } from '../services/storage/storage.service';
+import { DatabaseService } from '../services/dataBase/database.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -27,7 +28,8 @@ export class RegisterPage implements OnInit {
 
   constructor(private router: Router,
     private afAuth: AuthServiceService,
-    private storage: StorageService) { }
+    private storage: StorageService,
+    private database: DatabaseService) { }
 
   ngOnInit() {
   }
@@ -50,6 +52,8 @@ export class RegisterPage implements OnInit {
     this.afAuth.register(this.registerFrom.controls.email.value,
       this.registerFrom.controls.fisrtPassword.value)
       .then(user=>{
+        user.displayName = this.registerFrom.controls.userName.value;
+        this.database.setUserData(user, this.registerFrom.controls.fullName.value);
         this.storage.setItemStore('user', JSON.stringify(user));
         this.router.navigate(['']);
       }).catch(error=>{
@@ -57,6 +61,6 @@ export class RegisterPage implements OnInit {
           this.emailInUsed = true;
         }
       });
-  }
+  };
 
 }
