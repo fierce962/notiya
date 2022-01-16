@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NotificationPushService } from '../services/notificationPush/notification-push.service';
 import { DatabaseService } from '../services/dataBase/database.service';
+import { ParseUserNameService } from '../services/parseUserName/parse-user-name.service';
+import { UserData } from '../models/interface';
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -10,21 +12,23 @@ import { DatabaseService } from '../services/dataBase/database.service';
 export class Tab1Page implements OnInit {
 
   searchInput = new FormControl();
+  users: UserData[];
+  viewSearch = false;
 
-  constructor(private notification: NotificationPushService, private db: DatabaseService) {}
+  constructor(private notification: NotificationPushService,
+    private db: DatabaseService,
+    private parserUsername: ParseUserNameService) {}
 
   ngOnInit(): void {
     //this.notification.registerDevice();
-    const test = 'fiercess ';
-    const init = test.length / 2;
-    const initPalabra = test.slice(0, init);
-    const end = test.slice(init);
   }
 
-  search(event: KeyboardEvent): void{
+  async search(event: KeyboardEvent): Promise<void>{
     if(event.key === 'Enter'){
-
-      // this.db.shearchUsers(text, startText, endText);
+      this.users = await this.db.shearchUsers(this.parserUsername.get(this.searchInput.value));
+      if(this.users.length !== 0){
+        this.viewSearch = true;
+      }
     }
   }
 }

@@ -1,9 +1,15 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="content-header">
   <ion-toolbar color="primary">
-    <ion-searchbar [formControl]="searchInput" (keyup)="search($event)"></ion-searchbar>
+    <div class="content-header__fab">
+      <ion-fab-button size="small" color="medium"><ion-icon name="search"></ion-icon></ion-fab-button>
+    </div>
+    <div class="content-header__search">
+      <!-- <ion-searchbar [formControl]="searchInput" (keyup)="search($event)"></ion-searchbar> -->
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" color="light">
-  <app-notifications></app-notifications>
+  <app-notifications *ngIf="!viewSearch"></app-notifications>
+  <app-user-search *ngIf="viewSearch" [users]="users"></app-user-search>
 </ion-content>

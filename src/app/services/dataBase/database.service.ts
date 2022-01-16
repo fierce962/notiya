@@ -31,14 +31,15 @@ export class DatabaseService {
     .then(results => results.docs[0].data());
   }
 
-  async shearchUsers(search: string, startText: string, endText: string): Promise<void>{
-    await getDocs(query(collection(this.db, 'userData'),
-    orderBy('userName'),
-    startAt('fierce'),
-      )).then(results=>{
-        results.docs.forEach(e=>{
-          console.log(e.data());
+  async shearchUsers(search: string[]): Promise<UserData[]>{
+    return await getDocs(query(collection(this.db, 'userData'),
+      where('userName', 'array-contains-any', search)))
+        .then(results=>{
+        const users: UserData[] = [];
+        results.docs.forEach((user: any)=>{
+          users.push(user.data());
         });
+        return users;
       });
   };
 }

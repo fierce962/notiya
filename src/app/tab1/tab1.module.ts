@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Tab1Page } from './tab1.page';
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UserSearchModule } from '../component/user-search/user-search.module';
 
 import { NotificationsModule } from '../component/notifications/notifications.module';
 @NgModule({
@@ -14,7 +15,8 @@ import { NotificationsModule } from '../component/notifications/notifications.mo
     FormsModule,
     Tab1PageRoutingModule,
     NotificationsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UserSearchModule
   ],
   declarations: [Tab1Page]
 })
