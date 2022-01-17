@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, query, where, orderBy, startAt, endAt } from 'firebase/firestore';
-import { addDoc } from '@angular/fire/firestore';
-import { UserData, User } from 'src/app/models/interface';
+import { getFirestore, collection, getDocs, query, where, addDoc, updateDoc, doc } from 'firebase/firestore';
+import { UserData, User, SubsCriptions } from 'src/app/models/interface';
 import { ParseUserNameService } from '../parseUserName/parse-user-name.service';
 
 const app = initializeApp(environment.firebaseConfig);
@@ -28,7 +27,13 @@ export class DatabaseService {
 
   async getUserData(user: User): Promise<any>{
     return await getDocs(query(collection(this.db, 'userData'), where('uid', '==', user.uid)))
-    .then(results => results.docs[0].data());
+    .then(results => {
+      if(results.docs.length !== 0){
+        return results.docs[0].data();
+      }else{
+        return undefined;
+      }
+    });
   }
 
   async shearchUsers(search: string[]): Promise<UserData[]>{
@@ -42,4 +47,15 @@ export class DatabaseService {
         return users;
       });
   };
+
+  async addSubcriptions(subscriptions: SubsCriptions): Promise<void>{
+    await addDoc(collection(this.db, 'subscriptions'), subscriptions);
+  }
+
+  async updateSubscriptions(subscriptions: SubsCriptions): Promise<void>{
+    await getDocs(query(collection(this.db, 'subscriptions'), where('uid', '==', subscriptions.uid)))
+    .then(results=>{
+      updateDoc(results.docs[0].ref, { subsCriptions: subscriptions.subsCriptions });
+    });
+  }
 }

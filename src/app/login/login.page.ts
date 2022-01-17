@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthServiceService } from '../services/authService/auth-service.service';
 import { StorageService } from '../services/storage/storage.service';
 import { Router } from '@angular/router';
@@ -31,8 +31,8 @@ export class LoginPage implements OnInit {
 
   async loginWithGoogle(): Promise<void>{
     this.user = await this.auth.loginGoogle();
-    const userData: UserData = await this.database.getUserData(this.user);
-    if(userData.uid === undefined){
+    const userData: UserData | undefined = await this.database.getUserData(this.user);
+    if(userData === undefined){
       this.modalUserName = true;
     }else{
       this.user.displayName = userData.userName[0];

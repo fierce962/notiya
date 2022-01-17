@@ -11,3 +11,8 @@ export interface UserData{
     userName: string[];
     subsCriptions: number;
 }
+
+export interface SubsCriptions{
+    uid: string;
+    subsCriptions: string[];
+}

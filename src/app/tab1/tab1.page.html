@@ -1,15 +1,22 @@
 <ion-header [translucent]="true" class="content-header">
   <ion-toolbar color="primary">
     <div class="content-header__fab">
-      <ion-fab-button size="small" color="medium"><ion-icon name="search"></ion-icon></ion-fab-button>
-    </div>
-    <div class="content-header__search">
-      <!-- <ion-searchbar [formControl]="searchInput" (keyup)="search($event)"></ion-searchbar> -->
+      <div class="content-header__search" [class.content-header__search-on]="viewInputSearch">
+        <ion-button class="content-header__btn-back" 
+          (click)="viewInputSearch = !viewInputSearch; viewSearch = false">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+        <ion-searchbar [formControl]="searchInput" (keyup)="search($event)"></ion-searchbar>
+      </div>
+      <ion-fab-button size="small" color="medium" [class.content-header__btn-search]="viewInputSearch"
+        (click)="viewInputSearch = !viewInputSearch"><ion-icon name="search"></ion-icon>
+      </ion-fab-button>
     </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" color="light">
   <app-notifications *ngIf="!viewSearch"></app-notifications>
-  <app-user-search *ngIf="viewSearch" [users]="users"></app-user-search>
+  <app-user-search *ngIf="viewSearch" 
+    (subscriptions)="addSubCription($event)" [searchsUsers]="searchsUsers"></app-user-search>
 </ion-content>

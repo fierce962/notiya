@@ -7,4 +7,22 @@ ion-searchbar{
         display: flex;
         justify-content: end;
     }
+    &__btn-back{
+        height: 41px;
+        margin-left: 10px;
+        --box-shadow: 0px;
+    }
+    &__search{
+        width: 0%;
+        display: flex;
+        overflow: hidden;
+        transition: .5s;
+    }
+    &__search-on{
+        width: 100%;
+        transition: .5s;
+    }
+    &__btn-search{
+        display: none;
+    }
 }
