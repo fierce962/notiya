@@ -68,13 +68,13 @@ export class DatabaseService {
 
   async addListNotification(list: ListNotification): Promise<string>{
     return new Promise((resolve)=>{
-      addDoc(collection(this.db, 'Notification'), list).then(result => {
+      addDoc(collection(this.db, 'ListenerNotification'), list).then(result => {
         resolve(result.id);
       });
     });
   }
 
   removeListNotification(id: string): void{
-    deleteDoc(doc(this.db, 'Notification', id));
+    deleteDoc(doc(this.db, 'ListenerNotification', id));
   }
 }
