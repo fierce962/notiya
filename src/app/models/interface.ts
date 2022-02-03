@@ -21,4 +21,11 @@ export interface SubsCriptions{
 export interface Subscription{
     uid: string;
     date: Date;
+    notificationId: string;
+}
+
+export interface ListNotification{
+    uidUser: string;
+    uidUserData: string;
+    token: string;
 }

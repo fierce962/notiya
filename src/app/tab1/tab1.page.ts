@@ -27,6 +27,7 @@ export class Tab1Page implements OnInit {
 
   async search(event: KeyboardEvent): Promise<void>{
     if(event.key === 'Enter'){
+      console.log(event);
       this.searchsUsers = await this.db.shearchUsers(this.parserUsername.get(this.searchInput.value));
       if(this.searchsUsers.length !== 0){
         this.viewSearch = true;

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, query, where, addDoc, updateDoc, increment } from 'firebase/firestore';
-import { UserData, User, SubsCriptions } from 'src/app/models/interface';
+import { getFirestore, collection, getDocs, query, where, addDoc, updateDoc, increment, deleteDoc, doc } from 'firebase/firestore';
+import { UserData, User, SubsCriptions, ListNotification } from 'src/app/models/interface';
 import { ParseUserNameService } from '../parseUserName/parse-user-name.service';
 
 const app = initializeApp(environment.firebaseConfig);
@@ -49,11 +49,11 @@ export class DatabaseService {
   };
 
   async addSubcriptions(subscriptions: SubsCriptions): Promise<void>{
-    await addDoc(collection(this.db, 'subscriptions'), subscriptions);
+    await addDoc(collection(this.db, 'subscribed'), subscriptions);
   }
 
   async updateSubscriptions(subscriptions: SubsCriptions): Promise<void>{
-    await getDocs(query(collection(this.db, 'subscriptions'), where('uid', '==', subscriptions.uid)))
+    await getDocs(query(collection(this.db, 'subscribed'), where('uid', '==', subscriptions.uid)))
     .then(results=>{
       updateDoc(results.docs[0].ref, { subsCriptions: subscriptions.subsCriptions });
     });
@@ -64,5 +64,17 @@ export class DatabaseService {
     .then(results=>{
       updateDoc(results.docs[0].ref, { subsCriptions: increment(incrementSub) });
     });
+  }
+
+  async addListNotification(list: ListNotification): Promise<string>{
+    return new Promise((resolve)=>{
+      addDoc(collection(this.db, 'Notification'), list).then(result => {
+        resolve(result.id);
+      });
+    });
+  }
+
+  removeListNotification(id: string): void{
+    deleteDoc(doc(this.db, 'Notification', id));
   }
 }
