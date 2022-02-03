@@ -10,30 +10,68 @@ import { DatabaseService } from '../../services/dataBase/database.service';
 })
 export class UserSearchComponent implements OnInit {
   @Input() searchsUsers: UserData[];
+  subscriptions: SubsCriptions | null;
 
   constructor(private sessions: SessionsService,
     private store: StorageService,
     private db: DatabaseService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.subscriptions = JSON.parse(this.store.getItemStore('subscribed'));
+    this.hasStoreSubCription();
+  }
 
-  hasStoreSubCription(userSearch: UserData): void{
-    let subscriptions: SubsCriptions | null = JSON.parse(this.store.getItemStore('subscribed'));
-    if(subscriptions === null){
-      subscriptions = this.addSubcriptions(userSearch);
-    }else{
-      subscriptions.subsCriptions.push(userSearch.uid);
-      this.db.updateSubscriptions(subscriptions);
+  hasStoreSubCription(): void{
+    if(this.subscriptions !== null){
+      this.subscriptions.subsCriptions.forEach(subs => {
+        this.searchsUsers.forEach(users => {
+          if(subs.uid === users.uid){
+            users.subscribe = true;
+          };
+        });
+      });
     }
-    this.store.setItemStore('subscribed', JSON.stringify(subscriptions));
+  }
+
+  addNewsubCription(userSearch: UserData): void{
+    if(this.subscriptions === null){
+      this.subscriptions = this.addSubcriptions(userSearch);
+    }else{
+      this.updateSubscriptions(userSearch);
+    }
+    userSearch.subscribe = true;
+    userSearch.subsCriptions += 1;
+    this.db.updateUserSubscription(userSearch.uid, 1);
+    this.store.setItemStore('subscribed', JSON.stringify(this.subscriptions));
   }
 
   addSubcriptions(user: UserData): SubsCriptions{
     const subCription: SubsCriptions = {
       uid: this.sessions.user.uid,
-      subsCriptions: [user.uid]
+      subsCriptions: [{
+        uid: user.uid,
+        date: new Date()
+      }]
     };
     this.db.addSubcriptions(subCription);
     return subCription;
   }
+
+  removeSubscription(user: UserData): void{
+    this.subscriptions.subsCriptions = this.subscriptions.subsCriptions.filter(sub => sub.uid !== user.uid);
+    this.store.setItemStore('subscribed', JSON.stringify(this.subscriptions));
+    this.db.updateSubscriptions(this.subscriptions);
+    user.subsCriptions -= 1;
+    this.db.updateUserSubscription(user.uid, -1);
+    user.subscribe = undefined;
+  }
+
+  updateSubscriptions(user: UserData): void{
+    this.subscriptions.subsCriptions.push({
+      uid: user.uid,
+      date: new Date()
+    });
+    this.db.updateSubscriptions(this.subscriptions);
+  }
+
 }

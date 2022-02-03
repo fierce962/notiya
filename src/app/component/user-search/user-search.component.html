@@ -5,8 +5,11 @@
   </ion-card-header>
 
   <ion-card-content>
-    <ion-button (click)="hasStoreSubCription(user)" color="primary">
-      Notificame<ion-icon name="notifications-outline"></ion-icon>
+    <ion-button (click)="user.subscribe === undefined ?  addNewsubCription(user) : removeSubscription(user)" 
+      [color]="user.subscribe === undefined ?  'primary' : 'danger'">
+      Notificame
+      <ion-icon [name]="user.subscribe === undefined ? 
+        'notifications-outline' : 'notifications-off-outline'"></ion-icon>
     </ion-button>
   </ion-card-content>
 </ion-card>

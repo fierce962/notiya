@@ -10,9 +10,15 @@ export interface UserData{
     fullName: string;
     userName: string[];
     subsCriptions: number;
+    subscribe?: boolean;
 }
 
 export interface SubsCriptions{
     uid: string;
-    subsCriptions: string[];
+    subsCriptions: Subscription[];
+}
+
+export interface Subscription{
+    uid: string;
+    date: Date;
 }

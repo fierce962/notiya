@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, query, where, addDoc, updateDoc, doc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, query, where, addDoc, updateDoc, increment } from 'firebase/firestore';
 import { UserData, User, SubsCriptions } from 'src/app/models/interface';
 import { ParseUserNameService } from '../parseUserName/parse-user-name.service';
 
@@ -56,6 +56,13 @@ export class DatabaseService {
     await getDocs(query(collection(this.db, 'subscriptions'), where('uid', '==', subscriptions.uid)))
     .then(results=>{
       updateDoc(results.docs[0].ref, { subsCriptions: subscriptions.subsCriptions });
+    });
+  }
+
+  async updateUserSubscription(uid: string, incrementSub: number): Promise<void>{
+    await getDocs(query(collection(this.db, 'userData'), where('uid', '==', uid)))
+    .then(results=>{
+      updateDoc(results.docs[0].ref, { subsCriptions: increment(incrementSub) });
     });
   }
 }
