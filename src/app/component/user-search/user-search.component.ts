@@ -87,7 +87,7 @@ export class UserSearchComponent implements OnInit {
     return await this.db.addListNotification({
       uidUser: this.sessions.user.uid,
       uidUserData: userSearch.uid,
-      token: 'no-token'
+      token: userSearch.playerId
     });
   }
 

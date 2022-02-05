@@ -38,6 +38,7 @@ export class LoginPage implements OnInit {
       this.modalUserName = true;
     }else{
       this.user.displayName = userData.userName[0];
+      this.user.playerId = userData.playerId;
       this.setUserStore();
     }
   }
