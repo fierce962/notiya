@@ -4,10 +4,46 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" color="light">
-  <ion-card>
-    <ion-input placeholder="Enter Input"></ion-input>
-    <ion-input placeholder="Enter Input"></ion-input>
-    <ion-input placeholder="Enter Input"></ion-input>
-  </ion-card>
-  <button (click)="sendNotification()">send</button>
+
+  <div class="card-notification">
+    <form [formGroup]="notificaion" class="card-notification__form">
+      <ion-item class="card-notification__item">
+        <ion-label position="floating">Titulo</ion-label>
+        <ion-input formControlName="titulo"></ion-input>
+        <div class="card-notification__error" 
+          *ngIf="notificaion.controls.titulo.hasError('required') && 
+            (notificaion.controls.titulo.dirty || notificaion.controls.titulo.touched) || 
+            notificaion.controls.titulo.hasError('error')">
+          El campo es requerido
+        </div>
+      </ion-item>
+      <ion-item class="card-notification__item">
+        <ion-label position="floating">Mensaje</ion-label>
+        <ion-input formControlName="mensaje"></ion-input>
+        <div class="card-notification__error" 
+          *ngIf="notificaion.controls.mensaje.hasError('required') && 
+            (notificaion.controls.mensaje.dirty || notificaion.controls.mensaje.touched) || 
+            notificaion.controls.mensaje.hasError('error')">
+          El campo es requerido
+        </div>
+      </ion-item>
+      <ion-item class="card-notification__item">
+        <ion-label position="floating">url</ion-label>
+        <ion-input formControlName="url"></ion-input>
+        <div class="card-notification__error" 
+          *ngIf="notificaion.controls.url.hasError('required') && 
+            (notificaion.controls.url.dirty || notificaion.controls.url.touched) || 
+            notificaion.controls.url.hasError('error')">
+          El campo es requerido
+        </div>
+      </ion-item>
+    </form>
+    <div class="card-notification__btn-zone">
+      <ion-button class="card-notification__btn" 
+        (click)="sendNotification()" color="primary">Enviar</ion-button>
+      <ion-button class="card-notification__btn" 
+        color="primary">Cancelar</ion-button>
+    </div>
+  </div>
+
 </ion-content>

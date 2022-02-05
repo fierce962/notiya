@@ -1,8 +1,6 @@
-/* eslint-disable quote-props */
-/* eslint-disable @typescript-eslint/quotes */
-/* eslint-disable @typescript-eslint/naming-convention */
 import { Component } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { OneSignalService } from '../services/OneSignal/one-signal.service';
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -10,21 +8,29 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class Tab2Page {
 
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Access-Control-Allow-Origin':'*'
-    })
-  };
+  notificaion = new FormGroup({
+    titulo: new FormControl('', [Validators.required]),
+    mensaje: new FormControl('', [Validators.required]),
+    url: new FormControl('', [Validators.required])
+  });
 
-  constructor(private http: HttpClient) {}
+  constructor(private oneSignal: OneSignalService) {}
 
   sendNotification(): void{
-    this.http.post('https://onesignal.com/api/v1/notifications', {
-      "app_id": 'e1d6c6f3-0f5c-4a20-a688-75319373f280',
-      "include_player_ids": ['1166b790-8617-11ec-9c8f-aecd5c7aa51b'],
-      "data": {"foo": "bar"}
-      }, this.httpOptions).subscribe(res=>{
-        console.log(res);
-      });
+    if(this.notificaion.valid){
+      this.oneSignal.send(this.notificaion.controls.titulo.value,
+        this.notificaion.controls.mensaje.value,
+        this.notificaion.controls.url.value);
+    }else{
+      this.viewInputError();
+    }
+  }
+
+  viewInputError(): void{
+    Object.keys(this.notificaion.controls).forEach(input=>{
+      if(!this.notificaion.controls[input].valid){
+        this.notificaion.controls[input].setErrors({error: 'error'});
+      }
+    });
   }
 }
