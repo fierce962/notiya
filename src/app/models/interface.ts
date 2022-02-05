@@ -3,6 +3,7 @@ export interface User{
     email: string;
     displayName: string;
     emailVerified: boolean;
+    playerId?: string;
 }
 
 export interface UserData{
@@ -11,6 +12,7 @@ export interface UserData{
     userName: string[];
     subsCriptions: number;
     subscribe?: boolean;
+    playerId?: string;
 }
 
 export interface SubsCriptions{

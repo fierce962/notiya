@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DatabaseService } from '../services/dataBase/database.service';
 import { User, UserData } from '../models/interface';
+import { OneSignalService } from '../services/OneSignal/one-signal.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,8 @@ export class LoginPage implements OnInit {
   constructor(private auth: AuthServiceService,
     private storage: StorageService,
     private router: Router,
-    private database: DatabaseService) { }
+    private database: DatabaseService,
+    private oneSignal: OneSignalService) { }
 
   ngOnInit() {
   }
@@ -40,9 +42,10 @@ export class LoginPage implements OnInit {
     }
   }
 
-  setUsername(userName: string): void{
+  async setUsername(userName: string): Promise<void>{
     if(userName !== ''){
       this.user.displayName = userName;
+      this.user.playerId = await this.oneSignal.getPlayerId();
       this.database.setUserData(this.user, userName);
       this.modalUserName = false;
       this.setUserStore();
@@ -58,13 +61,14 @@ export class LoginPage implements OnInit {
     this.router.navigate(['register']);
   }
 
-  async signOut(): Promise<void>{
+  async signIn(): Promise<void>{
     await this.auth.loginEmail(this.loginForm.controls.email.value,
         this.loginForm.controls.password.value)
         .then(user=>{
           this.user = user;
           this.database.getUserData(this.user).then(userData => {
             this.user.displayName = userData.userName[0];
+            this.user.playerId = userData.playerId;
             this.setUserStore();
           });
         }).catch(error=>{

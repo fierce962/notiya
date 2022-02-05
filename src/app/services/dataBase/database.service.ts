@@ -20,6 +20,7 @@ export class DatabaseService {
       uid: user.uid,
       userName: this.parseUser.get(user.displayName),
       fullName: name,
+      playerId: user.playerId,
       subsCriptions: 0
     };
     await addDoc(collection(this.db, 'userData'), userData);

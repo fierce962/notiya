@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthServiceService } from '../services/authService/auth-service.service';
 import { StorageService } from '../services/storage/storage.service';
 import { DatabaseService } from '../services/dataBase/database.service';
+import { OneSignalService } from '../services/OneSignal/one-signal.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -29,7 +30,8 @@ export class RegisterPage implements OnInit {
   constructor(private router: Router,
     private afAuth: AuthServiceService,
     private storage: StorageService,
-    private database: DatabaseService) { }
+    private database: DatabaseService,
+    private onesignal: OneSignalService) { }
 
   ngOnInit() {
   }
@@ -48,14 +50,17 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  register(): void{
+  async register(): Promise<void>{
     this.afAuth.register(this.registerFrom.controls.email.value,
       this.registerFrom.controls.fisrtPassword.value)
       .then(user=>{
-        user.displayName = this.registerFrom.controls.userName.value;
-        this.database.setUserData(user, this.registerFrom.controls.fullName.value);
-        this.storage.setItemStore('user', JSON.stringify(user));
-        this.router.navigate(['']);
+        this.onesignal.getPlayerId().then(id=>{
+          user.displayName = this.registerFrom.controls.userName.value;
+          user.playerId = id;
+          this.database.setUserData(user, this.registerFrom.controls.fullName.value);
+          this.storage.setItemStore('user', JSON.stringify(user));
+          this.router.navigate(['']);
+        });
       }).catch(error=>{
         if(error === 'auth/email-already-in-use'){
           this.emailInUsed = true;
