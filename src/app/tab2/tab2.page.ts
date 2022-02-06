@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OneSignalService } from '../services/OneSignal/one-signal.service';
+import { DatabaseService } from '../services/dataBase/database.service';
+import { SessionsService } from '../services/sessions/sessions.service';
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -14,13 +16,17 @@ export class Tab2Page {
     url: new FormControl('', [Validators.required])
   });
 
-  constructor(private oneSignal: OneSignalService) {}
+  constructor(private oneSignal: OneSignalService,
+    private db: DatabaseService,
+    private sessions: SessionsService) {}
 
-  sendNotification(): void{
+  async sendNotification(): Promise<void>{
     if(this.notificaion.valid){
+      const tokens: string[] = await this.db.getListenerNotification(this.sessions.user.uid);
       this.oneSignal.send(this.notificaion.controls.titulo.value,
         this.notificaion.controls.mensaje.value,
-        this.notificaion.controls.url.value);
+        this.notificaion.controls.url.value,
+        tokens);
     }else{
       this.viewInputError();
     }

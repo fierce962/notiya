@@ -86,8 +86,8 @@ export class UserSearchComponent implements OnInit {
   async createListNotification(userSearch: UserData): Promise<string>{
     return await this.db.addListNotification({
       uidUser: this.sessions.user.uid,
-      uidUserData: userSearch.uid,
-      token: userSearch.playerId
+      uidCreator: userSearch.uid,
+      token: this.sessions.user.playerId
     });
   }
 

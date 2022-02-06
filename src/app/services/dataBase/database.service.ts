@@ -78,4 +78,15 @@ export class DatabaseService {
   removeListNotification(id: string): void{
     deleteDoc(doc(this.db, 'ListenerNotification', id));
   }
+
+  async getListenerNotification(uid: string): Promise<string[]>{
+    return await getDocs(query(collection(this.db, 'ListenerNotification'), where('uidCreator', '==', uid)))
+    .then(results=>{
+      const playerId: string[] = [];
+      results.docs.forEach((result: any)=>{
+        playerId.push(result.data().token);
+      });
+      return playerId;
+    });
+  }
 }

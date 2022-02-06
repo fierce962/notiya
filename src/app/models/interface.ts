@@ -28,6 +28,6 @@ export interface Subscription{
 
 export interface ListNotification{
     uidUser: string;
-    uidUserData: string;
+    uidCreator: string;
     token: string;
 }
