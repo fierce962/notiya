@@ -16,7 +16,7 @@ export class OneSignalService {
     // OneSignal.setAppId('e1d6c6f3-0f5c-4a20-a688-75319373f280');
     // OneSignal.setNotificationOpenedHandler((jsonData) => {
     //   //esta es la funcion que se ispara cuando se abre la notificaicon
-    //     console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+    //     console.log(jsonData);
     // });
 
     // OneSignal.promptForPushNotificationsWithUserResponse((accepted) => {
