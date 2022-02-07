@@ -6,7 +6,11 @@
           (click)="viewInputSearch = !viewInputSearch; viewSearch = false">
           <ion-icon name="arrow-back-outline"></ion-icon>
         </ion-button>
-        <ion-searchbar [formControl]="searchInput" (keyup)="search($event)"></ion-searchbar>
+        <ion-searchbar [formControl]="input" (keydown)="search($event)" 
+          showClearButton="never"></ion-searchbar>
+
+        <ion-icon *ngIf="clearView" (click)="clearInput()"
+          class="content-header__clear" name="close-outline"></ion-icon>
       </div>
       <ion-fab-button size="small" color="medium" [class.content-header__btn-search]="viewInputSearch"
         (click)="viewInputSearch = !viewInputSearch"><ion-icon name="search"></ion-icon>

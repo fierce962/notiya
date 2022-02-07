@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, query, where, addDoc, updateDoc, increment, deleteDoc, doc } from 'firebase/firestore';
-import { UserData, User, SubsCriptions, ListNotification } from 'src/app/models/interface';
 import { ParseUserNameService } from '../parseUserName/parse-user-name.service';
+import { UserData, User, SubsCriptions, ListNotification, SendNotification } from 'src/app/models/interface';
 
 const app = initializeApp(environment.firebaseConfig);
 
@@ -88,5 +89,14 @@ export class DatabaseService {
       });
       return playerId;
     });
+  }
+
+  async registerNotification(sendNotification: SendNotification): Promise<string>{
+    return await addDoc(collection(this.db, 'sendNotification'), sendNotification)
+    .then(result=> result.id);
+  }
+
+  async updateRegisterNotification(id: string, sendNotification: SendNotification | any){
+    await updateDoc(doc(this.db, 'sendNotification', id), sendNotification);
   }
 }

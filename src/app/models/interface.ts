@@ -31,3 +31,10 @@ export interface ListNotification{
     uidCreator: string;
     token: string;
 }
+
+export interface SendNotification{
+    uid: string;
+    title: string;
+    message: string;
+    url: string;
+}

@@ -4,6 +4,7 @@
 import { Injectable } from '@angular/core';
 import OneSignal from 'onesignal-cordova-plugin';
 import { HttpClient } from '@angular/common/http';
+import { SendNotification } from 'src/app/models/interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -32,14 +33,18 @@ export class OneSignalService {
     return 'hola';
   }
 
-  send(title: string, mensaje: string, url: string, tokens: string[]): void{
+  send(sendNotification: SendNotification, tokens: string[]): void{
     this.http.post('https://onesignal.com/api/v1/notifications', {
       "app_id": "e1d6c6f3-0f5c-4a20-a688-75319373f280",
       "include_player_ids": tokens,
       // eslint-disable-next-line object-shorthand
-      "data": { "title": title, "mensaje": mensaje, "url": url },
-      "contents": {"en": mensaje},
-      "headings": {"en": title}
+      "data": {
+        "title": sendNotification.title,
+        "mensaje": sendNotification.message,
+        "url": sendNotification.url
+      },
+      "contents": {"en": sendNotification.message},
+      "headings": {"en": sendNotification.title}
       }).subscribe(res=>{
         console.log(res);
       });
