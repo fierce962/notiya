@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/member-ordering */
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DatabaseService } from '../services/dataBase/database.service';
 import { ParseUserNameService } from '../services/parseUserName/parse-user-name.service';
@@ -32,4 +31,5 @@ export class Tab1Page implements OnInit {
       }
     }
   }
+
 }

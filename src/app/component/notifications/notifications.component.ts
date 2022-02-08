@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { SessionsService } from '../../services/sessions/sessions.service';
 
+import { ReceivedNotification } from '../../models/interface';
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
@@ -7,8 +9,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotificationsComponent implements OnInit {
 
-  constructor() { }
+  openNotification = false;
+  notification: ReceivedNotification;
 
-  ngOnInit() {}
+  constructor(private sessions: SessionsService, private ng: NgZone) { }
+
+  ngOnInit() {
+    this.startApp();
+    this.sessions.getNotification().subscribe(notification=>{
+      this.ng.run(()=>{
+        this.notification = notification;
+        this.openNotification = true;
+      });
+    });
+  }
+
+  startApp(): void{
+    if(this.sessions.receivedNotification === undefined){
+
+    }else{
+      this.notification = this.sessions.receivedNotification;
+      this.openNotification = true;
+    }
+  }
 
 }

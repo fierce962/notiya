@@ -26,8 +26,8 @@ export class Tab2Page {
   async sendNotification(): Promise<void>{
     if(this.notificaion.valid){
       const sendNotification: SendNotification = this.createNotification();
-      // const tokens: string[] = await this.db.getListenerNotification(this.sessions.user.uid);
-      // this.oneSignal.send(sendNotification, tokens);
+      const tokens: string[] = await this.db.getListenerNotification(this.sessions.user.uid);
+      this.oneSignal.send(sendNotification, tokens);
       this.registerLastNotification(sendNotification);
     }else{
       this.viewInputError();

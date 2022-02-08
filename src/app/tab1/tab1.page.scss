@@ -25,13 +25,4 @@ ion-searchbar{
     &__btn-search{
         display: none;
     }
-    &__clear{
-        position: absolute;
-        right: 15px;
-        color: black;
-        font-size: 25px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-    }
 }

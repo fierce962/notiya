@@ -38,3 +38,9 @@ export interface SendNotification{
     message: string;
     url: string;
 }
+export interface ReceivedNotification{
+    title: string;
+    message: string;
+    url: string;
+    userName: string;
+}

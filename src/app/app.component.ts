@@ -15,8 +15,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.sessions.getUserLogin();
+    this.oneSignal.oneSignalInit(this.sessions);
     this.redirect();
-    this.oneSignal.oneSignalInit();
   }
 
   redirect(): void{

@@ -5,31 +5,39 @@ import { Injectable } from '@angular/core';
 import OneSignal from 'onesignal-cordova-plugin';
 import { HttpClient } from '@angular/common/http';
 import { SendNotification } from 'src/app/models/interface';
+import { SessionsService } from '../sessions/sessions.service';
+import { Platform } from '@ionic/angular';
+
 @Injectable({
   providedIn: 'root'
 })
 export class OneSignalService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private platform: Platform) { }
 
-  oneSignalInit(): void {
-    // OneSignal.setAppId('e1d6c6f3-0f5c-4a20-a688-75319373f280');
-    // OneSignal.setNotificationOpenedHandler((jsonData) => {
-    //   //esta es la funcion que se ispara cuando se abre la notificaicon
-    //     console.log(jsonData);
-    // });
+  oneSignalInit(sessions: SessionsService): void {
+    if(this.platform.is('android')){
+      OneSignal.setAppId('e1d6c6f3-0f5c-4a20-a688-75319373f280');
+      OneSignal.setNotificationOpenedHandler((jsonData) => {
+        const notification: any = jsonData.notification.additionalData;
+        sessions.setNotification(notification);
+          console.log(jsonData.notification.additionalData);
+      });
 
-    // OneSignal.promptForPushNotificationsWithUserResponse((accepted) => {
-    //     console.log('User accepted notifications: ' + accepted);
-    // });
+      OneSignal.promptForPushNotificationsWithUserResponse((accepted) => {
+          console.log('User accepted notifications: ' + accepted);
+      });
+    }
   }
 
   async getPlayerId(): Promise<string>{
-    // return new Promise(resolve=>{
-    //   OneSignal.addSubscriptionObserver((state) =>{
-    //     resolve(state.to.userId);
-    //   });
-    // });
+    if(this.platform.is('android')){
+      return new Promise(resolve=>{
+        OneSignal.addSubscriptionObserver((state) =>{
+          resolve(state.to.userId);
+        });
+      });
+    }
     return 'hola';
   }
 
