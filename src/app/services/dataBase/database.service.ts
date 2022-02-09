@@ -83,11 +83,11 @@ export class DatabaseService {
   async getListenerNotification(uid: string): Promise<string[]>{
     return await getDocs(query(collection(this.db, 'ListenerNotification'), where('uidCreator', '==', uid)))
     .then(results=>{
-      const playerId: string[] = [];
+      const tokens: string[] = [];
       results.docs.forEach((result: any)=>{
-        playerId.push(result.data().token);
+        tokens.push(result.data().uidUser);
       });
-      return playerId;
+      return tokens;
     });
   }
 

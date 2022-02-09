@@ -41,9 +41,9 @@ export class Tab2Page {
       uid: this.sessions.user.uid,
       title: this.notificaion.controls.titulo.value,
       message: this.notificaion.controls.mensaje.value,
-      url: this.notificaion.controls.mensaje.value,
+      url: this.notificaion.controls.url.value,
       userName: this.sessions.user.displayName,
-      urlAuth: this.checkUrl(this.notificaion.controls.mensaje.value)
+      urlAuth: this.checkUrl(this.notificaion.controls.url.value)
     };
     return sendNotification;
   }

@@ -7,6 +7,6 @@
       </ion-label>
     </ion-item>
   </ion-card>
-  <ion-button class="card__btn"
-    expand="full">Abrir <ion-icon [name]="noti.urlAuth"></ion-icon></ion-button>
+  <ion-button class="card__btn" (click)="openAplication(noti.urlAuth, noti.url)"
+    expand="full">ir a<ion-icon [name]="noti.urlAuth"></ion-icon></ion-button>
 </div>

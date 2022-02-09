@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
 import OneSignal from 'onesignal-cordova-plugin';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SendNotification } from 'src/app/models/interface';
 import { SessionsService } from '../sessions/sessions.service';
 import { Platform } from '@ionic/angular';
@@ -30,6 +30,10 @@ export class OneSignalService {
     }
   }
 
+  setExternalId(uid: string): void{
+    OneSignal.setExternalUserId(uid);
+  }
+
   async getPlayerId(): Promise<string>{
     if(this.platform.is('android')){
       return new Promise(resolve=>{
@@ -44,11 +48,16 @@ export class OneSignalService {
   send(sendNotification: SendNotification, tokens: string[]): void{
     this.http.post('https://onesignal.com/api/v1/notifications', {
       "app_id": "e1d6c6f3-0f5c-4a20-a688-75319373f280",
-      "include_player_ids": tokens,
+      "include_external_user_ids": tokens,
       // eslint-disable-next-line object-shorthand
       "data": sendNotification,
       "contents": {"en": sendNotification.message},
       "headings": {"en": sendNotification.title}
+      },
+      {
+        headers: new HttpHeaders({
+        'Authorization': 'Bearer token=\"YTRhZmVkNGYtYjE5Zi00YjhhLThkYmItZDg3OTBiZmZlMGY5\"'
+        })
       }).subscribe(res=>{
         console.log(res);
       });

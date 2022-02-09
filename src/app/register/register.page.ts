@@ -5,6 +5,7 @@ import { AuthServiceService } from '../services/authService/auth-service.service
 import { StorageService } from '../services/storage/storage.service';
 import { DatabaseService } from '../services/dataBase/database.service';
 import { OneSignalService } from '../services/OneSignal/one-signal.service';
+import { SessionsService } from '../services/sessions/sessions.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -31,7 +32,8 @@ export class RegisterPage implements OnInit {
     private afAuth: AuthServiceService,
     private storage: StorageService,
     private database: DatabaseService,
-    private onesignal: OneSignalService) { }
+    private onesignal: OneSignalService,
+    private sessions: SessionsService) { }
 
   ngOnInit() {
   }
@@ -59,6 +61,8 @@ export class RegisterPage implements OnInit {
           user.playerId = id;
           this.database.setUserData(user, this.registerFrom.controls.fullName.value);
           this.storage.setItemStore('user', JSON.stringify(user));
+          this.sessions.user = user;
+          this.onesignal.setExternalId(user.uid);
           this.router.navigate(['']);
         });
       }).catch(error=>{
