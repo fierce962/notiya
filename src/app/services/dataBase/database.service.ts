@@ -21,7 +21,6 @@ export class DatabaseService {
       uid: user.uid,
       userName: this.parseUser.get(user.displayName),
       fullName: name,
-      playerId: user.playerId,
       subsCriptions: 0
     };
     await addDoc(collection(this.db, 'userData'), userData);
@@ -50,6 +49,14 @@ export class DatabaseService {
       });
   };
 
+  async getSubscriptions(user: User): Promise<SubsCriptions>{
+    return await getDocs(query(collection(this.db, 'subscribed'), where('uid', '==', user.uid)))
+    .then(results=>{
+      const subscription: any =results.docs[0].data();
+      return subscription;
+    });
+  }
+
   async addSubcriptions(subscriptions: SubsCriptions): Promise<void>{
     await addDoc(collection(this.db, 'subscribed'), subscriptions);
   }
@@ -76,8 +83,8 @@ export class DatabaseService {
     });
   }
 
-  removeListNotification(id: string): void{
-    deleteDoc(doc(this.db, 'ListenerNotification', id));
+  removeListNotification(notificationId: string): void{
+    deleteDoc(doc(this.db, 'ListenerNotification', notificationId));
   }
 
   async getListenerNotification(uid: string): Promise<string[]>{
@@ -85,7 +92,7 @@ export class DatabaseService {
     .then(results=>{
       const tokens: string[] = [];
       results.docs.forEach((result: any)=>{
-        tokens.push(result.data().uidUser);
+        tokens.push(result.data().token);
       });
       return tokens;
     });

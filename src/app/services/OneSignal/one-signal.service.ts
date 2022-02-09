@@ -31,18 +31,9 @@ export class OneSignalService {
   }
 
   setExternalId(uid: string): void{
-    OneSignal.setExternalUserId(uid);
-  }
-
-  async getPlayerId(): Promise<string>{
     if(this.platform.is('android')){
-      return new Promise(resolve=>{
-        OneSignal.addSubscriptionObserver((state) =>{
-          resolve(state.to.userId);
-        });
-      });
-    }
-    return 'hola';
+      OneSignal.setExternalUserId(uid);
+    };
   }
 
   send(sendNotification: SendNotification, tokens: string[]): void{

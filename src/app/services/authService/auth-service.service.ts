@@ -37,8 +37,8 @@ export class AuthServiceService {
     };
   }
 
-  async loginEmail(email: string, password: string): Promise<User>{
-    return new Promise((resolve, reject)=>{
+  async loginEmail(email: string, password: string): Promise<User | string>{
+    return new Promise((resolve)=>{
       signInWithEmailAndPassword(this.afAuth, email, password)
       .then(userLogin=>{
         const user: User = {
@@ -49,7 +49,7 @@ export class AuthServiceService {
         };
         resolve(user);
       }).catch(error =>{
-        reject(error.code);
+        resolve(error.code);
       });
     });
 

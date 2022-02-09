@@ -3,7 +3,7 @@ export interface User{
     email: string;
     displayName: string;
     emailVerified: boolean;
-    playerId?: string;
+    notification?: boolean;
 }
 
 export interface UserData{
@@ -12,7 +12,6 @@ export interface UserData{
     userName: string[];
     subsCriptions: number;
     subscribe?: boolean;
-    playerId?: string;
 }
 
 export interface SubsCriptions{
@@ -27,7 +26,6 @@ export interface Subscription{
 }
 
 export interface ListNotification{
-    uidUser: string;
     uidCreator: string;
     token: string;
 }

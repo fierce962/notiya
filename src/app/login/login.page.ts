@@ -6,6 +6,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DatabaseService } from '../services/dataBase/database.service';
 import { User, UserData } from '../models/interface';
 import { OneSignalService } from '../services/OneSignal/one-signal.service';
+import { SessionsService } from '../services/sessions/sessions.service';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,8 @@ export class LoginPage implements OnInit {
     private storage: StorageService,
     private router: Router,
     private database: DatabaseService,
-    private oneSignal: OneSignalService) { }
+    private oneSignal: OneSignalService,
+    private sessions: SessionsService) { }
 
   ngOnInit() {
   }
@@ -38,7 +40,6 @@ export class LoginPage implements OnInit {
       this.modalUserName = true;
     }else{
       this.user.displayName = userData.userName[0];
-      this.user.playerId = userData.playerId;
       this.setUserStore();
     }
   }
@@ -46,7 +47,6 @@ export class LoginPage implements OnInit {
   async setUsername(userName: string): Promise<void>{
     if(userName !== ''){
       this.user.displayName = userName;
-      this.user.playerId = await this.oneSignal.getPlayerId();
       this.database.setUserData(this.user, userName);
       this.modalUserName = false;
       this.setUserStore();
@@ -54,7 +54,7 @@ export class LoginPage implements OnInit {
   }
 
   setUserStore(): void{
-    this.storage.setItemStore('user', JSON.stringify(this.user));
+    this.storage.setItemStore('user', JSON.stringify(this.sessions.user));
     this.router.navigate(['']);
   }
 
@@ -63,21 +63,27 @@ export class LoginPage implements OnInit {
   }
 
   async signIn(): Promise<void>{
-    await this.auth.loginEmail(this.loginForm.controls.email.value,
-        this.loginForm.controls.password.value)
-        .then(user=>{
-          this.user = user;
-          this.database.getUserData(this.user).then(userData => {
-            this.user.displayName = userData.userName[0];
-            this.user.playerId = userData.playerId;
-            this.setUserStore();
-          });
-        }).catch(error=>{
-          if(error === 'auth/user-not-found'){
-            this.loginForm.controls.email.setErrors({ emailError: true });
-          }else if(error === 'auth/wrong-password'){
-            this.loginForm.controls.password.setErrors({ passwordError: true });
-          }
-        });
+    const user: User | string = await this.auth.loginEmail(this.loginForm.controls.email.value,
+          this.loginForm.controls.password.value);
+    if(typeof(user) === 'object'){
+      this.sessions.user = user;
+      const userData: UserData = await this.database.getUserData(this.sessions.user);
+      this.sessions.user.displayName = userData.userName[0];
+
+      if(userData.subsCriptions !== 0){
+        this.user.notification = true;
+      }
+
+      this.oneSignal.setExternalId(this.sessions.user.uid);
+
+      const subscritiption = await this.database.getSubscriptions(this.sessions.user);
+      this.storage.setItemStore('subscribed', JSON.stringify(subscritiption));
+
+      this.setUserStore();
+    }else if(user === 'auth/user-not-found'){
+        this.loginForm.controls.email.setErrors({ emailError: true });
+    }else if(user === 'auth/wrong-password'){
+      this.loginForm.controls.password.setErrors({ passwordError: true });
+    }
   }
 }

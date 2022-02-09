@@ -56,15 +56,12 @@ export class RegisterPage implements OnInit {
     this.afAuth.register(this.registerFrom.controls.email.value,
       this.registerFrom.controls.fisrtPassword.value)
       .then(user=>{
-        this.onesignal.getPlayerId().then(id=>{
-          user.displayName = this.registerFrom.controls.userName.value;
-          user.playerId = id;
-          this.database.setUserData(user, this.registerFrom.controls.fullName.value);
-          this.storage.setItemStore('user', JSON.stringify(user));
-          this.sessions.user = user;
-          this.onesignal.setExternalId(user.uid);
-          this.router.navigate(['']);
-        });
+        user.displayName = this.registerFrom.controls.userName.value;
+        this.database.setUserData(user, this.registerFrom.controls.fullName.value);
+        this.storage.setItemStore('user', JSON.stringify(user));
+        this.sessions.user = user;
+        this.onesignal.setExternalId(user.uid);
+        this.router.navigate(['']);
       }).catch(error=>{
         if(error === 'auth/email-already-in-use'){
           this.emailInUsed = true;
