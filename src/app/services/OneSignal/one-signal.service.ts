@@ -46,11 +46,7 @@ export class OneSignalService {
       "app_id": "e1d6c6f3-0f5c-4a20-a688-75319373f280",
       "include_player_ids": tokens,
       // eslint-disable-next-line object-shorthand
-      "data": {
-        "title": sendNotification.title,
-        "mensaje": sendNotification.message,
-        "url": sendNotification.url
-      },
+      "data": sendNotification,
       "contents": {"en": sendNotification.message},
       "headings": {"en": sendNotification.title}
       }).subscribe(res=>{

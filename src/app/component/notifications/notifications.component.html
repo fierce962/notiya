@@ -1,22 +1,12 @@
-<ion-card>
-  <ion-item-sliding>
-    <ion-item-options side="start">
-      <ion-item-option>Share</ion-item-option>
-    </ion-item-options>
-
+<div class="card" *ngFor="let noti of notification">
+  <ion-card>
     <ion-item>
       <ion-label>
-        <h2>titulo</h2>
-        <p>lo que sea</p>
+        <h2>{{ noti.title }}</h2>
+        <p>{{ noti.message }}</p>
       </ion-label>
     </ion-item>
-
-    <ion-item-options side="end">
-      <ion-item-option color="danger">Visto</ion-item-option>
-    </ion-item-options>
-  </ion-item-sliding>
-</ion-card>
-
-<div *ngIf="openNotification">
-  
+  </ion-card>
+  <ion-button class="card__btn"
+    expand="full">Abrir <ion-icon [name]="noti.urlAuth"></ion-icon></ion-button>
 </div>

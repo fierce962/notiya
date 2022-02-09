@@ -12,6 +12,8 @@ import { SendNotification } from 'src/app/models/interface';
 })
 export class Tab2Page {
 
+  authorizedUrl: string[] = ['youtube', 'twitch'];
+
   notificaion = new FormGroup({
     titulo: new FormControl('', [Validators.required]),
     mensaje: new FormControl('', [Validators.required]),
@@ -40,8 +42,22 @@ export class Tab2Page {
       title: this.notificaion.controls.titulo.value,
       message: this.notificaion.controls.mensaje.value,
       url: this.notificaion.controls.mensaje.value,
+      userName: this.sessions.user.displayName,
+      urlAuth: this.checkUrl(this.notificaion.controls.mensaje.value)
     };
     return sendNotification;
+  }
+
+  checkUrl(url: string): string{
+    let urlAth: string;
+    this.authorizedUrl.some(authorized => {
+        const include = url.includes(authorized);
+        if(include){
+          urlAth = `logo-${authorized}`;
+        }
+        return include;
+    });
+    return urlAth;
   }
 
   async registerLastNotification(sendNotification: SendNotification): Promise<void>{

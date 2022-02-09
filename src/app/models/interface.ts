@@ -33,14 +33,11 @@ export interface ListNotification{
 }
 
 export interface SendNotification{
-    uid: string;
-    title: string;
-    message: string;
-    url: string;
-}
-export interface ReceivedNotification{
+    uid?: string;
     title: string;
     message: string;
     url: string;
     userName: string;
+    urlAuth?: string;
 }
+

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
-import { User, ReceivedNotification } from 'src/app/models/interface';
+import { User, SendNotification } from 'src/app/models/interface';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable({
@@ -10,9 +10,9 @@ export class SessionsService {
 
   user: User;
 
-  receivedNotification: ReceivedNotification;
+  receivedNotification: SendNotification;
 
-  private receivedNotification$: Subject<ReceivedNotification> = new Subject();
+  private receivedNotification$: Subject<SendNotification> = new Subject();
 
   constructor(private storage: StorageService) { }
 
@@ -20,11 +20,11 @@ export class SessionsService {
     this.user = JSON.parse(this.storage.getItemStore('user'));
   }
 
-  setNotification(notification: ReceivedNotification): void{
+  setNotification(notification: SendNotification): void{
     this.receivedNotification$.next(notification);
   }
 
-  getNotification(): Observable<ReceivedNotification>{
+  getNotification(): Observable<SendNotification>{
     return this.receivedNotification$;
   }
 }
