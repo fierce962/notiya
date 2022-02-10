@@ -37,5 +37,6 @@ export interface SendNotification{
     url: string;
     userName: string;
     urlAuth?: string;
+    thumbnail?: string;
 }
 

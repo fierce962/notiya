@@ -52,8 +52,12 @@ export class DatabaseService {
   async getSubscriptions(user: User): Promise<SubsCriptions>{
     return await getDocs(query(collection(this.db, 'subscribed'), where('uid', '==', user.uid)))
     .then(results=>{
-      const subscription: any =results.docs[0].data();
-      return subscription;
+      if(results.docs.length !== 0){
+        const subscription: any =results.docs[0].data();
+        return subscription;
+      }else{
+        return undefined;
+      }
     });
   }
 
@@ -95,6 +99,14 @@ export class DatabaseService {
         tokens.push(result.data().token);
       });
       return tokens;
+    });
+  }
+
+
+  async getNotificationId(user: User){
+    await getDocs(query(collection(this.db, 'sendNotification'), where('uid', '==', user.uid)))
+    .then(results=>{
+      console.log();
     });
   }
 

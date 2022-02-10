@@ -51,5 +51,4 @@ export class NotificationsComponent implements OnInit {
       alert(value);
     }
   }
-
 }

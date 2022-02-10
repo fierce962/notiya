@@ -4,7 +4,7 @@ import { StorageService } from '../services/storage/storage.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DatabaseService } from '../services/dataBase/database.service';
-import { User, UserData } from '../models/interface';
+import { SubsCriptions, User, UserData } from '../models/interface';
 import { OneSignalService } from '../services/OneSignal/one-signal.service';
 import { SessionsService } from '../services/sessions/sessions.service';
 
@@ -71,13 +71,15 @@ export class LoginPage implements OnInit {
       this.sessions.user.displayName = userData.userName[0];
 
       if(userData.subsCriptions !== 0){
-        this.user.notification = true;
+        user.notification = true;
       }
 
       this.oneSignal.setExternalId(this.sessions.user.uid);
 
-      const subscritiption = await this.database.getSubscriptions(this.sessions.user);
-      this.storage.setItemStore('subscribed', JSON.stringify(subscritiption));
+      const subscritiption: SubsCriptions = await this.database.getSubscriptions(this.sessions.user);
+      if(subscritiption !== undefined){
+        this.storage.setItemStore('subscribed', JSON.stringify(subscritiption));
+      }
 
       this.setUserStore();
     }else if(user === 'auth/user-not-found'){

@@ -36,6 +36,12 @@ export class OneSignalService {
     };
   }
 
+  removeExternalid(): void{
+    if(this.platform.is('android')){
+      OneSignal.removeExternalUserId();
+    }
+  }
+
   send(sendNotification: SendNotification, tokens: string[]): void{
     this.http.post('https://onesignal.com/api/v1/notifications', {
       "app_id": "e1d6c6f3-0f5c-4a20-a688-75319373f280",
