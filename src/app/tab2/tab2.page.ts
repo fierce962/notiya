@@ -43,9 +43,15 @@ export class Tab2Page {
       message: this.notificaion.controls.mensaje.value,
       url: this.notificaion.controls.url.value,
       userName: this.sessions.user.displayName,
-      urlAuth: this.checkUrl(this.notificaion.controls.url.value)
+      urlAuth: this.checkUrl(this.notificaion.controls.url.value),
+      date: this.createDate()
     };
     return sendNotification;
+  }
+
+  createDate(): string{
+    const date: Date = new Date();
+    return `${date.getDate()}-${date.getMonth()}`;
   }
 
   checkUrl(url: string): string{
@@ -63,7 +69,7 @@ export class Tab2Page {
   async registerLastNotification(sendNotification: SendNotification): Promise<void>{
     const sendId: string | null = this.storage.getItemStore('sendNotification');
     if(sendId === null){
-      const id = await this.db.registerNotification(sendNotification);
+      const id: string = await this.db.registerNotification(sendNotification);
       this.storage.setItemStore('sendNotification', id);
     }else{
       this.db.updateRegisterNotification(sendId ,sendNotification);

@@ -50,7 +50,7 @@ export class UserSearchComponent implements OnInit {
       uid: this.sessions.user.uid,
       subsCriptions: [{
         uid: user.uid,
-        date: new Date(),
+        url: '',
         notificationId: await this.createListNotification(user)
       }]
     };
@@ -77,7 +77,7 @@ export class UserSearchComponent implements OnInit {
   async updateSubscriptions(user: UserData): Promise<void>{
     this.subscriptions.subsCriptions.push({
       uid: user.uid,
-      date: new Date(),
+      url: '',
       notificationId: await this.createListNotification(user)
     });
     this.db.updateSubscriptions(this.subscriptions);

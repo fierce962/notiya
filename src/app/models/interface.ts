@@ -21,7 +21,7 @@ export interface SubsCriptions{
 
 export interface Subscription{
     uid: string;
-    date: Date;
+    url: string;
     notificationId: string;
 }
 
@@ -38,5 +38,6 @@ export interface SendNotification{
     userName: string;
     urlAuth?: string;
     thumbnail?: string;
+    date?: string;
 }
 

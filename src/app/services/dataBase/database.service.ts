@@ -2,7 +2,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, query, where, addDoc, updateDoc, increment, deleteDoc, doc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, query, where,
+  addDoc, updateDoc, increment, deleteDoc, doc, DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { ParseUserNameService } from '../parseUserName/parse-user-name.service';
 import { UserData, User, SubsCriptions, ListNotification, SendNotification } from 'src/app/models/interface';
 
@@ -102,11 +103,16 @@ export class DatabaseService {
     });
   }
 
+  async getNotifications(subscritionsId: string[]): Promise<QueryDocumentSnapshot<DocumentData>[]>{
+    return await getDocs(query(collection(this.db, 'sendNotification'),
+    where('uid', 'in', subscritionsId)))
+    .then(results=> results.docs );
+  }
 
   async getNotificationId(user: User){
     await getDocs(query(collection(this.db, 'sendNotification'), where('uid', '==', user.uid)))
     .then(results=>{
-      console.log();
+      console.log(results);
     });
   }
 
@@ -115,7 +121,7 @@ export class DatabaseService {
     .then(result=> result.id);
   }
 
-  async updateRegisterNotification(id: string, sendNotification: SendNotification | any){
+  async updateRegisterNotification(id: string, sendNotification: SendNotification | any): Promise<void>{
     await updateDoc(doc(this.db, 'sendNotification', id), sendNotification);
   }
 }
