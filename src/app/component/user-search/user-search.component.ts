@@ -72,6 +72,7 @@ export class UserSearchComponent implements OnInit {
       }
       return diferentUser;
     });
+    this.sessions.setremoveSubscription(user.uid);
     this.db.updateSubscriptions(this.subscriptions);
     user.subsCriptions -= 1;
     this.db.updateUserSubscription(user.uid, -1);

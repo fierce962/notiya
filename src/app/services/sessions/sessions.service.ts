@@ -16,9 +16,12 @@ export class SessionsService {
 
   newSubscriptions: Subscription[] = [];
 
+  removeSubscription$: Subject<string> = new Subject();
+
   private newSubsciptions$: Subject<Subscription[]> = new Subject();
 
   private receivedNotification$: Subject<SendNotification> = new Subject();
+
 
   constructor(private storage: StorageService) { }
 
@@ -35,10 +38,20 @@ export class SessionsService {
   }
 
   setNewSubscriptions(): void{
-    this.newSubsciptions$.next(this.newSubscriptions);
+    if(this.newSubscriptions.length !== 0){
+      this.newSubsciptions$.next(this.newSubscriptions);
+    }
   }
 
   getNewSubscriptions(): Observable<Subscription[]>{
     return this.newSubsciptions$;
+  }
+
+  setremoveSubscription(userId: string): void{
+    this.removeSubscription$.next(userId);
+  }
+
+  getRemoveSubscription(): Observable<string>{
+    return this.removeSubscription$;
   }
 }

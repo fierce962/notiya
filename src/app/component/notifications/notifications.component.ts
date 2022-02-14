@@ -24,18 +24,32 @@ export class NotificationsComponent implements OnInit {
     private ng: NgZone, private storage: StorageService) { }
 
   ngOnInit() {
-    console.log('init');
     this.startApp();
+    this.startObservable();
+  }
+
+  async startApp(): Promise<void>{
+    this.subscribedCopy = JSON.parse(this.storage.getItemStore('subscribed'));
+    if(this.sessions.receivedNotification !== undefined){
+      this.notification.push(this.sessions.receivedNotification);
+      this.openNotification = true;
+    }else if(this.subscribedCopy !== null){
+      this.searchNotifications([... this.subscribedCopy.subsCriptions]);
+    };
+  }
+
+  startObservable(): void{
     this.sessions.getNotification().subscribe(notification=>{
       this.ng.run(()=>{
+        this.setNotificationThumbnail(notification);
         this.notification.unshift(notification);
         this.openNotification = true;
       });
     });
+
     this.sessions.getNewSubscriptions().subscribe(newSubscritions=>{
       this.ng.run(()=>{
         if(newSubscritions.length !== 0){
-          console.log(this.sessions.newSubscriptions);
           newSubscritions.forEach(subscribed=>{
             this.subscribedCopy.subsCriptions.unshift(subscribed);
           });
@@ -43,20 +57,17 @@ export class NotificationsComponent implements OnInit {
             this.searchNotifications(this.subscribedCopy.subsCriptions);
           }
           this.sessions.newSubscriptions = [];
-          console.log(this.sessions.newSubscriptions);
         };
       });
     });
-  }
 
-  async startApp(): Promise<void>{
-    this.subscribedCopy = JSON.parse(this.storage.getItemStore('subscribed'));
-    if(this.sessions.receivedNotification === undefined){
-      this.searchNotifications([... this.subscribedCopy.subsCriptions]);
-    }else{
-      this.notification.push(this.sessions.receivedNotification);
-      this.openNotification = true;
-    }
+    this.sessions.removeSubscription$.subscribe(idUser =>{
+      this.ng.run(()=>{
+        this.removeSubscritionCopy(idUser);
+
+        this.removeNotification(idUser);
+      });
+    });
   }
 
   async searchNotifications(subscritions: Subscription[]): Promise<void>{
@@ -165,4 +176,25 @@ export class NotificationsComponent implements OnInit {
     }
   }
 
+  removeNotification(idUser: string): void{
+    if(this.notification.length !== 0){
+      this.notification.some((notification, index)=>{
+        if(notification.uid === idUser){
+          this.notification.splice(index, 1);
+          return true;
+        }
+      });
+    }
+  }
+
+  removeSubscritionCopy(idUser: string): void{
+    if(this.subscribedCopy.subsCriptions.length !== 0){
+      this.subscribedCopy.subsCriptions.some((subscrition, index)=>{
+        if(subscrition.uid === idUser){
+          this.subscribedCopy.subsCriptions.splice(index, 1);
+          return true;
+        }
+      });
+    }
+  }
 }
