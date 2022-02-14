@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UserData, SubsCriptions } from 'src/app/models/interface';
+import { UserData, SubsCriptions, Subscription } from 'src/app/models/interface';
 import { SessionsService } from 'src/app/services/sessions/sessions.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { DatabaseService } from '../../services/dataBase/database.service';
@@ -39,6 +39,7 @@ export class UserSearchComponent implements OnInit {
     }else{
       await this.updateSubscriptions(userSearch);
     }
+    this.sessions.newSubscriptions.push(await this.createSubscription(userSearch));
     userSearch.subscribe = true;
     userSearch.subsCriptions += 1;
     this.db.updateUserSubscription(userSearch.uid, 1);
@@ -48,14 +49,18 @@ export class UserSearchComponent implements OnInit {
   async addSubcriptions(user: UserData): Promise<SubsCriptions>{
     const subCription: SubsCriptions = {
       uid: this.sessions.user.uid,
-      subsCriptions: [{
-        uid: user.uid,
-        url: '',
-        notificationId: await this.createListNotification(user)
-      }]
+      subsCriptions: [await this.createSubscription(user)]
     };
     this.db.addSubcriptions(subCription);
     return subCription;
+  }
+
+  async createSubscription(user: UserData): Promise<Subscription>{
+    return {
+      uid: user.uid,
+      url: '',
+      notificationId: await this.createListNotification(user)
+    };
   }
 
   removeSubscription(user: UserData): void{
@@ -71,7 +76,20 @@ export class UserSearchComponent implements OnInit {
     user.subsCriptions -= 1;
     this.db.updateUserSubscription(user.uid, -1);
     user.subscribe = undefined;
+    this.removeNewSubscription(user);
     this.store.setItemStore('subscribed', JSON.stringify(this.subscriptions));
+  }
+
+  removeNewSubscription(user: UserData): void{
+    const newSubscriptions = this.sessions.newSubscriptions;
+    if(newSubscriptions.length !== 0){
+      newSubscriptions.some((subscription, index) => {
+        if(subscription.uid === user.uid){
+          newSubscriptions.splice(index, 1);
+          return true;
+        }
+      });
+    }
   }
 
   async updateSubscriptions(user: UserData): Promise<void>{

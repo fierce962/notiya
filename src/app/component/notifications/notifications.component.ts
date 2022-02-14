@@ -1,9 +1,11 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { SessionsService } from '../../services/sessions/sessions.service';
 import { SendNotification, SubsCriptions, Subscription } from '../../models/interface';
 import { AppLauncher } from '@capacitor/app-launcher';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { DatabaseService } from 'src/app/services/dataBase/database.service';
+
+import { IonInfiniteScroll } from '@ionic/angular';
 
 @Component({
   selector: 'app-notifications',
@@ -11,6 +13,8 @@ import { DatabaseService } from 'src/app/services/dataBase/database.service';
   styleUrls: ['./notifications.component.scss'],
 })
 export class NotificationsComponent implements OnInit {
+
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   openNotification = true;
   notification: SendNotification[] = [];
@@ -20,11 +24,27 @@ export class NotificationsComponent implements OnInit {
     private ng: NgZone, private storage: StorageService) { }
 
   ngOnInit() {
+    console.log('init');
     this.startApp();
     this.sessions.getNotification().subscribe(notification=>{
       this.ng.run(()=>{
-        this.notification.push(notification);
+        this.notification.unshift(notification);
         this.openNotification = true;
+      });
+    });
+    this.sessions.getNewSubscriptions().subscribe(newSubscritions=>{
+      this.ng.run(()=>{
+        if(newSubscritions.length !== 0){
+          console.log(this.sessions.newSubscriptions);
+          newSubscritions.forEach(subscribed=>{
+            this.subscribedCopy.subsCriptions.unshift(subscribed);
+          });
+          if(this.notification.length < 10){
+            this.searchNotifications(this.subscribedCopy.subsCriptions);
+          }
+          this.sessions.newSubscriptions = [];
+          console.log(this.sessions.newSubscriptions);
+        };
       });
     });
   }
@@ -40,7 +60,7 @@ export class NotificationsComponent implements OnInit {
   }
 
   async searchNotifications(subscritions: Subscription[]): Promise<void>{
-    if(subscritions.length !== 0){
+    if(subscritions !== undefined && subscritions.length !== 0){
       const subscritionId: string[] = [];
       const invalidUrl: object = {};
       let numberChange = 0;
@@ -68,11 +88,19 @@ export class NotificationsComponent implements OnInit {
       if(invalidUrl[newNotification.uid] !== newNotification.url){
         dateValid.forEach(day=>{
           if(day === newNotification.date){
+            this.setNotificationThumbnail(newNotification);
             this.notification.push(newNotification);
           }
         });
       }
     });
+  }
+
+  setNotificationThumbnail(notification: SendNotification): void{
+    if('logo-youtube' === notification.urlAuth){
+      const urlId: RegExpMatchArray = notification.url.match('[\\?&]v=([^&#]*)');
+      notification.thumbnail = `https://img.youtube.com/vi/${urlId[1]}/sddefault.jpg`;
+    };
   }
 
   changePositionSubscriptions(numberChange: number): void{
@@ -81,17 +109,7 @@ export class NotificationsComponent implements OnInit {
     removeSubscriptinos.forEach(subscritions=>{
       subscribed.subsCriptions.push(subscritions);
     });
-  }
-
-  async openAplication(urlAuth: string, openUrl: string): Promise<void>{
-    const { value } = await AppLauncher.canOpenUrl({
-      url: `com.google.android.${urlAuth.split('-')[1]}`
-    });
-    if(value){
-      await AppLauncher.openUrl({ url: openUrl });
-    }else{
-      alert(value);
-    }
+    this.storage.setItemStore('subscribed', JSON.stringify(subscribed));
   }
 
   getSearchDay(){
@@ -110,8 +128,41 @@ export class NotificationsComponent implements OnInit {
     }else{
       searchDate.push(`${date.getDate()}-${date.getMonth()}`);
       searchDate.push(`${date.getDate()+1}-${date.getMonth()}`);
-      searchDate.push(`${date.getDate()-1}-${date.getMonth()+1}`);
+      searchDate.push(`${date.getDate()-1}-${date.getMonth()}`);
     }
     return searchDate;
   }
+
+  loadNewsNotifications(event: any): void{
+    console.log('infiniti');
+    if(this.subscribedCopy.subsCriptions.length !== 0){
+      this.searchNotifications(this.subscribedCopy.subsCriptions);
+    }else{
+      event.target.complete();
+    }
+  }
+
+  changeUrlSubscribed(notification: SendNotification): void{
+    const subscribed: SubsCriptions = JSON.parse(this.storage.getItemStore('subscribed'));
+    subscribed.subsCriptions.some((subscrition)=>{
+      if(notification.uid === subscrition.uid){
+        subscrition.url = notification.url;
+        return true;
+      }
+    });
+    this.storage.setItemStore('subscribed', JSON.stringify(subscribed));
+    this.openAplication(notification.urlAuth, notification.url);
+  }
+
+  async openAplication(urlAuth: string, openUrl: string): Promise<void>{
+    const { value } = await AppLauncher.canOpenUrl({
+      url: `com.google.android.${urlAuth.split('-')[1]}`
+    });
+    if(value){
+      await AppLauncher.openUrl({ url: openUrl });
+    }else{
+      alert(value);
+    }
+  }
+
 }

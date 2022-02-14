@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DatabaseService } from '../services/dataBase/database.service';
 import { ParseUserNameService } from '../services/parseUserName/parse-user-name.service';
 import { UserData } from '../models/interface';
+import { SessionsService } from '../services/sessions/sessions.service';
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -16,7 +17,8 @@ export class Tab1Page implements OnInit {
   viewInputSearch = false;
 
   constructor(private db: DatabaseService,
-    private parserUsername: ParseUserNameService) {}
+    private parserUsername: ParseUserNameService,
+    private sessions: SessionsService) {}
 
   ngOnInit(): void {}
 
@@ -32,4 +34,7 @@ export class Tab1Page implements OnInit {
     }
   }
 
+  setSubscriptions(): void{
+    this.sessions.setNewSubscriptions();
+  }
 }

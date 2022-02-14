@@ -1,12 +1,31 @@
-<div class="card" *ngFor="let noti of notification">
-  <div class="card__content-icon">
-    <ion-icon class="card__icon" [name]="noti.urlAuth"></ion-icon>
+<div *ngIf="notification.length !== 0 && subscribedCopy !== null">
+  <div class="card" *ngFor="let noti of notification" (click)="changeUrlSubscribed(noti)">
+    <div class="card__content-icon">
+      <ion-icon class="card__icon" [name]="noti.urlAuth"></ion-icon>
+    </div>
+    <div class="card__title">
+      <h1 class="card__title-text">{{ noti.title }}</h1>
+    </div>
+    <img [src]="noti.thumbnail" alt="">
+    <div class="card__description">
+      <p class="card__description-text">{{ noti.message }}</p>
+    </div>
   </div>
-  <div class="card__title">
-    <h1 class="card__title-text">{{ noti.title }}</h1>
+  
+  <ion-infinite-scroll class="infinite-scroll" 
+    threshold="80%" (ionInfinite)="loadNewsNotifications($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" 
+        loadingText="Cargando nuevas nofiticaciones...">
+      </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</div>
+
+<div class="error-message" *ngIf="notification.length === 0">
+  <div *ngIf="subscribedCopy !== null">
+    <ion-icon name="notifications-off-outline"></ion-icon>
+    <label>No hay nuevas notificaciones</label>
   </div>
-  <img src="https://img.youtube.com/vi/ItL6vcUrpUs/sddefault.jpg" alt="">
-  <div class="card__description">
-    <p class="card__description-text">{{ noti.message }}</p>
-  </div>
+  <label *ngIf="subscribedCopy === null">
+    No tienes subscripciones activas
+  </label>
 </div>

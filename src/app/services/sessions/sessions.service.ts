@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
-import { User, SendNotification } from 'src/app/models/interface';
+import { User, SendNotification, Subscription } from 'src/app/models/interface';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable({
@@ -11,6 +11,12 @@ export class SessionsService {
   user: User;
 
   receivedNotification: SendNotification;
+
+  authorizedUrl: string[] = ['youtube', 'twitch'];
+
+  newSubscriptions: Subscription[] = [];
+
+  private newSubsciptions$: Subject<Subscription[]> = new Subject();
 
   private receivedNotification$: Subject<SendNotification> = new Subject();
 
@@ -26,5 +32,13 @@ export class SessionsService {
 
   getNotification(): Observable<SendNotification>{
     return this.receivedNotification$;
+  }
+
+  setNewSubscriptions(): void{
+    this.newSubsciptions$.next(this.newSubscriptions);
+  }
+
+  getNewSubscriptions(): Observable<Subscription[]>{
+    return this.newSubsciptions$;
   }
 }

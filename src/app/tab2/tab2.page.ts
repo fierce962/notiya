@@ -12,7 +12,7 @@ import { SendNotification } from 'src/app/models/interface';
 })
 export class Tab2Page {
 
-  authorizedUrl: string[] = ['youtube', 'twitch'];
+
 
   notificaion = new FormGroup({
     titulo: new FormControl('', [Validators.required]),
@@ -56,7 +56,7 @@ export class Tab2Page {
 
   checkUrl(url: string): string{
     let urlAth: string;
-    this.authorizedUrl.some(authorized => {
+    this.sessions.authorizedUrl.some(authorized => {
         const include = url.includes(authorized);
         if(include){
           urlAth = `logo-${authorized}`;
