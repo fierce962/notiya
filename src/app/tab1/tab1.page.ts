@@ -14,6 +14,7 @@ export class Tab1Page implements OnInit {
 
   searchsUsers: UserData[];
   viewSearch = false;
+  viewNotification = true;
   viewInputSearch = false;
 
   constructor(private db: DatabaseService,
@@ -23,12 +24,14 @@ export class Tab1Page implements OnInit {
   ngOnInit(): void {}
 
   async search(event: KeyboardEvent): Promise<void>{
+    this.viewSearch = false;
     if(event.key === 'Enter'){
       const search: string = this.searchbar.nativeElement.querySelector('.searchbar-input').value;
       if(search !== ''){
         this.searchsUsers = await this.db.shearchUsers(this.parserUsername.get(search));
         if(this.searchsUsers.length !== 0){
           this.viewSearch = true;
+          this.viewNotification = false;
         }
       }
     }

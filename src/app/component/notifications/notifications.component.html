@@ -1,10 +1,10 @@
 <div *ngIf="notification.length !== 0 && subscribedCopy !== null">
-  <div class="card" *ngFor="let noti of notification" (click)="changeUrlSubscribed(noti)">
+  <div class="card" *ngFor="let noti of notification; index as i" (click)="changeUrlSubscribed(noti)">
     <div class="card__content-icon">
       <ion-icon class="card__icon" [name]="noti.urlAuth"></ion-icon>
     </div>
     <div class="card__title">
-      <h1 class="card__title-text">{{ noti.title }}</h1>
+      <h1 class="card__title-text">{{ noti.title }} {{noti.uid}} {{i}}</h1>
     </div>
     <img [src]="noti.thumbnail" alt="">
     <div class="card__description">
@@ -16,6 +16,7 @@
     threshold="80%" (ionInfinite)="loadNewsNotifications($event)">
       <ion-infinite-scroll-content loadingSpinner="bubbles" 
         loadingText="Cargando nuevas nofiticaciones...">
+        <label *ngIf="notLoadNotification">No tiene mas notificaciones</label>
       </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </div>

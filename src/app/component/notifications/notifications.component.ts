@@ -20,6 +20,8 @@ export class NotificationsComponent implements OnInit {
   notification: SendNotification[] = [];
   subscribedCopy: SubsCriptions;
 
+  notLoadNotification = false;
+
   constructor(private sessions: SessionsService, private database: DatabaseService,
     private ng: NgZone, private storage: StorageService) { }
 
@@ -31,9 +33,12 @@ export class NotificationsComponent implements OnInit {
   async startApp(): Promise<void>{
     this.subscribedCopy = JSON.parse(this.storage.getItemStore('subscribed'));
     if(this.sessions.receivedNotification !== undefined){
+      this.setNotificationThumbnail(this.sessions.receivedNotification);
       this.notification.push(this.sessions.receivedNotification);
+      this.removePerIdUser(this.subscribedCopy.subsCriptions, this.sessions.receivedNotification.uid);
       this.openNotification = true;
-    }else if(this.subscribedCopy !== null){
+    }
+    if(this.subscribedCopy !== null){
       this.searchNotifications([... this.subscribedCopy.subsCriptions]);
     };
   }
@@ -63,9 +68,9 @@ export class NotificationsComponent implements OnInit {
 
     this.sessions.removeSubscription$.subscribe(idUser =>{
       this.ng.run(()=>{
-        this.removeSubscritionCopy(idUser);
+        this.removePerIdUser(this.notification, idUser);
 
-        this.removeNotification(idUser);
+        this.removePerIdUser(this.subscribedCopy.subsCriptions, idUser);
       });
     });
   }
@@ -145,11 +150,12 @@ export class NotificationsComponent implements OnInit {
   }
 
   loadNewsNotifications(event: any): void{
-    console.log('infiniti');
     if(this.subscribedCopy.subsCriptions.length !== 0){
       this.searchNotifications(this.subscribedCopy.subsCriptions);
+      event.target.complete();
     }else{
       event.target.complete();
+      this.notLoadNotification = true;
     }
   }
 
@@ -176,22 +182,11 @@ export class NotificationsComponent implements OnInit {
     }
   }
 
-  removeNotification(idUser: string): void{
-    if(this.notification.length !== 0){
-      this.notification.some((notification, index)=>{
-        if(notification.uid === idUser){
-          this.notification.splice(index, 1);
-          return true;
-        }
-      });
-    }
-  }
-
-  removeSubscritionCopy(idUser: string): void{
-    if(this.subscribedCopy.subsCriptions.length !== 0){
-      this.subscribedCopy.subsCriptions.some((subscrition, index)=>{
-        if(subscrition.uid === idUser){
-          this.subscribedCopy.subsCriptions.splice(index, 1);
+  removePerIdUser(removeArray: Array<any>, idUser: string): void{
+    if(removeArray.length !== 0){
+      removeArray.some((positionActual, index)=>{
+        if(positionActual.uid === idUser){
+          removeArray.splice(index, 1);
           return true;
         }
       });

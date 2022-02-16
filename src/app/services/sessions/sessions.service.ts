@@ -30,6 +30,7 @@ export class SessionsService {
   }
 
   setNotification(notification: SendNotification): void{
+    this.receivedNotification = notification;
     this.receivedNotification$.next(notification);
   }
 

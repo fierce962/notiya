@@ -109,10 +109,13 @@ export class DatabaseService {
     .then(results=> results.docs );
   }
 
-  async getNotificationId(user: User){
-    await getDocs(query(collection(this.db, 'sendNotification'), where('uid', '==', user.uid)))
+  async getNotificationId(user: User): Promise<string>{
+    return await getDocs(query(collection(this.db, 'sendNotification'), where('uid', '==', user.uid)))
     .then(results=>{
-      console.log(results);
+      if(results.docs.length !== 0){
+        return results.docs[0].id;
+      }
+      return '';
     });
   }
 

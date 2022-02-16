@@ -5,6 +5,7 @@
         <ion-button class="content-header__btn-back" 
           (click)="viewInputSearch = !viewInputSearch; 
           viewSearch = false;
+          viewNotification = true;
           setSubscriptions()">
           <ion-icon name="arrow-back-outline"></ion-icon>
         </ion-button>
@@ -18,9 +19,8 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" color="light">
-  <div class="content-page">
-    <app-notifications [class.content-page__notification-view]="viewSearch"></app-notifications>
-    <app-user-search *ngIf="viewSearch" 
-      (subscriptions)="addSubCription($event)" [searchsUsers]="searchsUsers"></app-user-search>
-  </div>
+  <app-notifications class="content-page__notification"
+  [class.content-page__notification-view]="viewNotification"></app-notifications>
+  <app-user-search *ngIf="viewSearch" 
+    (subscriptions)="addSubCription($event)" [searchsUsers]="searchsUsers"></app-user-search>
 </ion-content>

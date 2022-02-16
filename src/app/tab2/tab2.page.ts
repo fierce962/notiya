@@ -12,8 +12,6 @@ import { SendNotification } from 'src/app/models/interface';
 })
 export class Tab2Page {
 
-
-
   notificaion = new FormGroup({
     titulo: new FormControl('', [Validators.required]),
     mensaje: new FormControl('', [Validators.required]),
@@ -69,7 +67,12 @@ export class Tab2Page {
   async registerLastNotification(sendNotification: SendNotification): Promise<void>{
     const sendId: string | null = this.storage.getItemStore('sendNotification');
     if(sendId === null){
-      const id: string = await this.db.registerNotification(sendNotification);
+      let id: string = await this.db.getNotificationId(this.sessions.user);
+      if(id === ''){
+        id = await this.db.registerNotification(sendNotification);
+      }else{
+        this.db.updateRegisterNotification(id ,sendNotification);
+      }
       this.storage.setItemStore('sendNotification', id);
     }else{
       this.db.updateRegisterNotification(sendId ,sendNotification);
