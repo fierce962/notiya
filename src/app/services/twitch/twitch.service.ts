@@ -3,7 +3,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StorageService } from '../storage/storage.service';
-import { CreateTokenTwitch, PerfilesTwitch } from 'src/app/models/interface';
+import { CreateTokenTwitch, PerfilesTwitch, InvalidTokenTwitch } from 'src/app/models/interface';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +34,8 @@ export class TwitchService {
 
   async hasToken(): Promise<string>{
     let token: string | null = this.storage.getItemStore('twitchToken');
-    if(token === null){
+    const valid: boolean = await this.validToken(token);
+    if(token === null || valid){
       console.log('null');
       const createToken = await this.createTokenTwitch();
       token = createToken.access_token;
@@ -50,5 +51,24 @@ export class TwitchService {
         body: '{}'
       });
       return token.json();
+  }
+
+  private validToken(token: string): Promise<boolean>{
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      })
+    };
+    return new Promise((resolve)=>{
+      this.http.get('https://id.twitch.tv/oauth2/validate', httpOptions)
+      .subscribe(res=>{
+        resolve(false);
+      }, (err)=>{
+        const errorMensage: InvalidTokenTwitch = err;
+        if(errorMensage.error.message === 'invalid access token'){
+          resolve(true);
+        }
+      });
+    });
   }
 }

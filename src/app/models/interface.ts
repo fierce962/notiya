@@ -64,3 +64,11 @@ interface PerfilesData{
     view_count: number;
     created_at: Date;
 }
+
+export interface InvalidTokenTwitch{
+    error: {
+        error: string;
+        status: number;
+        message: string;
+    };
+}
