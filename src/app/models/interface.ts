@@ -64,8 +64,3 @@ interface PerfilesData{
     view_count: number;
     created_at: Date;
 }
-
-export interface SearchThumbnailTwitch{
-    perfilName: string;
-    notification: SendNotification[];
-}

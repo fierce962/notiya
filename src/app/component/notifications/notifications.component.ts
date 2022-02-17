@@ -27,8 +27,8 @@ export class NotificationsComponent implements OnInit {
     private ng: NgZone, private storage: StorageService,
     private thumbnail: NotificationThumbnailService) { }
 
-  ngOnInit() {
-    this.startApp();
+  async ngOnInit() {
+    await this.startApp();
     this.startObservable();
   }
 
@@ -43,6 +43,7 @@ export class NotificationsComponent implements OnInit {
     if(this.subscribedCopy !== null){
       this.searchNotifications([... this.subscribedCopy.subsCriptions]);
     };
+    await this.thumbnail.start();
   }
 
   startObservable(): void{
@@ -91,7 +92,7 @@ export class NotificationsComponent implements OnInit {
         }
       });
       const notifications = await this.database.getNotifications(subscritionId);
-      this.setNotification(notifications, invalidUrl);
+      await this.setNotification(notifications, invalidUrl);
       this.changePositionSubscriptions(numberChange);
       if(this.notification.length < 10){
         this.searchNotifications([... this.subscribedCopy.subsCriptions]);
@@ -99,10 +100,10 @@ export class NotificationsComponent implements OnInit {
     }
   }
 
-  setNotification(notifications, invalidUrl: object): void{
+  async setNotification(notifications, invalidUrl: object): Promise<void>{
     const dateValid: string[] = this.getSearchDay();
     const end: number = notifications.length - 1;
-    notifications.forEach((notification: any, index) => {
+    notifications.forEach((notification: any) => {
       const newNotification: SendNotification = notification.data();
       if(invalidUrl[newNotification.uid] !== newNotification.url){
         dateValid.forEach(day=>{
@@ -111,9 +112,6 @@ export class NotificationsComponent implements OnInit {
             this.notification.push(newNotification);
           }
         });
-      }
-      if(end === index){
-        this.thumbnail.endProcess();
       }
     });
   }
