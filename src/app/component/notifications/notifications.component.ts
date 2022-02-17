@@ -4,6 +4,7 @@ import { SendNotification, SubsCriptions, Subscription } from '../../models/inte
 import { AppLauncher } from '@capacitor/app-launcher';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { DatabaseService } from 'src/app/services/dataBase/database.service';
+import { NotificationThumbnailService } from 'src/app/services/notificationThumbnail/notification-thumbnail.service';
 
 import { IonInfiniteScroll } from '@ionic/angular';
 
@@ -23,7 +24,8 @@ export class NotificationsComponent implements OnInit {
   notLoadNotification = false;
 
   constructor(private sessions: SessionsService, private database: DatabaseService,
-    private ng: NgZone, private storage: StorageService) { }
+    private ng: NgZone, private storage: StorageService,
+    private thumbnail: NotificationThumbnailService) { }
 
   ngOnInit() {
     this.startApp();
@@ -92,22 +94,26 @@ export class NotificationsComponent implements OnInit {
       this.setNotification(notifications, invalidUrl);
       this.changePositionSubscriptions(numberChange);
       if(this.notification.length < 10){
-        this.searchNotifications(this.subscribedCopy.subsCriptions);
+        this.searchNotifications([... this.subscribedCopy.subsCriptions]);
       }
     }
   }
 
   setNotification(notifications, invalidUrl: object): void{
     const dateValid: string[] = this.getSearchDay();
-    notifications.forEach((notification: any) => {
+    const end: number = notifications.length - 1;
+    notifications.forEach((notification: any, index) => {
       const newNotification: SendNotification = notification.data();
       if(invalidUrl[newNotification.uid] !== newNotification.url){
         dateValid.forEach(day=>{
           if(day === newNotification.date){
-            this.setNotificationThumbnail(newNotification);
+            this.thumbnail.set(newNotification);
             this.notification.push(newNotification);
           }
         });
+      }
+      if(end === index){
+        this.thumbnail.endProcess();
       }
     });
   }
@@ -149,12 +155,14 @@ export class NotificationsComponent implements OnInit {
     return searchDate;
   }
 
-  loadNewsNotifications(event: any): void{
+  async loadNewsNotifications(event: any): Promise<void>{
     if(this.subscribedCopy.subsCriptions.length !== 0){
-      this.searchNotifications(this.subscribedCopy.subsCriptions);
+      await this.searchNotifications(this.subscribedCopy.subsCriptions);
       event.target.complete();
     }else{
       event.target.complete();
+    }
+    if(this.subscribedCopy.subsCriptions.length < 10){
       this.notLoadNotification = true;
     }
   }

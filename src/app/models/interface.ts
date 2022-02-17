@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface User{
     uid: string;
     email: string;
@@ -41,3 +42,30 @@ export interface SendNotification{
     date?: string;
 }
 
+export interface CreateTokenTwitch{
+    access_token: string;
+    expires_in: number;
+    scope: string[];
+    token_type: string;
+}
+
+export interface PerfilesTwitch{
+    data: PerfilesData[];
+}
+interface PerfilesData{
+    id: string;
+    login: string;
+    display_name: string;
+    type: string;
+    broadcaster_type: string;
+    description: string;
+    profile_image_url: string;
+    offline_image_url: string;
+    view_count: number;
+    created_at: Date;
+}
+
+export interface SearchThumbnailTwitch{
+    perfilName: string;
+    notification: SendNotification[];
+}
