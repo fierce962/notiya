@@ -72,3 +72,12 @@ export interface InvalidTokenTwitch{
         message: string;
     };
 }
+
+export interface HistoryActions{
+    [url: string]: {
+        [nameVariable: string]: {
+            valueInitial: any;
+            action: any;
+        };
+    };
+}

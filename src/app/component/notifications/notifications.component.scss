@@ -4,6 +4,7 @@
     position: relative;
     margin: 15px;
     border-radius: 15px;
+    box-sizing: border-box;
     overflow: hidden;
     &__title, &__description{
         width: 100%;
@@ -20,9 +21,13 @@
         overflow: hidden;
         white-space: nowrap;
     }
-    &__img{
+    &__img-content{
         width: 100%;
-        object-fit: cover;
+        height: 100%;
+        background: #fff;
+        padding: 12% 0px;
+        display: flex;
+        justify-content: center;
     }
     &__description{
         bottom: 0;

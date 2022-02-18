@@ -21,7 +21,8 @@ export class Tab1Page implements OnInit {
     private parserUsername: ParseUserNameService,
     private sessions: SessionsService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   async search(event: KeyboardEvent): Promise<void>{
     if(event.key === 'Enter'){

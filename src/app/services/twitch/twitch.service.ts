@@ -36,7 +36,6 @@ export class TwitchService {
     let token: string | null = this.storage.getItemStore('twitchToken');
     const valid: boolean = await this.validToken(token);
     if(token === null || valid){
-      console.log('null');
       const createToken = await this.createTokenTwitch();
       token = createToken.access_token;
       this.storage.setItemStore('twitchToken', token);
@@ -53,22 +52,25 @@ export class TwitchService {
       return token.json();
   }
 
-  private validToken(token: string): Promise<boolean>{
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${token}`
-      })
-    };
-    return new Promise((resolve)=>{
-      this.http.get('https://id.twitch.tv/oauth2/validate', httpOptions)
-      .subscribe(res=>{
-        resolve(false);
-      }, (err)=>{
-        const errorMensage: InvalidTokenTwitch = err;
-        if(errorMensage.error.message === 'invalid access token'){
-          resolve(true);
-        }
+  private async validToken(token: string): Promise<boolean>{
+    if(token !== null){
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': `Bearer ${token}`
+        })
+      };
+      return new Promise((resolve)=>{
+        this.http.get('https://id.twitch.tv/oauth2/validate', httpOptions)
+        .subscribe(res=>{
+          resolve(false);
+        }, (err)=>{
+          const errorMensage: InvalidTokenTwitch = err;
+          if(errorMensage.error.message === 'invalid access token'){
+            resolve(true);
+          }
+        });
       });
-    });
+    }
+    return false;
   }
 }

@@ -55,11 +55,11 @@ export class LoginPage implements OnInit {
 
   setUserStore(): void{
     this.storage.setItemStore('user', JSON.stringify(this.sessions.user));
-    this.router.navigate(['']);
+    this.router.navigateByUrl('', { replaceUrl: true });
   }
 
   register(): void{
-    this.router.navigate(['register']);
+    this.router.navigateByUrl('/register', { replaceUrl: true });
   }
 
   async signIn(): Promise<void>{

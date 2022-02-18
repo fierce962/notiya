@@ -39,7 +39,7 @@ export class RegisterPage implements OnInit {
   }
 
   cancel(): void{
-    this.router.navigate(['login']);
+    this.router.navigateByUrl('/login', { replaceUrl: true });
   }
 
   verifiedPassword(): void{
@@ -61,7 +61,7 @@ export class RegisterPage implements OnInit {
         this.storage.setItemStore('user', JSON.stringify(user));
         this.sessions.user = user;
         this.onesignal.setExternalId(user.uid);
-        this.router.navigate(['']);
+        this.router.navigateByUrl('', { replaceUrl: true });
       }).catch(error=>{
         if(error === 'auth/email-already-in-use'){
           this.emailInUsed = true;

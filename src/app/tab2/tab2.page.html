@@ -4,8 +4,13 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" color="light">
-
   <div class="card-notification">
+    <div class="card-notification__title">
+      <div class="card-notification__icon-title">
+        <ion-icon name="send"></ion-icon>
+      </div>
+      <h1>Notifica a tu audiencia</h1>
+    </div>
     <form [formGroup]="notificaion" class="card-notification__form">
       <ion-item class="card-notification__item">
         <ion-label position="floating">Titulo</ion-label>
