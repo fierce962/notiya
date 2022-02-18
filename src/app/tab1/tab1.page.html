@@ -12,7 +12,8 @@
         <ion-searchbar #searchbar (keydown)="search($event)"></ion-searchbar>
       </div>
       <ion-fab-button size="small" color="medium" [class.content-header__btn-search]="viewInputSearch"
-        (click)="viewInputSearch = !viewInputSearch"><ion-icon name="search"></ion-icon>
+        (click)="viewInputSearch = !viewInputSearch;
+          focusInputSearch()"><ion-icon name="search"></ion-icon>
       </ion-fab-button>
     </div>
   </ion-toolbar>

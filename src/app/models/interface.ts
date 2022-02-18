@@ -74,10 +74,12 @@ export interface InvalidTokenTwitch{
 }
 
 export interface HistoryActions{
-    [url: string]: {
-        [nameVariable: string]: {
-            valueInitial: any;
-            action: any;
-        };
-    };
+    [url: string]: HistoryValue[];
+}
+
+export interface HistoryValue{
+    nameVar: string;
+    valueInitial: any;
+    action: 'none' | 'setFocus';
+    optionalAction?: HistoryValue;
 }

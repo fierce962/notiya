@@ -35,7 +35,7 @@ export class NotificationsComponent implements OnInit {
   async startApp(): Promise<void>{
     this.subscribedCopy = JSON.parse(this.storage.getItemStore('subscribed'));
     if(this.sessions.receivedNotification !== undefined){
-      this.setNotificationThumbnail(this.sessions.receivedNotification);
+      this.thumbnail.set(this.sessions.receivedNotification);
       this.notification.push(this.sessions.receivedNotification);
       this.removePerIdUser(this.subscribedCopy.subsCriptions, this.sessions.receivedNotification.uid);
       this.openNotification = true;
@@ -49,7 +49,7 @@ export class NotificationsComponent implements OnInit {
   startObservable(): void{
     this.sessions.getNotification().subscribe(notification=>{
       this.ng.run(()=>{
-        this.setNotificationThumbnail(notification);
+        this.thumbnail.set(notification);
         this.notification.unshift(notification);
         this.openNotification = true;
       });
@@ -116,12 +116,6 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
-  setNotificationThumbnail(notification: SendNotification): void{
-    if('logo-youtube' === notification.urlAuth){
-      const urlId: RegExpMatchArray = notification.url.match('[\\?&]v=([^&#]*)');
-      notification.thumbnail = `https://img.youtube.com/vi/${urlId[1]}/sddefault.jpg`;
-    };
-  }
 
   changePositionSubscriptions(numberChange: number): void{
     const subscribed: SubsCriptions = JSON.parse(this.storage.getItemStore('subscribed'));
