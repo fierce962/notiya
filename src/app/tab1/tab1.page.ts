@@ -32,6 +32,7 @@ export class Tab1Page implements OnInit {
   }
 
   async search(event: KeyboardEvent): Promise<void>{
+    console.log(this.searchbar);
     if(event.key === 'Enter'){
       this.viewSearch = false;
       const search: string = this.searchbar.nativeElement.querySelector('.searchbar-input').value;

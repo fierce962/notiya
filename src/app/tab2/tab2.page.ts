@@ -1,4 +1,5 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+/* eslint-disable @typescript-eslint/naming-convention */
+import { Component, ElementRef, NgZone, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OneSignalService } from '../services/OneSignal/one-signal.service';
 import { DatabaseService } from '../services/dataBase/database.service';
@@ -12,6 +13,8 @@ import { HistoryBackButtonService } from '../services/historyBackButton/history-
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit {
+
+  @ViewChildren('inputs', { read: ElementRef }) Inputs: QueryList<ElementRef>;
 
   notificaion = new FormGroup({
     titulo: new FormControl('', [Validators.required]),
@@ -41,6 +44,14 @@ export class Tab2Page implements OnInit {
     }else{
       this.viewInputError();
     }
+  }
+
+  blurInputSetHistory(inputNumber: any): void{
+    this.Inputs.forEach((input, index)=>{
+      if(index === inputNumber){
+        this.historyBackBtn.setHistory(`Inputs-${inputNumber}`, '', 'setFocus', 'ViewChildren');
+      }
+    });
   }
 
   createNotification(): SendNotification{

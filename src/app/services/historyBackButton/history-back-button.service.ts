@@ -39,7 +39,26 @@ export class HistoryBackButtonService {
     }else{
       historyAction = optionalAction;
     }
-    if(historyAction.typeVar !== 'ElementRef'){
+    if(historyAction.typeVar === 'ViewChildren'){
+      if(history.length !== 0 && this.historyActions[this.router.url] !== undefined){
+        // eslint-disable-next-line radix
+        const positionInput: number = parseInt(historyAction.nameVar.split('-')[1]);
+        const nameVar: string = historyAction.nameVar.split('-')[0];
+        let change = false;
+        thisObject[nameVar].forEach((input, index)=>{
+          if(index === positionInput && input.nativeElement.value !== ''){
+            input.nativeElement.value = '';
+            input.nativeElement.setFocus();
+            change = true;
+          };
+        });
+        if(!change){
+          this.backHistory(thisObject);
+        }
+      }else{
+        console.log('cambiar la ruta');
+      }
+    }else if(historyAction.typeVar !== 'ElementRef'){
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       thisObject[historyAction.nameVar] = historyAction.valueInitial;
       if(historyAction.action !== 'none'){
@@ -57,7 +76,7 @@ export class HistoryBackButtonService {
   setHistory(variableName: string,
     initialValue: any,
     throwAction: 'none' | 'setFocus',
-    vartype: 'string' | 'number' | 'ElementRef' | 'boolean',
+    vartype: 'string' | 'number' | 'ElementRef' | 'boolean' | 'ViewChildren',
     optionalActions?: HistoryValue): void{
 
     if(this.historyActions[this.router.url] === undefined){
@@ -74,7 +93,7 @@ export class HistoryBackButtonService {
   private buildHistyObject(varName: string,
     initialValue: any,
     throwAction: 'none' | 'setFocus',
-    vartype: 'string' | 'number' | 'ElementRef' | 'boolean',
+    vartype: 'string' | 'number' | 'ElementRef' | 'boolean' | 'ViewChildren',
     optionalActions?: HistoryValue): HistoryValue{
 
     return {
