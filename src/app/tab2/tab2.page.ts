@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OneSignalService } from '../services/OneSignal/one-signal.service';
 import { DatabaseService } from '../services/dataBase/database.service';
 import { SessionsService } from '../services/sessions/sessions.service';
 import { StorageService } from '../services/storage/storage.service';
 import { SendNotification } from 'src/app/models/interface';
+import { HistoryBackButtonService } from '../services/historyBackButton/history-back-button.service';
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss']
 })
-export class Tab2Page {
+export class Tab2Page implements OnInit {
 
   notificaion = new FormGroup({
     titulo: new FormControl('', [Validators.required]),
@@ -21,7 +22,15 @@ export class Tab2Page {
   constructor(private oneSignal: OneSignalService,
     private db: DatabaseService,
     private sessions: SessionsService,
-    private storage: StorageService) {}
+    private storage: StorageService,
+    private historyBackBtn: HistoryBackButtonService) {}
+
+  ngOnInit(): void {
+    this.historyBackBtn.createListener().subscribe(()=>{
+      console.log('tab2');
+      this.historyBackBtn.backHistory(this);
+    });
+  }
 
   async sendNotification(): Promise<void>{
     if(this.notificaion.valid){

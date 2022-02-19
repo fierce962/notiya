@@ -81,5 +81,6 @@ export interface HistoryValue{
     nameVar: string;
     valueInitial: any;
     action: 'none' | 'setFocus';
+    typeVar: 'string' | 'number' | 'ElementRef' | 'boolean';
     optionalAction?: HistoryValue;
 }

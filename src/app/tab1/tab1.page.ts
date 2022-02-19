@@ -18,7 +18,6 @@ export class Tab1Page implements OnInit {
   viewSearch = false;
   viewNotification = true;
   viewInputSearch = false;
-  currentUrl = '/tabs/tab1';
 
   constructor(private db: DatabaseService,
     private parserUsername: ParseUserNameService,
@@ -26,8 +25,9 @@ export class Tab1Page implements OnInit {
     private historyBackbtn: HistoryBackButtonService) {}
 
   ngOnInit(): void {
-    this.historyBackbtn.getListener().subscribe(() =>{
-      this.historyBackbtn.test(this.currentUrl, this);
+    this.historyBackbtn.createListener().subscribe(()=>{
+      console.log('tab1');
+      this.historyBackbtn.backHistory(this);
     });
   }
 
@@ -40,10 +40,11 @@ export class Tab1Page implements OnInit {
         if(this.searchsUsers.length !== 0){
           this.viewSearch = true;
           this.viewNotification = false;
-          this.historyBackbtn.setHistory(this.currentUrl,'viewSearch', false, 'none',
+          this.historyBackbtn.setHistory('viewSearch', false, 'none', 'boolean',
           {
             nameVar: 'viewNotification',
             valueInitial: true,
+            typeVar: 'boolean',
             action: 'none'
           });
         }
@@ -52,8 +53,9 @@ export class Tab1Page implements OnInit {
   }
 
   focusInputSearch(): void{
-    this.historyBackbtn.setHistory(this.currentUrl, 'viewInputSearch', false, 'none');
-    this.historyBackbtn.setHistory(this.currentUrl, 'searchbar', false, 'setFocus');
+    this.searchbar.nativeElement.setFocus();
+    this.historyBackbtn.setHistory('viewInputSearch', false, 'none', 'boolean');
+    this.historyBackbtn.setHistory('searchbar', '', 'setFocus', 'ElementRef');
   }
 
   setSubscriptions(): void{

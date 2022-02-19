@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+import { Injectable, NgZone } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { BackButtonEmitter } from '@ionic/angular/providers/platform';
-import { Observable } from 'rxjs';
 import { HistoryActions, HistoryValue } from 'src/app/models/interface';
-
+import { Router } from '@angular/router';
+import { Subject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,57 +12,76 @@ export class HistoryBackButtonService {
 
   private historyActions: HistoryActions = {};
 
-  constructor(private platform: Platform) { }
+  constructor(private platform: Platform, private router: Router, private zone: NgZone) {
+    this.platform.backButton.subscribe(()=>{
+      this[`getListener${this.router.url}`]();
+    });
+  }
 
   getListener(): BackButtonEmitter{
     return this.platform.backButton;
   }
 
-  test(currentUrl: string, thisObject: object, optionalAction: HistoryValue = undefined){
+  createListener(): Observable<any>{
+    this[`getListener${this.router.url}`] = () => {
+      this[`getObservable${this.router.url}`].next();
+    };
+    const history: Subject<any> = new Subject();
+    return this[`getObservable${this.router.url}`] = history;
+  }
+
+  backHistory(thisObject: object, optionalAction: HistoryValue = undefined): void{
     let historyAction: HistoryValue;
+
     if(optionalAction === undefined){
-      const history = this.historyActions[currentUrl];
+      const history = this.historyActions[this.router.url];
       historyAction = history.pop();
     }else{
       historyAction = optionalAction;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    thisObject[historyAction.nameVar] = historyAction.valueInitial;
-    if(historyAction.action !== 'none'){
-      //agregar la funcion que ara el focues
-    }
-    if(historyAction.optionalAction !== undefined){
-      this.test(currentUrl, thisObject, historyAction.optionalAction);
-    }
+    if(historyAction.typeVar !== 'ElementRef'){
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      thisObject[historyAction.nameVar] = historyAction.valueInitial;
+      if(historyAction.action !== 'none'){
+        //agregar la funcion que ara el focues
+      }
+      if(historyAction.optionalAction !== undefined){
+        this.backHistory(thisObject, historyAction.optionalAction);
+      }
+    }else{
+      thisObject[historyAction.nameVar].nativeElement.value = historyAction.valueInitial;
+      thisObject[historyAction.nameVar].nativeElement.setFocus();
+    };
   }
 
-  setHistory(currentUrl: string,
-    variableName: string,
+  setHistory(variableName: string,
     initialValue: any,
     throwAction: 'none' | 'setFocus',
+    vartype: 'string' | 'number' | 'ElementRef' | 'boolean',
     optionalActions?: HistoryValue): void{
 
-    if(this.historyActions[currentUrl] === undefined){
-      this.historyActions[currentUrl] = [
-        this.buildHistyObject(variableName, initialValue, throwAction, optionalActions)
+    if(this.historyActions[this.router.url] === undefined){
+      this.historyActions[this.router.url] = [
+        this.buildHistyObject(variableName, initialValue, throwAction, vartype, optionalActions)
       ];
     }else{
-      this.historyActions[currentUrl].push(
-        this.buildHistyObject(variableName, initialValue, throwAction, optionalActions)
+      this.historyActions[this.router.url].push(
+        this.buildHistyObject(variableName, initialValue, throwAction, vartype, optionalActions)
       );
     };
-    console.log(this.historyActions);
   }
 
   private buildHistyObject(varName: string,
     initialValue: any,
     throwAction: 'none' | 'setFocus',
+    vartype: 'string' | 'number' | 'ElementRef' | 'boolean',
     optionalActions?: HistoryValue): HistoryValue{
 
     return {
       nameVar: varName,
       valueInitial: initialValue,
       action: throwAction,
+      typeVar: vartype,
       // eslint-disable-next-line object-shorthand
       optionalAction: optionalActions
     };
