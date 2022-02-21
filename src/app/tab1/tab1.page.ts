@@ -6,6 +6,8 @@ import { SessionsService } from '../services/sessions/sessions.service';
 import { Router } from '@angular/router';
 import { BackBtnHistory } from '../models/BackBtnHistory';
 import { Platform } from '@ionic/angular';
+import { ControlHistoryRoutService } from '../services/ControlHistoryRout/control-history-rout.service';
+
 
 @Component({
   selector: 'app-tab1',
@@ -20,14 +22,15 @@ export class Tab1Page implements OnInit {
   viewSearch = false;
   viewNotification = true;
   viewInputSearch = false;
-  history = new BackBtnHistory(this);
+  history = new BackBtnHistory(this, this.controlHistory);
   componentUrl: string;
 
   constructor(private db: DatabaseService,
     private parserUsername: ParseUserNameService,
     private sessions: SessionsService,
     private router: Router,
-    private platform: Platform) {}
+    private platform: Platform,
+    private controlHistory: ControlHistoryRoutService) {}
 
   ngOnInit(): void {
     this.componentUrl = this.router.url;

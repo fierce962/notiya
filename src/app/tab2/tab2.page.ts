@@ -9,6 +9,7 @@ import { SendNotification } from 'src/app/models/interface';
 import { BackBtnHistory } from '../models/BackBtnHistory';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { ControlHistoryRoutService } from '../services/ControlHistoryRout/control-history-rout.service';
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -18,7 +19,7 @@ export class Tab2Page implements OnInit {
 
   @ViewChildren('inputs', { read: ElementRef }) Inputs: QueryList<ElementRef>;
 
-  history = new BackBtnHistory(this);
+  history = new BackBtnHistory(this, this.controlHistory);
   componentUrl: string;
 
   notificaion = new FormGroup({
@@ -32,7 +33,8 @@ export class Tab2Page implements OnInit {
     private sessions: SessionsService,
     private storage: StorageService,
     private platform: Platform,
-    private router: Router) {}
+    private router: Router,
+    private controlHistory: ControlHistoryRoutService) {}
 
   ngOnInit(): void {
     this.componentUrl = this.router.url;
