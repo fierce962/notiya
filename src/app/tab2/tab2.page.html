@@ -14,8 +14,7 @@
     <form [formGroup]="notificaion" class="card-notification__form">
       <ion-item class="card-notification__item">
         <ion-label position="floating">Titulo</ion-label>
-        <ion-input #inputs (ionBlur)="blurInputSetHistory(0)" 
-          formControlName="titulo"></ion-input>
+        <ion-input #inputs (ionBlur)="blurInput()" formControlName="titulo"></ion-input>
         <div class="card-notification__error" 
           *ngIf="notificaion.controls.titulo.hasError('required') && 
             (notificaion.controls.titulo.dirty || notificaion.controls.titulo.touched) || 
@@ -25,8 +24,7 @@
       </ion-item>
       <ion-item class="card-notification__item">
         <ion-label position="floating">Mensaje</ion-label>
-        <ion-input #inputs (ionBlur)="blurInputSetHistory(1)" 
-          formControlName="mensaje"></ion-input>
+        <ion-input #inputs (ionBlur)="blurInput()" formControlName="mensaje"></ion-input>
         <div class="card-notification__error" 
           *ngIf="notificaion.controls.mensaje.hasError('required') && 
             (notificaion.controls.mensaje.dirty || notificaion.controls.mensaje.touched) || 
@@ -36,8 +34,7 @@
       </ion-item>
       <ion-item class="card-notification__item">
         <ion-label position="floating">url</ion-label>
-        <ion-input #inputs (ionBlur)="blurInputSetHistory(2)" 
-          formControlName="url"></ion-input>
+        <ion-input #inputs (ionBlur)="blurInput()" formControlName="url"></ion-input>
         <div class="card-notification__error" 
           *ngIf="notificaion.controls.url.hasError('required') && 
             (notificaion.controls.url.dirty || notificaion.controls.url.touched) || 

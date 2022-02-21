@@ -3,7 +3,9 @@ import { DatabaseService } from '../services/dataBase/database.service';
 import { ParseUserNameService } from '../services/parseUserName/parse-user-name.service';
 import { UserData } from '../models/interface';
 import { SessionsService } from '../services/sessions/sessions.service';
-import { HistoryBackButtonService } from '../services/historyBackButton/history-back-button.service';
+import { Router } from '@angular/router';
+import { BackBtnHistory } from '../models/BackBtnHistory';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -18,21 +20,26 @@ export class Tab1Page implements OnInit {
   viewSearch = false;
   viewNotification = true;
   viewInputSearch = false;
+  history = new BackBtnHistory(this);
+  componentUrl: string;
 
   constructor(private db: DatabaseService,
     private parserUsername: ParseUserNameService,
     private sessions: SessionsService,
-    private historyBackbtn: HistoryBackButtonService) {}
+    private router: Router,
+    private platform: Platform) {}
 
   ngOnInit(): void {
-    this.historyBackbtn.createListener().subscribe(()=>{
-      console.log('tab1');
-      this.historyBackbtn.backHistory(this);
+    this.componentUrl = this.router.url;
+    this.platform.backButton.subscribe(()=>{
+      if(this.router.url === this.componentUrl){
+        console.log('tab1');
+        this.history.backHistory();
+      };
     });
   }
 
   async search(event: KeyboardEvent): Promise<void>{
-    console.log(this.searchbar);
     if(event.key === 'Enter'){
       this.viewSearch = false;
       const search: string = this.searchbar.nativeElement.querySelector('.searchbar-input').value;
@@ -41,22 +48,37 @@ export class Tab1Page implements OnInit {
         if(this.searchsUsers.length !== 0){
           this.viewSearch = true;
           this.viewNotification = false;
-          this.historyBackbtn.setHistory('viewSearch', false, 'none', 'boolean',
-          {
+          this.history.setColention({
+            nameHistory: 'search',
             nameVar: 'viewNotification',
-            valueInitial: true,
-            typeVar: 'boolean',
-            action: 'none'
+            initialValue: true,
+            type: 'primitive'
           });
-        }
+          this.history.setColention({
+            nameHistory: 'search',
+            nameVar: 'viewSearch',
+            initialValue: false,
+            type: 'primitive'
+          });
+        };
       }
     }
   }
 
   focusInputSearch(): void{
     this.searchbar.nativeElement.setFocus();
-    this.historyBackbtn.setHistory('viewInputSearch', false, 'none', 'boolean');
-    this.historyBackbtn.setHistory('searchbar', '', 'setFocus', 'ElementRef');
+    this.history.setColention({
+      nameHistory: 'search',
+      nameVar: 'viewInputSearch',
+      initialValue: false,
+      type: 'primitive'
+    });
+    this.history.setColention({
+      nameHistory: 'search',
+      nameVar: 'searchbar',
+      initialValue: '',
+      type: 'ViewChild'
+    });
   }
 
   setSubscriptions(): void{

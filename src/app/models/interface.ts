@@ -73,14 +73,10 @@ export interface InvalidTokenTwitch{
     };
 }
 
-export interface HistoryActions{
-    [url: string]: HistoryValue[];
+export interface HistoryBackBtn{
+    nameHistory: string;
+    nameVar: string;
+    initialValue: any;
+    type: 'primitive' | 'ViewChild' | 'ViewChildren';
 }
 
-export interface HistoryValue{
-    nameVar: string;
-    valueInitial: any;
-    action: 'none' | 'setFocus';
-    typeVar: 'string' | 'number' | 'ElementRef' | 'boolean' | 'ViewChildren';
-    optionalAction?: HistoryValue;
-}

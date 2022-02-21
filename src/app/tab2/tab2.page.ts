@@ -6,7 +6,9 @@ import { DatabaseService } from '../services/dataBase/database.service';
 import { SessionsService } from '../services/sessions/sessions.service';
 import { StorageService } from '../services/storage/storage.service';
 import { SendNotification } from 'src/app/models/interface';
-import { HistoryBackButtonService } from '../services/historyBackButton/history-back-button.service';
+import { BackBtnHistory } from '../models/BackBtnHistory';
+import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -15,6 +17,9 @@ import { HistoryBackButtonService } from '../services/historyBackButton/history-
 export class Tab2Page implements OnInit {
 
   @ViewChildren('inputs', { read: ElementRef }) Inputs: QueryList<ElementRef>;
+
+  history = new BackBtnHistory(this);
+  componentUrl: string;
 
   notificaion = new FormGroup({
     titulo: new FormControl('', [Validators.required]),
@@ -26,12 +31,25 @@ export class Tab2Page implements OnInit {
     private db: DatabaseService,
     private sessions: SessionsService,
     private storage: StorageService,
-    private historyBackBtn: HistoryBackButtonService) {}
+    private platform: Platform,
+    private router: Router) {}
 
   ngOnInit(): void {
-    this.historyBackBtn.createListener().subscribe(()=>{
-      console.log('tab2');
-      this.historyBackBtn.backHistory(this);
+    this.componentUrl = this.router.url;
+    this.platform.backButton.subscribe(()=>{
+      if(this.router.url === this.componentUrl){
+        console.log('tab2');
+        this.history.backHistory();
+      };
+    });
+  }
+
+  blurInput(): void{
+    this.history.setColention({
+      nameVar: 'Inputs',
+      initialValue: '',
+      nameHistory: 'sendNotification',
+      type: 'ViewChildren'
     });
   }
 
@@ -44,14 +62,6 @@ export class Tab2Page implements OnInit {
     }else{
       this.viewInputError();
     }
-  }
-
-  blurInputSetHistory(inputNumber: any): void{
-    this.Inputs.forEach((input, index)=>{
-      if(index === inputNumber){
-        this.historyBackBtn.setHistory(`Inputs-${inputNumber}`, '', 'setFocus', 'ViewChildren');
-      }
-    });
   }
 
   createNotification(): SendNotification{
