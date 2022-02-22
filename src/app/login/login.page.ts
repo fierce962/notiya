@@ -7,6 +7,9 @@ import { DatabaseService } from '../services/dataBase/database.service';
 import { SubsCriptions, User, UserData } from '../models/interface';
 import { OneSignalService } from '../services/OneSignal/one-signal.service';
 import { SessionsService } from '../services/sessions/sessions.service';
+import { ControlHistoryRoutService } from '../services/ControlHistoryRout/control-history-rout.service';
+import { Platform } from '@ionic/angular';
+import { BackBtnHistory } from '../models/BackBtnHistory';
 
 @Component({
   selector: 'app-login',
@@ -23,14 +26,27 @@ export class LoginPage implements OnInit {
 
   modalUserName = false;
 
+  componentUrl: string;
+
+  history = new BackBtnHistory(this, this.controlHistory);
+
   constructor(private auth: AuthServiceService,
     private storage: StorageService,
     private router: Router,
     private database: DatabaseService,
     private oneSignal: OneSignalService,
-    private sessions: SessionsService) { }
+    private sessions: SessionsService,
+    private platform: Platform,
+    private controlHistory: ControlHistoryRoutService) { }
 
   ngOnInit() {
+    this.componentUrl = this.router.url;
+    this.platform.backButton.subscribe(()=>{
+      if(this.router.url === this.componentUrl){
+        console.log('se disparo el btn de login');
+        this.history.backHistory();
+      };
+    });
   }
 
   async loginWithGoogle(): Promise<void>{
@@ -55,11 +71,11 @@ export class LoginPage implements OnInit {
 
   setUserStore(): void{
     this.storage.setItemStore('user', JSON.stringify(this.sessions.user));
-    this.router.navigateByUrl('', { replaceUrl: true });
+    this.router.navigate(['']);
   }
 
   register(): void{
-    this.router.navigateByUrl('/register', { replaceUrl: true });
+    this.router.navigate(['/register']);
   }
 
   async signIn(): Promise<void>{

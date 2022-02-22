@@ -36,7 +36,7 @@ export class Tab1Page implements OnInit {
     this.componentUrl = this.router.url;
     this.platform.backButton.subscribe(()=>{
       if(this.router.url === this.componentUrl){
-        console.log('tab1');
+        console.log('se disparo el btn de tab1');
         this.history.backHistory();
       };
     });

@@ -6,6 +6,9 @@ import { StorageService } from '../services/storage/storage.service';
 import { DatabaseService } from '../services/dataBase/database.service';
 import { OneSignalService } from '../services/OneSignal/one-signal.service';
 import { SessionsService } from '../services/sessions/sessions.service';
+import { ControlHistoryRoutService } from '../services/ControlHistoryRout/control-history-rout.service';
+import { Platform } from '@ionic/angular';
+import { BackBtnHistory } from '../models/BackBtnHistory';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -28,18 +31,30 @@ export class RegisterPage implements OnInit {
 
   emailInUsed = false;
 
+  componentUrl: string;
+
+  history = new BackBtnHistory(this, this.controlHistory);
+
   constructor(private router: Router,
     private afAuth: AuthServiceService,
     private storage: StorageService,
     private database: DatabaseService,
     private onesignal: OneSignalService,
-    private sessions: SessionsService) { }
+    private sessions: SessionsService,
+    private platform: Platform,
+    private controlHistory: ControlHistoryRoutService) { }
 
   ngOnInit() {
+    this.componentUrl = this.router.url;
+    this.platform.backButton.subscribe(()=>{
+      if(this.router.url === this.componentUrl){
+        this.history.backHistory();
+      };
+    });
   }
 
   cancel(): void{
-    this.router.navigateByUrl('/login', { replaceUrl: true });
+    this.router.navigate(['/login']);
   }
 
   verifiedPassword(): void{
@@ -61,7 +76,7 @@ export class RegisterPage implements OnInit {
         this.storage.setItemStore('user', JSON.stringify(user));
         this.sessions.user = user;
         this.onesignal.setExternalId(user.uid);
-        this.router.navigateByUrl('', { replaceUrl: true });
+        this.router.navigate(['']);
       }).catch(error=>{
         if(error === 'auth/email-already-in-use'){
           this.emailInUsed = true;

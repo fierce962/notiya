@@ -31,8 +31,7 @@ export class BackBtnHistory{
                 }
             });
         }else{
-            console.log('remove');
-            this.controlUrl.removeUrl();
+            this.controlUrl.changeUrlwithMain();
         }
         console.log(this.history);
     }

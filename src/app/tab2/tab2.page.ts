@@ -40,7 +40,6 @@ export class Tab2Page implements OnInit {
     this.componentUrl = this.router.url;
     this.platform.backButton.subscribe(()=>{
       if(this.router.url === this.componentUrl){
-        console.log('tab2');
         this.history.backHistory();
       };
     });

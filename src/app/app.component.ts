@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { SessionsService } from './services/sessions/sessions.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { OneSignalService } from './services/OneSignal/one-signal.service';
@@ -14,7 +14,8 @@ export class AppComponent implements OnInit {
   constructor(private sessions: SessionsService,
     private router: Router,
     private oneSignal: OneSignalService,
-    private controlHistory: ControlHistoryRoutService) {}
+    private controlHistory: ControlHistoryRoutService,
+    private zone: NgZone) {}
 
   ngOnInit(): void {
     this.sessions.getUserLogin();
@@ -23,16 +24,19 @@ export class AppComponent implements OnInit {
 
     this.router.events.subscribe(events=>{
       if(events instanceof NavigationEnd){
-        this.controlHistory.setUrlVisited(events.url);
+        this.controlHistory.setMainUrl(events.url);
       }
     });
 
-    this.controlHistory.getpreviousUrl().subscribe(url=>{
-      if(url !== 'close'){
-        this.router.navigate([url]);
-      }else{
-        App.exitApp();
-      }
+    this.controlHistory.getMainUrl().subscribe(url=>{
+      this.zone.run(()=>{
+        console.log('appcomponent ', url);
+        if(url !== 'close'){
+          this.router.navigate([url]);
+        }else{
+          App.exitApp();
+        }
+      });
     });
   }
 

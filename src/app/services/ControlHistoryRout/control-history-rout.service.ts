@@ -8,41 +8,40 @@ export class ControlHistoryRoutService {
 
   private previousUrl: Subject<string> = new Subject();
 
-  private visitedUrl: string[] = [];
+  private mainUrl = '';
+
+  private close = false;
 
   constructor() { }
 
-  setUrlVisited(currentUrl: string): void{
-    if(currentUrl !== '/login' && currentUrl !== '/register'){
-      const currentPosition = this.visitedUrl.indexOf(currentUrl);
-      if(currentPosition !== -1){
-        this.visitedUrl.splice(currentPosition, 1);
-      }
-      if(currentUrl === '/'){
-        currentUrl = '/tabs/tab1';
-      };
-      this.visitedUrl.push(currentUrl);
+  setMainUrl(currentUrl: string): void{
+    console.log('current', currentUrl);
+    this.close = false;
+    if(currentUrl === '/login'){
+      this.mainUrl = '/login';
+    }else if(currentUrl === '/' || currentUrl === '/tabs/tab1'){
+      currentUrl = '/tabs/tab1';
+      this.mainUrl = '/tabs/tab1';
     };
-    console.log(this.visitedUrl);
+    console.log('mainurl', this.mainUrl);
+    if(this.mainUrl === currentUrl){
+      this.close = true;
+    };
   }
 
-  removeUrl(): void{
-    console.log('function  remove');
-    console.log('visited', this.visitedUrl);
-    if(this.visitedUrl.length !== 0){
-      const previousUrl = this.visitedUrl.shift();
-      console.log('previous', previousUrl);
-      this.setpreviousUrl(previousUrl);
-    }else{
-      this.setpreviousUrl('close');
+  changeUrlwithMain(): void{
+    let urlChange: string = this.mainUrl;
+    if(this.close){
+      urlChange = 'close';
     }
+    this.changeUrlMain(urlChange);
   }
 
-  getpreviousUrl(): Observable<string>{
+  getMainUrl(): Observable<string>{
     return this.previousUrl;
   }
 
-  private setpreviousUrl(url: string): void{
+  private changeUrlMain(url: string): void{
     this.previousUrl.next(url);
   }
 }
