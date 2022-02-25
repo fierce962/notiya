@@ -4,6 +4,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { OneSignalService } from './services/OneSignal/one-signal.service';
 import { ControlHistoryRoutService } from './services/ControlHistoryRout/control-history-rout.service';
 import { App } from '@capacitor/app';
+import { AuthServiceService } from './services/authService/auth-service.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -15,7 +16,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private oneSignal: OneSignalService,
     private controlHistory: ControlHistoryRoutService,
-    private zone: NgZone) {}
+    private zone: NgZone,
+    private auth: AuthServiceService) {}
 
   ngOnInit(): void {
     this.sessions.getUserLogin();
@@ -27,6 +29,8 @@ export class AppComponent implements OnInit {
         this.controlHistory.setMainUrl(events.url);
       }
     });
+
+    this.auth.checkToken();
 
     this.controlHistory.getMainUrl().subscribe(url=>{
       this.zone.run(()=>{

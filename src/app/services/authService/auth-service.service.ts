@@ -75,4 +75,10 @@ export class AuthServiceService {
   logout(){
     this.afAuth.signOut();
   }
+
+  checkToken(): void{
+    // this.afAuth.onAuthStateChanged(res=>{
+    //   console.log(res.);
+    // });
+  }
 }

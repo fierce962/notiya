@@ -25,11 +25,11 @@
 </div>
 
 <div class="error-message" *ngIf="notification.length === 0">
-  <div *ngIf="subscribedCopy !== null">
-    <ion-icon name="notifications-off-outline"></ion-icon>
-    <label>No hay nuevas notificaciones</label>
+  <div class="error-message__notifications" *ngIf="subscribedCopy !== null">
+    <ion-icon class="error-message__notification-icon" name="notifications-off-outline"></ion-icon>
+    <label class="error-message__text">No hay nuevas notificaciones</label>
   </div>
-  <label *ngIf="subscribedCopy === null">
+  <label class="error-message__text" *ngIf="subscribedCopy === null">
     No tienes subscripciones activas
   </label>
 </div>

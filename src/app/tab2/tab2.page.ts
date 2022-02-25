@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Component, ElementRef, NgZone, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OneSignalService } from '../services/OneSignal/one-signal.service';
 import { DatabaseService } from '../services/dataBase/database.service';
@@ -16,8 +16,6 @@ import { ControlHistoryRoutService } from '../services/ControlHistoryRout/contro
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit {
-
-  @ViewChildren('inputs', { read: ElementRef }) Inputs: QueryList<ElementRef>;
 
   history = new BackBtnHistory(this, this.controlHistory);
   componentUrl: string;
@@ -42,15 +40,6 @@ export class Tab2Page implements OnInit {
       if(this.router.url === this.componentUrl){
         this.history.backHistory();
       };
-    });
-  }
-
-  blurInput(): void{
-    this.history.setColention({
-      nameVar: 'Inputs',
-      initialValue: '',
-      nameHistory: 'sendNotification',
-      type: 'ViewChildren'
     });
   }
 

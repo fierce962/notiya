@@ -14,7 +14,6 @@ import { getAuth } from '@firebase/auth';
 import { environment } from 'src/environments/environment';
 
 import { HttpClientModule } from '@angular/common/http';
-
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

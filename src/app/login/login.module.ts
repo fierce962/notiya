@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { LoginPageRoutingModule } from './login-routing.module';
 import { GoogleUserNameModule } from '../component/google-user-name/google-user-name.module';
+import { LoadingModule } from '../component/loading/loading.module';
 
 import { LoginPage } from './login.page';
 
@@ -16,7 +17,8 @@ import { LoginPage } from './login.page';
     IonicModule,
     ReactiveFormsModule,
     LoginPageRoutingModule,
-    GoogleUserNameModule
+    GoogleUserNameModule,
+    LoadingModule
   ],
   declarations: [LoginPage]
 })

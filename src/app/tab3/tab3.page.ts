@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { BackBtnHistory } from '../models/BackBtnHistory';
 import { ControlHistoryRoutService } from '../services/ControlHistoryRout/control-history-rout.service';
-
+import { AuthServiceService } from '../services/authService/auth-service.service';
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
@@ -19,7 +19,8 @@ export class Tab3Page implements OnInit {
 
   constructor(private storage: StorageService, private router: Router,
     private oneSignal: OneSignalService, private platform: Platform,
-    private controlHistory: ControlHistoryRoutService) {}
+    private controlHistory: ControlHistoryRoutService,
+    private auth: AuthServiceService) {}
 
   ngOnInit(): void {
     this.componentUrl = this.router.url;
@@ -33,6 +34,7 @@ export class Tab3Page implements OnInit {
   signOut(): void{
     this.storage.clearStore();
     this.oneSignal.removeExternalid();
+    this.auth.logout();
     this.router.navigate(['login']);
   }
 }
