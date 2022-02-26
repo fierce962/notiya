@@ -16,10 +16,10 @@
         height: 50%;
         background: yellow;
         position: relative;
-        animation-name: reduce, desplace, increase, reduceEnd, positionInit, increaseEnd;
-        animation-duration: 5s, 5s, 5s, 5s, 5s, 5s;
-        animation-delay: 0s, 5s, 10s, 15s, 20s, 25s;
+        animation-name: reduce;
+        animation-duration: 8s;
         animation-iteration-count: infinite;
+        animation-timing-function: linear;
         position: absolute;
     }
     &__two{
@@ -29,63 +29,30 @@
 }
 
 @keyframes reduce {
-    from{
+    0%{
         height: 50%;
     }
-    to{
-        height: 10%;
-    }
-}
-
-@keyframes desplace {
-    from{
+    15%{
         left: 0px;
         height: 10%;
     }
-    to{
+    35%{
         left: calc(100% - 20px);
         height: 10%;
     }
-}
-
-@keyframes increase {
-    from{
-        left: calc(100% - 20px);
-        height: 10%;
-    }
-    to{
+    50%{
         left: calc(100% - 20px);
         height: 50%;
     }
-}
-
-@keyframes reduceEnd {
-    from{
-        left: calc(100% - 20px);
-        height: 50%;
-    }
-    to{
+    65%{
         left: calc(100% - 20px);
         height: 10%;
     }
-}
-
-@keyframes positionInit {
-    from{
-        left: calc(100% - 20px);
-        height: 10%;
-    }
-    to{
+    85%{
         left: 0;
         height: 10%;
     }
-}
-
-@keyframes increaseEnd {
-    from{
-        height: 10%;
-    }
-    to{
+    100%{
         height: 50%;
     }
 }
