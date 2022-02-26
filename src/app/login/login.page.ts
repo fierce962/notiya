@@ -10,6 +10,7 @@ import { SessionsService } from '../services/sessions/sessions.service';
 import { ControlHistoryRoutService } from '../services/ControlHistoryRout/control-history-rout.service';
 import { Platform } from '@ionic/angular';
 import { BackBtnHistory } from '../models/BackBtnHistory';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +26,8 @@ export class LoginPage implements OnInit {
   user: User;
 
   modalUserName = false;
+
+  loading = false;
 
   componentUrl: string;
 
@@ -71,7 +74,6 @@ export class LoginPage implements OnInit {
 
   setUserStore(): void{
     this.storage.setItemStore('user', JSON.stringify(this.sessions.user));
-    this.router.navigate(['']);
   }
 
   register(): void{
@@ -79,6 +81,8 @@ export class LoginPage implements OnInit {
   }
 
   async signIn(): Promise<void>{
+    this.closeLoading();
+    this.loading = true;
     const user: User | string = await this.auth.loginEmail(this.loginForm.controls.email.value,
           this.loginForm.controls.password.value);
     if(typeof(user) === 'object'){
@@ -96,12 +100,23 @@ export class LoginPage implements OnInit {
       if(subscritiption !== undefined){
         this.storage.setItemStore('subscribed', JSON.stringify(subscritiption));
       }
-
       this.setUserStore();
     }else if(user === 'auth/user-not-found'){
-        this.loginForm.controls.email.setErrors({ emailError: true });
+      this.loginForm.controls.email.setErrors({ emailError: true });
     }else if(user === 'auth/wrong-password'){
       this.loginForm.controls.password.setErrors({ passwordError: true });
     }
+  }
+
+  closeLoading(): void{
+    setTimeout(() => {
+      const user: string = this.storage.getItemStore('user');
+      if(user !== null){
+        this.loading = false;
+        this.router.navigate(['']);
+      }else{
+        this.loading = false;
+      }
+    }, 4000);
   }
 }
