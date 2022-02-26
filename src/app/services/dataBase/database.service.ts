@@ -6,6 +6,7 @@ import { getFirestore, collection, getDocs, query, where,
   addDoc, updateDoc, increment, deleteDoc, doc, DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { ParseUserNameService } from '../parseUserName/parse-user-name.service';
 import { UserData, User, SubsCriptions, ListNotification, SendNotification } from 'src/app/models/interface';
+import { NetworkService } from '../network/network.service';
 
 const app = initializeApp(environment.firebaseConfig);
 
@@ -15,7 +16,7 @@ const app = initializeApp(environment.firebaseConfig);
 export class DatabaseService {
   private db = getFirestore(app);
 
-  constructor(private parseUser: ParseUserNameService) { }
+  constructor(private parseUser: ParseUserNameService, private network: NetworkService) { }
 
   async setUserData(user: User, name: string): Promise<void>{
     const userData: UserData = {
@@ -93,8 +94,10 @@ export class DatabaseService {
   }
 
   async getListenerNotification(uid: string): Promise<string[]>{
+    await this.network.getConectionStatus();
     return await getDocs(query(collection(this.db, 'ListenerNotification'), where('uidCreator', '==', uid)))
     .then(results=>{
+      console.log('comenso a usar la base de datos');
       const tokens: string[] = [];
       results.docs.forEach((result: any)=>{
         tokens.push(result.data().token);

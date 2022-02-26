@@ -5,6 +5,7 @@ import { OneSignalService } from './services/OneSignal/one-signal.service';
 import { ControlHistoryRoutService } from './services/ControlHistoryRout/control-history-rout.service';
 import { App } from '@capacitor/app';
 import { AuthServiceService } from './services/authService/auth-service.service';
+import { NetworkService } from './services/network/network.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -17,9 +18,11 @@ export class AppComponent implements OnInit {
     private oneSignal: OneSignalService,
     private controlHistory: ControlHistoryRoutService,
     private zone: NgZone,
-    private auth: AuthServiceService) {}
+    private auth: AuthServiceService,
+    private network: NetworkService) {}
 
   ngOnInit(): void {
+    this.network.initDetectConnection();
     this.sessions.getUserLogin();
     this.oneSignal.oneSignalInit(this.sessions);
     this.redirect();

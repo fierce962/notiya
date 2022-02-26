@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OneSignalService } from '../services/OneSignal/one-signal.service';
 import { DatabaseService } from '../services/dataBase/database.service';
@@ -32,13 +32,17 @@ export class Tab2Page implements OnInit {
     private storage: StorageService,
     private platform: Platform,
     private router: Router,
-    private controlHistory: ControlHistoryRoutService) {}
+    private controlHistory: ControlHistoryRoutService,
+    private zone: NgZone) {}
 
   ngOnInit(): void {
     this.componentUrl = this.router.url;
     this.platform.backButton.subscribe(()=>{
       if(this.router.url === this.componentUrl){
-        this.history.backHistory();
+        this.zone.run(()=>{
+          this.notificaion.reset();
+          this.history.backHistory();
+        });
       };
     });
   }
