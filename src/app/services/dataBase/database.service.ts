@@ -94,16 +94,18 @@ export class DatabaseService {
   }
 
   async getListenerNotification(uid: string): Promise<string[]>{
-    await this.network.getConectionStatus();
-    return await getDocs(query(collection(this.db, 'ListenerNotification'), where('uidCreator', '==', uid)))
-    .then(results=>{
-      console.log('comenso a usar la base de datos');
-      const tokens: string[] = [];
-      results.docs.forEach((result: any)=>{
-        tokens.push(result.data().token);
-      });
-      return tokens;
+    const results = await getDocs(query(collection(this.db, 'ListenerNotification'),
+    where('uidCreator', '==', uid)));
+    const tokens: string[] = [];
+    results.docs.forEach((result: any)=>{
+      tokens.push(result.data().token);
     });
+    if(results.metadata.fromCache){
+      await this.network.getConectionStatus();
+      console.log('paso el get conection');
+      return this.getListenerNotification(uid);
+    };
+    return tokens;
   }
 
   async getNotifications(subscritionsId: string[]): Promise<QueryDocumentSnapshot<DocumentData>[]>{
@@ -113,18 +115,26 @@ export class DatabaseService {
   }
 
   async getNotificationId(user: User): Promise<string>{
-    return await getDocs(query(collection(this.db, 'sendNotification'), where('uid', '==', user.uid)))
-    .then(results=>{
-      if(results.docs.length !== 0){
-        return results.docs[0].id;
-      }
-      return '';
-    });
+    const results = await getDocs(query(collection(this.db, 'sendNotification'),
+    where('uid', '==', user.uid)));
+    if(results.docs.length !== 0){
+      return results.docs[0].id;
+    }
+    if(results.metadata.fromCache){
+      await this.network.getConectionStatus();
+      return await this.getNotificationId(user);
+    };
+    return '';
   }
 
   async registerNotification(sendNotification: SendNotification): Promise<string>{
-    return await addDoc(collection(this.db, 'sendNotification'), sendNotification)
-    .then(result=> result.id);
+    const result = await addDoc(collection(this.db, 'sendNotification'), sendNotification);
+    if(result.id !== ''){
+      return result.id;
+    }else{
+      await this.network.getConectionStatus();
+      return await this.registerNotification(sendNotification);
+    }
   }
 
   async updateRegisterNotification(id: string, sendNotification: SendNotification | any): Promise<void>{

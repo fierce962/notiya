@@ -18,9 +18,10 @@ export class NetworkService {
 
 
   async getConectionStatus(): Promise<string>{
-    console.log('detectando estatus');
+    console.log('detectando estatus', this.statusConection);
     return new Promise((resolve)=>{
       if(this.statusConection){
+        console.log('true');
         resolve('online');
       }else{
         this.network.subscribe(status=>{
@@ -32,7 +33,8 @@ export class NetworkService {
   }
 
   initDetectConnection(): void{
-    console.log('se inicio la vigilancia');
+    this.statusConection = navigator.onLine;
+    console.log(this.statusConection);
     this.detectConnection();
     this.detectDisconnection();
   }

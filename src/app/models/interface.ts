@@ -80,3 +80,8 @@ export interface HistoryBackBtn{
     type: 'primitive' | 'ViewChild' | 'ViewChildren';
 }
 
+export interface SendOnsignal{
+    external_id: string;
+    id: string;
+    recipients: number;
+}

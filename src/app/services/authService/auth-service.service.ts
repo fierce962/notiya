@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword,
   signInWithPopup, GoogleAuthProvider,
-  updatePassword,  signInWithEmailAndPassword } from '@angular/fire/auth';
+  updatePassword, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { User } from 'src/app/models/interface';
 
 @Injectable({

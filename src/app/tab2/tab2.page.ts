@@ -51,8 +51,12 @@ export class Tab2Page implements OnInit {
     if(this.notificaion.valid){
       const sendNotification: SendNotification = this.createNotification();
       const tokens: string[] = await this.db.getListenerNotification(this.sessions.user.uid);
-      this.oneSignal.send(sendNotification, tokens);
-      this.registerLastNotification(sendNotification);
+      if(tokens.length !== 0){
+        const id = await this.oneSignal.send(sendNotification, tokens);
+        if(id !== ''){
+          this.registerLastNotification(sendNotification);
+        }
+      }
     }else{
       this.viewInputError();
     }

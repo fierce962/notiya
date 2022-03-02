@@ -12,7 +12,6 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideAuth } from '@angular/fire/auth';
 import { getAuth } from '@firebase/auth';
 import { environment } from 'src/environments/environment';
-import { Renderer2 } from '@angular/core';
 
 import { HttpClientModule } from '@angular/common/http';
 @NgModule({
