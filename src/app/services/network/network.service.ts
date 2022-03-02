@@ -39,6 +39,7 @@ export class NetworkService {
     this.detectDisconnection();
   }
 
+
   private detectConnection(): void{
     this.renderer.listen(window, 'online', ()=>{
       console.log('online');

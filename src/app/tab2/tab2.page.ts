@@ -51,8 +51,10 @@ export class Tab2Page implements OnInit {
     if(this.notificaion.valid){
       const sendNotification: SendNotification = this.createNotification();
       const tokens: string[] = await this.db.getListenerNotification(this.sessions.user.uid);
+      console.log(tokens);
       if(tokens.length !== 0){
         const id = await this.oneSignal.send(sendNotification, tokens);
+        console.log('id onesignal', id);
         if(id !== ''){
           this.registerLastNotification(sendNotification);
         }
@@ -103,6 +105,7 @@ export class Tab2Page implements OnInit {
       }
       this.storage.setItemStore('sendNotification', id);
     }else{
+      console.log('update', sendNotification);
       this.db.updateRegisterNotification(sendId ,sendNotification);
     }
   }

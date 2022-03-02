@@ -1,3 +1,9 @@
 <ion-app>
   <ion-router-outlet></ion-router-outlet>
+
+  <ion-modal [isOpen]="true" backdropDismiss="false">
+    <ng-template>
+      <app-network-error></app-network-error>
+    </ng-template>
+  </ion-modal>
 </ion-app>

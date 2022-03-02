@@ -55,6 +55,7 @@ export class OneSignalService {
           'Authorization': 'Bearer token=\"YTRhZmVkNGYtYjE5Zi00YjhhLThkYmItZDg3OTBiZmZlMGY5\"'
         })
       }).subscribe((res: any) =>{
+        console.log('object onesignal', res);
         const resultSend: SendOnsignal = res;
         resolve(resultSend.id);
       }, error => {

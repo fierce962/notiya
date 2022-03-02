@@ -12,6 +12,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideAuth } from '@angular/fire/auth';
 import { getAuth } from '@firebase/auth';
 import { environment } from 'src/environments/environment';
+import { NetworkErrorModule } from './component/network-error/network-error.module';
 
 import { HttpClientModule } from '@angular/common/http';
 @NgModule({
@@ -22,6 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
+    NetworkErrorModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth())

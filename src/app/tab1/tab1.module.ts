@@ -6,7 +6,6 @@ import { Tab1Page } from './tab1.page';
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserSearchModule } from '../component/user-search/user-search.module';
-
 import { NotificationsModule } from '../component/notifications/notifications.module';
 @NgModule({
   imports: [
