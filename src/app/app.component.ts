@@ -13,7 +13,7 @@ import { NetworkService } from './services/network/network.service';
 })
 export class AppComponent implements OnInit {
 
-  errorNetWork = false;
+  errorNetWork: boolean;
 
   constructor(private sessions: SessionsService,
     private router: Router,
@@ -24,8 +24,9 @@ export class AppComponent implements OnInit {
     private network: NetworkService) {}
 
   ngOnInit(): void {
-    this.viewError();
     this.network.initDetectConnection();
+    this.viewError();
+    this.errorNetWork = !this.network.statusConection;
     this.sessions.getUserLogin();
     this.oneSignal.oneSignalInit(this.sessions);
     this.redirect();
@@ -40,7 +41,6 @@ export class AppComponent implements OnInit {
 
     this.controlHistory.getMainUrl().subscribe(url=>{
       this.zone.run(()=>{
-        console.log('appcomponent ', url);
         if(url !== 'close'){
           this.router.navigate([url]);
         }else{
@@ -58,6 +58,7 @@ export class AppComponent implements OnInit {
 
   viewError(): void{
     this.network.network.subscribe((status)=>{
+      console.log('subiscribe del component app');
       if(status === 'offline'){
         this.errorNetWork = true;
       }else{

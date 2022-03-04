@@ -9,7 +9,7 @@ export class NetworkService {
 
   network: Subject<string> = new Subject();
 
-  private statusConection = true;
+  statusConection = true;
 
   private renderer: Renderer2;
 
@@ -27,7 +27,7 @@ export class NetworkService {
       }else{
         this.network.subscribe(status=>{
           console.log('termino estatus');
-          this.network.unsubscribe();
+          this.network.observers.pop();
           resolve(status);
         });
       }

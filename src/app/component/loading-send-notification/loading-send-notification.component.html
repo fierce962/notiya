@@ -1,0 +1,17 @@
+<div class="send">
+  <div class="send__circle" [class.send__circle-stop]="send">
+    <!-- <div class="send__semi-circle" [class.send__semi-circle-send]="send"></div> -->
+
+    <div class="send__semi-complete" [class.send__semi-complete-send]="send"></div>
+    
+    <!-- <div class="send__semi-circle" 
+      [class.send__semi-circle-bottom]="!send"
+        [class.send__semi-circle-bottom-send]="send"></div> -->
+
+    <div class="send__semi-complete" 
+      [class.send__semi-complete-bottom-send]="send"></div>
+  </div>
+  <div class="send__text">
+    <label>Exitoso</label>
+  </div>
+</div>

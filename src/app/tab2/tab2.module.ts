@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Tab2Page } from './tab2.page';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LoadingSendNotificationModule } from '../component/loading-send-notification/loading-send-notification.module';
 
 import { Tab2PageRoutingModule } from './tab2-routing.module';
 @NgModule({
@@ -13,7 +14,8 @@ import { Tab2PageRoutingModule } from './tab2-routing.module';
     CommonModule,
     FormsModule,
     Tab2PageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LoadingSendNotificationModule
   ],
   declarations: [Tab2Page]
 })

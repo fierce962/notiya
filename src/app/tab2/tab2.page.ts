@@ -64,6 +64,20 @@ export class Tab2Page implements OnInit {
     }
   }
 
+  validUrl(): void{
+    let urlValid = false;
+    this.sessions.authorizedUrl.some(url =>{
+      if(this.notificaion.controls.url.value !== '' &&
+        this.notificaion.controls.url.value.indexOf(url) > -1){
+          urlValid = true;
+          return true;
+        };
+    });
+    if(!urlValid){
+      this.notificaion.controls.url.setErrors({ errorUrl: true });
+    };
+  }
+
   createNotification(): SendNotification{
     const sendNotification: SendNotification = {
       uid: this.sessions.user.uid,
@@ -71,7 +85,7 @@ export class Tab2Page implements OnInit {
       message: this.notificaion.controls.mensaje.value,
       url: this.notificaion.controls.url.value,
       userName: this.sessions.user.displayName,
-      urlAuth: this.checkUrl(this.notificaion.controls.url.value),
+      urlAuth: this.parseUrlAuth(this.notificaion.controls.url.value),
       date: this.createDate()
     };
     return sendNotification;
@@ -82,7 +96,7 @@ export class Tab2Page implements OnInit {
     return `${date.getDate()}-${date.getMonth()}`;
   }
 
-  checkUrl(url: string): string{
+  parseUrlAuth(url: string): string{
     let urlAth: string;
     this.sessions.authorizedUrl.some(authorized => {
         const include = url.includes(authorized);
@@ -112,7 +126,8 @@ export class Tab2Page implements OnInit {
 
   viewInputError(): void{
     Object.keys(this.notificaion.controls).forEach(input=>{
-      if(!this.notificaion.controls[input].valid){
+      if(!this.notificaion.controls[input].valid
+        && this.notificaion.controls[input].errors === null){
         this.notificaion.controls[input].setErrors({error: 'error'});
       }
     });

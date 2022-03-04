@@ -4,6 +4,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" color="light">
+  <app-loading-send-notification></app-loading-send-notification>
   <div class="card-notification">
     <div class="card-notification__title">
       <div class="card-notification__icon-title">
@@ -34,12 +35,16 @@
       </ion-item>
       <ion-item class="card-notification__item">
         <ion-label position="floating">url</ion-label>
-        <ion-input formControlName="url"></ion-input>
+        <ion-input formControlName="url" (ionBlur)="validUrl()"></ion-input>
         <div class="card-notification__error" 
           *ngIf="notificaion.controls.url.hasError('required') && 
             (notificaion.controls.url.dirty || notificaion.controls.url.touched) || 
             notificaion.controls.url.hasError('error')">
           El campo es requerido
+        </div>
+        <div class="card-notification__error" 
+          *ngIf="notificaion.controls.url.hasError('errorUrl')">
+          La direccion no es valida
         </div>
       </ion-item>
     </form>
