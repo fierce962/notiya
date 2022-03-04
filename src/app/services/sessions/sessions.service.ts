@@ -20,6 +20,8 @@ export class SessionsService {
 
   sendNotification: Subject<boolean> = new Subject();
 
+  viewLoadingSend = false;
+
   private newSubsciptions$: Subject<Subscription[]> = new Subject();
 
   private receivedNotification$: Subject<SendNotification> = new Subject();

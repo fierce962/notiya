@@ -10,25 +10,27 @@ export class LoadingSendNotificationComponent implements OnInit {
 
   send = false;
   error = false;
-  offline = true;
+  offline = false;
 
   constructor(private sessions: SessionsService, private network: NetworkService) { }
 
   ngOnInit() {
+    this.offline = !this.network.statusConection;
     this.setlistenerNotificationSend();
     this.getStatusConection();
   }
 
   setlistenerNotificationSend(): void{
-    setTimeout(() => {
-      this.sessions.getSendNotification().subscribe(send=>{
+    this.sessions.getSendNotification().subscribe(send=>{
+      setTimeout(() => {
         if(send){
           this.send = true;
         }else{
+          this.send = false;
           this.error = true;
         };
-      });
-    }, 2000);
+      }, 2000);
+    });
   };
 
   getStatusConection(): void{
@@ -39,5 +41,11 @@ export class LoadingSendNotificationComponent implements OnInit {
         this.offline = false;
       }
     });
+  }
+
+  closeModal(): void{
+    if(this.error || this.send){
+      this.sessions.viewLoadingSend = false;
+    }
   }
 }

@@ -1,4 +1,4 @@
-<div class="send" [class.send__error]="offline">
+<div class="send" [class.send-error]="offline" (click)="closeModal()">
   <div class="send__circle" 
       [class.send__circle-stop]="send || error">
     <div class="send__semi-circle" 
@@ -20,8 +20,8 @@
   </div>
 
   <div class="send__text">
-    <label *ngIf="!error && !offline">{{ send ? 'Exitoso' : 'Enviando' }}</label>
-    <label *ngIf="offline">Desconectado, espere porfavor</label>
+    <label *ngIf="!error && !offline || send">{{ send ? 'Se envio con exito' : 'Enviando' }}</label>
+    <label *ngIf="offline && !send && !error">Desconectado, espere porfavor</label>
     <label *ngIf="error">Ocurrio un error</label>
   </div>
 </div>
