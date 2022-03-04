@@ -1,11 +1,16 @@
 .send{
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 101px);
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     background: #666666b2;
+    animation-name: none;
+    &__error{
+        animation-name: errorConection 1s;
+        animation-fill-mode: forwards;
+    }
     &__circle{
         width: 200px;
         height: 200px;
@@ -29,6 +34,9 @@
         animation: changeBorderColor 4s infinite;
         animation-timing-function: linear;
         z-index: 1;
+    }
+    &__semi-circle-error{
+        animation: none;
     }
     &__semi-circle-bottom, &__semi-circle-bottom-send{
         left: 0;
@@ -68,11 +76,17 @@
     }
 }
 
-.complete-circle-view{
+.complete-circle-view, .complete-circle-view-error{
     display: block;
     animation: completeCircle 2s;
     animation-fill-mode: forwards;
     animation-delay: 1s;
+}
+
+.complete-circle-view-error{
+    .complete-circle__semi-complete{
+        border-color: rgb(250, 54, 54);
+    }
 }
 
 @keyframes rotate {
@@ -108,5 +122,14 @@
     }
     to{
         transform: rotate(90deg);
+    }
+}
+
+@keyframes errorConection {
+    from{
+        height: calc(100vh - 101px);
+    }
+    to{
+        height: calc(100vh - 366px);
     }
 }

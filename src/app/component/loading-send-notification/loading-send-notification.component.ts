@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionsService } from 'src/app/services/sessions/sessions.service';
+import { NetworkService } from 'src/app/services/network/network.service';
 @Component({
   selector: 'app-loading-send-notification',
   templateUrl: './loading-send-notification.component.html',
@@ -9,26 +10,34 @@ export class LoadingSendNotificationComponent implements OnInit {
 
   send = false;
   error = false;
+  offline = true;
 
-  constructor(private sessions: SessionsService) { }
+  constructor(private sessions: SessionsService, private network: NetworkService) { }
 
   ngOnInit() {
     this.setlistenerNotificationSend();
+    this.getStatusConection();
   }
 
   setlistenerNotificationSend(): void{
     setTimeout(() => {
-      this.send = true;
-      //this.errorSend();
-      // this.sessions.getSendNotification().subscribe(send=>{
-      //   if(send){
-      //   }else{
-      //   }
-      // });
+      this.sessions.getSendNotification().subscribe(send=>{
+        if(send){
+          this.send = true;
+        }else{
+          this.error = true;
+        };
+      });
     }, 2000);
-  }
+  };
 
-  errorSend(): void{
-    this.error = true;
+  getStatusConection(): void{
+    this.network.network.subscribe(status=>{
+      if(status === 'offline'){
+        this.offline = true;
+      }else{
+        this.offline = false;
+      }
+    });
   }
 }

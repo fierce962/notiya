@@ -1,19 +1,27 @@
-<div class="send">
-  <div class="send__circle" [class.send__circle-stop]="send">
-    <div class="send__semi-circle" [class.send__semi-circle-send]="send"></div>
+<div class="send" [class.send__error]="offline">
+  <div class="send__circle" 
+      [class.send__circle-stop]="send || error">
+    <div class="send__semi-circle" 
+      [class.send__semi-circle-error]="error"
+      [class.send__semi-circle-send]="send"></div>
     
     <div class="send__semi-circle" 
+      [class.send__semi-circle-error]="error"
       [class.send__semi-circle-bottom]="!send"
-        [class.send__semi-circle-bottom-send]="send"></div>
+      [class.send__semi-circle-bottom-send]="send"></div>
   </div>
 
-  <div class="complete-circle" [class.complete-circle-view]="send">
-    <div class="complete-circle__semi-complete"></div>
-    <div class="complete-circle__semi-complete" 
-      [class.complete-circle__semi-complete-bottom-send]="send"></div>
+  <div class="complete-circle" 
+    [class.complete-circle-view]="send"
+    [class.complete-circle-view-error]="error">
+      <div class="complete-circle__semi-complete"></div>
+      <div class="complete-circle__semi-complete" 
+        [class.complete-circle__semi-complete-bottom-send]="send || error"></div>
   </div>
 
   <div class="send__text">
-    <label>Exitoso</label>
+    <label *ngIf="!error && !offline">{{ send ? 'Exitoso' : 'Enviando' }}</label>
+    <label *ngIf="offline">Desconectado, espere porfavor</label>
+    <label *ngIf="error">Ocurrio un error</label>
   </div>
 </div>
