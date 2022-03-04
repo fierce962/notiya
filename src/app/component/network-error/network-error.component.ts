@@ -9,6 +9,7 @@ export class NetworkErrorComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
 }

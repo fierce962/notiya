@@ -13,6 +13,8 @@ import { NetworkService } from './services/network/network.service';
 })
 export class AppComponent implements OnInit {
 
+  errorNetWork = false;
+
   constructor(private sessions: SessionsService,
     private router: Router,
     private oneSignal: OneSignalService,
@@ -22,6 +24,7 @@ export class AppComponent implements OnInit {
     private network: NetworkService) {}
 
   ngOnInit(): void {
+    this.viewError();
     this.network.initDetectConnection();
     this.sessions.getUserLogin();
     this.oneSignal.oneSignalInit(this.sessions);
@@ -51,6 +54,16 @@ export class AppComponent implements OnInit {
     if(this.sessions.user === null){
       this.router.navigate(['login']);
     }
+  }
+
+  viewError(): void{
+    this.network.network.subscribe((status)=>{
+      if(status === 'offline'){
+        this.errorNetWork = true;
+      }else{
+        this.errorNetWork = false;
+      }
+    });
   }
 
 }

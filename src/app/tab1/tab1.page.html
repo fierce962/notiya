@@ -23,5 +23,6 @@
   <app-notifications class="content-page__notification"
   [class.content-page__notification-view]="viewNotification"></app-notifications>
   <app-user-search *ngIf="viewSearch" 
-    (subscriptions)="addSubCription($event)" [searchsUsers]="searchsUsers"></app-user-search>
+  (subscriptions)="addSubCription($event)" [searchsUsers]="searchsUsers"></app-user-search>
 </ion-content>
+

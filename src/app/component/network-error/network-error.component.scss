@@ -1,67 +1,69 @@
 .ContentError{
     width: 100%;
-    height: 100%;
+    height: 250px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background: #666666cb;
+    background: #31313B;
+    border-radius: 35px 35px 0px 0px;
+    position: relative;
+    top: 250px;
+    animation-name: viewCircle;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
     &__text{
+        font-size: 25px;
         color: #fff;
-        font-size: 35px;
     }
     &__text-subtitle{
-        font-size: 20px;
+        font-size: 14px;
     }
     &__wifi{
-        width: 150px;
-        height: 150px;
+        width: 80px;
+        height: 80px;
         position: relative;
-        margin: 0px 0px 45px 0px;
+        margin: 0px 0px 25px 0px;
     }
     &__semi-circle{
-        width:100%;
-        height:100%;
+        width: 100%;
+        height: 100%;
         position: absolute;
-        bottom:0;
-        left:0;
-        border-color: black;
-        border-style:solid;
-        border-width:1em 1em 0 0 ;
+        bottom: 0;
+        left: 0;
+        border-color: #FFFFCC;
+        border-style: solid;
+        border-width: 1em 1em 0 0 ;
         border-radius:0 100% 0 0;
         transform: rotate(-45deg);
         opacity: 0;
         animation: semiCircleAnimate 3s infinite ;
+        animation-delay: 2s;
     }
     &__first{
+        left: 5px;
+        top: 12px;
         animation-delay: 1200ms;
     }
     &__second{
-        width: 80%;
-        height: 80%;
-        top: 35px;
+        width: 75%;
+        height: 75%;
+        top: 38px;
         left: 15px;
         animation-delay: 900ms;
     }
     &__tree{
-        width: 60%;
-        height: 60%;
-        top: 70px;
-        left: 30px;
+        width: 45%;
+        height: 45%;
+        top: 65px;
+        left: 27px;
         animation-delay: 600ms;
     }
-    &__fourd{
-        width: 40%;
-        height: 40%;
-        top: 104px;
-        left: 45px;
-        animation-delay: 300ms;
-    }
     &__base{
-        width: 20%;
-        height: 20%;
-        top: 140px;
-        left: 59px;
+        width: 5%;
+        height: 5%;
+        top: 90px;
+        left: 37px;
         opacity: 1;
         animation: none;
     }
@@ -74,4 +76,13 @@
     to { 
         opacity: 0.1 
     };
+}
+
+@keyframes viewCircle {
+    from{
+        top: 250px;
+    };
+    to{
+        top: 0px;
+    }
 }

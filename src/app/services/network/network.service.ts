@@ -7,9 +7,10 @@ import { Subject } from 'rxjs';
 })
 export class NetworkService {
 
+  network: Subject<string> = new Subject();
+
   private statusConection = true;
 
-  private network: Subject<string> = new Subject();
   private renderer: Renderer2;
 
   constructor(rendererFactory: RendererFactory2) {
@@ -26,6 +27,7 @@ export class NetworkService {
       }else{
         this.network.subscribe(status=>{
           console.log('termino estatus');
+          this.network.unsubscribe();
           resolve(status);
         });
       }
@@ -52,6 +54,7 @@ export class NetworkService {
     this.renderer.listen(window, 'offline', ()=>{
       console.log('offline');
       this.statusConection = false;
+      this.network.next('offline');
     });
   }
 }
