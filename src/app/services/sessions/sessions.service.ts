@@ -18,6 +18,8 @@ export class SessionsService {
 
   removeSubscription$: Subject<string> = new Subject();
 
+  sendNotification: Subject<boolean> = new Subject();
+
   private newSubsciptions$: Subject<Subscription[]> = new Subject();
 
   private receivedNotification$: Subject<SendNotification> = new Subject();
@@ -54,5 +56,13 @@ export class SessionsService {
 
   getRemoveSubscription(): Observable<string>{
     return this.removeSubscription$;
+  }
+
+  setSendNotification(valueSend: boolean): void{
+    this.sendNotification.next(valueSend);
+  }
+
+  getSendNotification(): Observable<boolean>{
+    return this.sendNotification;
   }
 }

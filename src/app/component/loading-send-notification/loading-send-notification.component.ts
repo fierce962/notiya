@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { SessionsService } from 'src/app/services/sessions/sessions.service';
 @Component({
   selector: 'app-loading-send-notification',
   templateUrl: './loading-send-notification.component.html',
@@ -8,15 +8,27 @@ import { Component, OnInit } from '@angular/core';
 export class LoadingSendNotificationComponent implements OnInit {
 
   send = false;
+  error = false;
 
-  constructor() { }
+  constructor(private sessions: SessionsService) { }
 
   ngOnInit() {
-    console.log('hola2');
+    this.setlistenerNotificationSend();
+  }
+
+  setlistenerNotificationSend(): void{
     setTimeout(() => {
-      console.log('hola');
       this.send = true;
+      //this.errorSend();
+      // this.sessions.getSendNotification().subscribe(send=>{
+      //   if(send){
+      //   }else{
+      //   }
+      // });
     }, 2000);
   }
 
+  errorSend(): void{
+    this.error = true;
+  }
 }

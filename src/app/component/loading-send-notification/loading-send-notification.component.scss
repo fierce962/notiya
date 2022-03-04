@@ -1,8 +1,11 @@
 .send{
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
+    background: #666666b2;
     &__circle{
         width: 200px;
         height: 200px;
@@ -14,7 +17,7 @@
     &__circle-stop{
         animation: none;
     }
-    &__semi-circle, &__semi-complete{
+    &__semi-circle{
         width: 100px;
         height: 100px;
         border-color: rgb(250, 54, 54);
@@ -24,11 +27,10 @@
         position: absolute;
         right: 0;
         animation: changeBorderColor 4s infinite;
+        animation-timing-function: linear;
+        z-index: 1;
     }
-    &__semi-complete{
-        display: none;
-    }
-    &__semi-circle-bottom, &__semi-circle-bottom-send, &__semi-complete-bottom-send{
+    &__semi-circle-bottom, &__semi-circle-bottom-send{
         left: 0;
         bottom: 0;
         transform: rotate(-180deg);
@@ -37,15 +39,40 @@
         animation: changeBorderSend 2s;
         animation-fill-mode: forwards;
     }
-    &__semi-complete-bottom-send, &__semi-complete-send{
-        display: block;
-        border-color: rgb(3, 223, 40);
-    }
     &__text{
         width: 180px;
         text-align: center;
         position: absolute;
     }
+}
+
+.complete-circle{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    display: none;
+    &__semi-complete{
+        width: 100px;
+        height: 100px;
+        border-color: rgb(3, 223, 40);
+        border-style: solid;
+        border-width: 10px 10px 0 0;
+        border-radius: 0 100% 0 0;
+        position: absolute;
+        right: 0;
+    }
+    &__semi-complete-bottom-send{
+        left: 0;
+        bottom: 0;
+        transform: rotate(-180deg);
+    }
+}
+
+.complete-circle-view{
+    display: block;
+    animation: completeCircle 2s;
+    animation-fill-mode: forwards;
+    animation-delay: 1s;
 }
 
 @keyframes rotate {
@@ -72,5 +99,14 @@
     }
     to{
         border-color: rgb(3, 223, 40);
+    }
+}
+
+@keyframes completeCircle {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(90deg);
     }
 }

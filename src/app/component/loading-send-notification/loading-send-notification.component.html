@@ -1,16 +1,18 @@
 <div class="send">
   <div class="send__circle" [class.send__circle-stop]="send">
-    <!-- <div class="send__semi-circle" [class.send__semi-circle-send]="send"></div> -->
-
-    <div class="send__semi-complete" [class.send__semi-complete-send]="send"></div>
+    <div class="send__semi-circle" [class.send__semi-circle-send]="send"></div>
     
-    <!-- <div class="send__semi-circle" 
+    <div class="send__semi-circle" 
       [class.send__semi-circle-bottom]="!send"
-        [class.send__semi-circle-bottom-send]="send"></div> -->
-
-    <div class="send__semi-complete" 
-      [class.send__semi-complete-bottom-send]="send"></div>
+        [class.send__semi-circle-bottom-send]="send"></div>
   </div>
+
+  <div class="complete-circle" [class.complete-circle-view]="send">
+    <div class="complete-circle__semi-complete"></div>
+    <div class="complete-circle__semi-complete" 
+      [class.complete-circle__semi-complete-bottom-send]="send"></div>
+  </div>
+
   <div class="send__text">
     <label>Exitoso</label>
   </div>
