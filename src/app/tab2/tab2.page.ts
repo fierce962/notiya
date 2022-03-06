@@ -136,4 +136,9 @@ export class Tab2Page implements OnInit {
       }
     });
   }
+
+  cancel(): void{
+    this.notificaion.reset();
+  }
+
 }

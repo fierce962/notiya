@@ -94,6 +94,7 @@ export class DatabaseService {
   }
 
   async getListenerNotification(uid: string): Promise<string[]>{
+    console.log('listener');
     const results = await getDocs(query(collection(this.db, 'ListenerNotification'),
     where('uidCreator', '==', uid)));
     const tokens: string[] = [];
@@ -101,17 +102,21 @@ export class DatabaseService {
       tokens.push(result.data().token);
     });
     if(results.metadata.fromCache){
+      console.log('esperando');
       await this.network.getConectionStatus();
-      console.log('paso el get conection');
       return this.getListenerNotification(uid);
     };
     return tokens;
   }
 
   async getNotifications(subscritionsId: string[]): Promise<QueryDocumentSnapshot<DocumentData>[]>{
-    return await getDocs(query(collection(this.db, 'sendNotification'),
-    where('uid', 'in', subscritionsId)))
-    .then(results=> results.docs );
+    const results = await getDocs(query(collection(this.db, 'sendNotification'),
+    where('uid', 'in', subscritionsId)));
+    if(results.metadata.fromCache){
+      await this.network.getConectionStatus();
+      return await this.getNotifications(subscritionsId);
+    }
+    return results.docs;
   }
 
   async getNotificationId(user: User): Promise<string>{

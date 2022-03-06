@@ -17,9 +17,10 @@ export class NotificationsComponent implements OnInit {
 
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
-  openNotification = true;
   notification: SendNotification[] = [];
   subscribedCopy: SubsCriptions;
+
+  search = true;
 
   notLoadNotification = false;
 
@@ -38,7 +39,6 @@ export class NotificationsComponent implements OnInit {
       this.thumbnail.set(this.sessions.receivedNotification);
       this.notification.push(this.sessions.receivedNotification);
       this.removePerIdUser(this.subscribedCopy.subsCriptions, this.sessions.receivedNotification.uid);
-      this.openNotification = true;
     }
     if(this.subscribedCopy !== null){
       this.searchNotifications([... this.subscribedCopy.subsCriptions]);
@@ -51,7 +51,6 @@ export class NotificationsComponent implements OnInit {
       this.ng.run(()=>{
         this.thumbnail.set(notification);
         this.notification.unshift(notification);
-        this.openNotification = true;
       });
     });
 
@@ -80,6 +79,7 @@ export class NotificationsComponent implements OnInit {
 
   async searchNotifications(subscritions: Subscription[]): Promise<void>{
     if(subscritions !== undefined && subscritions.length !== 0){
+      console.log('search');
       const subscritionId: string[] = [];
       const invalidUrl: object = {};
       let numberChange = 0;
@@ -97,6 +97,8 @@ export class NotificationsComponent implements OnInit {
       if(this.notification.length < 10){
         this.searchNotifications([... this.subscribedCopy.subsCriptions]);
       }
+    }else{
+      this.search = false;
     }
   }
 

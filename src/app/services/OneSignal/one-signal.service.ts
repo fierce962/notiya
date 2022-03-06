@@ -8,6 +8,7 @@ import { SendNotification, SendOnsignal } from 'src/app/models/interface';
 import { SessionsService } from '../sessions/sessions.service';
 import { Platform } from '@ionic/angular';
 import { NetworkService } from '../network/network.service';
+import { NotificationReceivedEvent } from 'onesignal-cordova-plugin/types/Notification';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,8 +21,14 @@ export class OneSignalService {
       OneSignal.setAppId('e1d6c6f3-0f5c-4a20-a688-75319373f280');
       OneSignal.setNotificationOpenedHandler((jsonData) => {
         const notification: any = jsonData.notification.additionalData;
+        sessions.receivedNotification = notification;
+        console.log(jsonData.notification.additionalData);
+      });
+
+      OneSignal.setNotificationWillShowInForegroundHandler((received: NotificationReceivedEvent)=>{
+        const notification: any = received.getNotification().additionalData;
         sessions.setNotification(notification);
-          console.log(jsonData.notification.additionalData);
+        received.complete(null);
       });
 
       OneSignal.promptForPushNotificationsWithUserResponse((accepted) => {

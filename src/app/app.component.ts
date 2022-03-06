@@ -58,12 +58,14 @@ export class AppComponent implements OnInit {
 
   viewError(): void{
     this.network.network.subscribe((status)=>{
-      console.log('subiscribe del component app');
-      if(status === 'offline'){
-        this.errorNetWork = true;
-      }else{
-        this.errorNetWork = false;
-      }
+      this.zone.run(()=>{
+        console.log('subiscribe del component app');
+        if(status === 'offline'){
+          this.errorNetWork = true;
+        }else{
+          this.errorNetWork = false;
+        }
+      });
     });
   }
 

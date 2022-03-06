@@ -26,8 +26,11 @@
 
 <div class="error-message" *ngIf="notification.length === 0">
   <div class="error-message__notifications" *ngIf="subscribedCopy !== null">
-    <ion-icon class="error-message__notification-icon" name="notifications-off-outline"></ion-icon>
-    <label class="error-message__text">No hay nuevas notificaciones</label>
+    <ion-icon class="error-message__notification-icon" 
+    [name]="search ? 'notifications-outline' : 'notifications-off-outline'"></ion-icon>
+    <label class="error-message__text">
+      {{ search ? 'Buscando' : 'No hay nuevas'}} notificaciones
+    </label>
   </div>
   <label class="error-message__text" *ngIf="subscribedCopy === null">
     No tienes subscripciones activas

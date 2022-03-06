@@ -22,6 +22,8 @@ export class SessionsService {
 
   viewLoadingSend = false;
 
+  hasReceivedNotification = 0;
+
   private newSubsciptions$: Subject<Subscription[]> = new Subject();
 
   private receivedNotification$: Subject<SendNotification> = new Subject();
@@ -34,7 +36,7 @@ export class SessionsService {
   }
 
   setNotification(notification: SendNotification): void{
-    this.receivedNotification = notification;
+    this.hasReceivedNotification++;
     this.receivedNotification$.next(notification);
   }
 

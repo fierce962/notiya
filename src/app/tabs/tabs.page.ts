@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SessionsService } from '../services/sessions/sessions.service';
 
 @Component({
   selector: 'app-tabs',
@@ -7,6 +8,6 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  constructor() {}
+  constructor(private sessions: SessionsService) {}
 
 }
