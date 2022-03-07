@@ -12,6 +12,8 @@ export class LoadingSendNotificationComponent implements OnInit {
   error = false;
   offline = false;
 
+  errorMessage = '';
+
   constructor(private sessions: SessionsService, private network: NetworkService) { }
 
   ngOnInit() {
@@ -23,9 +25,10 @@ export class LoadingSendNotificationComponent implements OnInit {
   setlistenerNotificationSend(): void{
     this.sessions.getSendNotification().subscribe(send=>{
       setTimeout(() => {
-        if(send){
+        if(send === 'enviado'){
           this.send = true;
         }else{
+          this.errorMessage = send;
           this.send = false;
           this.error = true;
         };

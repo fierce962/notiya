@@ -5,7 +5,9 @@
   </ion-card-header>
 
   <ion-card-content>
-    <ion-button (click)="user.subscribe === undefined ? addNewsubCription(user) : removeSubscription(user)" 
+    <ion-button 
+      [disabled]="user.uid === sessions.user.uid"
+      (click)="user.subscribe === undefined ? addNewsubCription(user) : removeSubscription(user)" 
       [color]="user.subscribe === undefined ?  'primary' : 'danger'">
       Notificame
       <ion-icon [name]="user.subscribe === undefined ? 

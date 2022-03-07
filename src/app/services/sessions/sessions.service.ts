@@ -18,7 +18,7 @@ export class SessionsService {
 
   removeSubscription$: Subject<string> = new Subject();
 
-  sendNotification: Subject<boolean> = new Subject();
+  sendNotification: Subject<string> = new Subject();
 
   viewLoadingSend = false;
 
@@ -62,11 +62,11 @@ export class SessionsService {
     return this.removeSubscription$;
   }
 
-  setSendNotification(valueSend: boolean): void{
+  setSendNotification(valueSend: string): void{
     this.sendNotification.next(valueSend);
   }
 
-  getSendNotification(): Observable<boolean>{
+  getSendNotification(): Observable<string>{
     return this.sendNotification;
   }
 }

@@ -12,7 +12,7 @@ export class UserSearchComponent implements OnInit {
   @Input() searchsUsers: UserData[];
   subscriptions: SubsCriptions | null;
 
-  constructor(private sessions: SessionsService,
+  constructor(public sessions: SessionsService,
     private store: StorageService,
     private db: DatabaseService) { }
 
@@ -36,12 +36,8 @@ export class UserSearchComponent implements OnInit {
   async addNewsubCription(userSearch: UserData): Promise<void>{
     if(userSearch.awaitSubscribe === undefined){
       userSearch.awaitSubscribe = true;
-      let subscrition: Subscription;
-      if(this.subscriptions === null){
-        subscrition = await this.addSubcriptions(userSearch);
-      }else{
-        subscrition = await this.updateSubscriptions(userSearch);
-      }
+      const subscrition: Subscription = await this.createSubscription(userSearch);
+      await this.addSubcriptions(subscrition);
       this.sessions.newSubscriptions.push(subscrition);
       userSearch.subscribe = true;
       userSearch.awaitSubscribe = undefined;
@@ -49,16 +45,6 @@ export class UserSearchComponent implements OnInit {
       this.db.updateUserSubscription(userSearch.uid, 1);
       this.store.setItemStore('subscribed', JSON.stringify(this.subscriptions));
     }
-  }
-
-  async addSubcriptions(user: UserData): Promise<Subscription>{
-    const subscrition: Subscription = await this.createSubscription(user);
-    this.subscriptions = {
-      uid: this.sessions.user.uid,
-      subsCriptions: [subscrition]
-    };
-    this.db.addSubcriptions(this.subscriptions);
-    return subscrition;
   }
 
   async createSubscription(user: UserData): Promise<Subscription>{
@@ -69,19 +55,38 @@ export class UserSearchComponent implements OnInit {
     };
   }
 
-  removeSubscription(user: UserData): void{
+  async createListNotification(userSearch: UserData): Promise<string>{
+    return await this.db.addListNotification({
+      uidCreator: userSearch.uid,
+      token: this.sessions.user.uid
+    });
+  }
+
+  async addSubcriptions(subscrition: Subscription): Promise<void>{
+    if(this.subscriptions === null){
+      this.subscriptions = {
+        uid: this.sessions.user.uid,
+        subsCriptions: [subscrition]
+      };
+      this.db.addSubcriptions(this.subscriptions);
+    }else{
+      this.subscriptions.subsCriptions.push(subscrition);
+      this.db.updateSubscriptions(this.subscriptions);
+    }
+  }
+
+  async removeSubscription(user: UserData): Promise<void>{
     this.subscriptions.subsCriptions = this.subscriptions.subsCriptions.filter(sub =>{
-      let diferentUser = true;
       if(sub.uid === user.uid){
         this.db.removeListNotification(sub.notificationId);
-        diferentUser = false;
+        return false;
       }
-      return diferentUser;
+      return true;
     });
     this.sessions.setremoveSubscription(user.uid);
     this.db.updateSubscriptions(this.subscriptions);
-    user.subsCriptions -= 1;
     this.db.updateUserSubscription(user.uid, -1);
+    user.subsCriptions -= 1;
     user.subscribe = undefined;
     this.removeNewSubscription(user);
     this.store.setItemStore('subscribed', JSON.stringify(this.subscriptions));
@@ -97,20 +102,6 @@ export class UserSearchComponent implements OnInit {
         }
       });
     }
-  }
-
-  async updateSubscriptions(user: UserData): Promise<Subscription>{
-    const subscrition = await this.createSubscription(user);
-    this.subscriptions.subsCriptions.push(subscrition);
-    this.db.updateSubscriptions(this.subscriptions);
-    return subscrition;
-  }
-
-  async createListNotification(userSearch: UserData): Promise<string>{
-    return await this.db.addListNotification({
-      uidCreator: userSearch.uid,
-      token: this.sessions.user.uid
-    });
   }
 
 }

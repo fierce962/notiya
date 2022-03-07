@@ -22,6 +22,6 @@
   <div class="send__text">
     <label *ngIf="!error && !offline || send">{{ send ? 'Se envio con exito' : 'Enviando' }}</label>
     <label *ngIf="offline && !send && !error">Desconectado, espere porfavor</label>
-    <label *ngIf="error">Ocurrio un error</label>
+    <label *ngIf="error">{{ errorMessage }}</label>
   </div>
 </div>

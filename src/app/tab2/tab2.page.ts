@@ -5,7 +5,7 @@ import { OneSignalService } from '../services/OneSignal/one-signal.service';
 import { DatabaseService } from '../services/dataBase/database.service';
 import { SessionsService } from '../services/sessions/sessions.service';
 import { StorageService } from '../services/storage/storage.service';
-import { SendNotification } from 'src/app/models/interface';
+import { SendNotification, UserData } from 'src/app/models/interface';
 import { BackBtnHistory } from '../models/BackBtnHistory';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -53,18 +53,39 @@ export class Tab2Page implements OnInit {
       const sendNotification: SendNotification = this.createNotification();
       const tokens: string[] = await this.db.getListenerNotification(this.sessions.user.uid);
       if(tokens.length !== 0){
-        const id = await this.oneSignal.send(sendNotification, tokens);
-        if(id !== ''){
+        const id: string[] = await this.send(sendNotification, tokens);
+        if(id.length !== 0){
           this.registerLastNotification(sendNotification);
-          this.sessions.setSendNotification(true);
-        }else{
-          this.sessions.setSendNotification(false);
-        }
+          this.sessions.setSendNotification('enviado');
+        };
       }else{
-        this.sessions.setSendNotification(false);
-      }
+        this.sessions.setSendNotification('Error tiene 0 subscripciones');
+      };
     }else{
       this.viewInputError();
+    }
+  }
+
+  async send(sendNotification: SendNotification, tokens: string[]): Promise<string[]>{
+    if(tokens.length < 2000){
+      return [await this.oneSignal.send(sendNotification, tokens)];
+    }else{
+      let reduceTokens: string[] = [];
+      const tokensPositionEnd: number = tokens.length - 1;
+      return await Promise.all(
+        tokens.map((token, index)=>{
+          reduceTokens.push(token);
+          if(reduceTokens.length === 2000){
+            const sendTokens: string[] = [... reduceTokens];
+            reduceTokens = [];
+            return this.oneSignal.send(sendNotification, sendTokens);
+          }else if(tokensPositionEnd === index){
+            return this.oneSignal.send(sendNotification, reduceTokens);
+          }else{
+            return '';
+          }
+        })
+      );
     }
   }
 
