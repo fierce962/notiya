@@ -13,6 +13,7 @@ export interface UserData{
     userName: string[];
     subsCriptions: number;
     subscribe?: boolean;
+    awaitSubscribe?: boolean;
 }
 
 export interface SubsCriptions{

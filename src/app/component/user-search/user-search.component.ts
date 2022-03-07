@@ -34,25 +34,31 @@ export class UserSearchComponent implements OnInit {
   }
 
   async addNewsubCription(userSearch: UserData): Promise<void>{
-    if(this.subscriptions === null){
-      this.subscriptions = await this.addSubcriptions(userSearch);
-    }else{
-      await this.updateSubscriptions(userSearch);
+    if(userSearch.awaitSubscribe === undefined){
+      userSearch.awaitSubscribe = true;
+      let subscrition: Subscription;
+      if(this.subscriptions === null){
+        subscrition = await this.addSubcriptions(userSearch);
+      }else{
+        subscrition = await this.updateSubscriptions(userSearch);
+      }
+      this.sessions.newSubscriptions.push(subscrition);
+      userSearch.subscribe = true;
+      userSearch.awaitSubscribe = undefined;
+      userSearch.subsCriptions += 1;
+      this.db.updateUserSubscription(userSearch.uid, 1);
+      this.store.setItemStore('subscribed', JSON.stringify(this.subscriptions));
     }
-    this.sessions.newSubscriptions.push(await this.createSubscription(userSearch));
-    userSearch.subscribe = true;
-    userSearch.subsCriptions += 1;
-    this.db.updateUserSubscription(userSearch.uid, 1);
-    this.store.setItemStore('subscribed', JSON.stringify(this.subscriptions));
   }
 
-  async addSubcriptions(user: UserData): Promise<SubsCriptions>{
-    const subCription: SubsCriptions = {
+  async addSubcriptions(user: UserData): Promise<Subscription>{
+    const subscrition: Subscription = await this.createSubscription(user);
+    this.subscriptions = {
       uid: this.sessions.user.uid,
-      subsCriptions: [await this.createSubscription(user)]
+      subsCriptions: [subscrition]
     };
-    this.db.addSubcriptions(subCription);
-    return subCription;
+    this.db.addSubcriptions(this.subscriptions);
+    return subscrition;
   }
 
   async createSubscription(user: UserData): Promise<Subscription>{
@@ -93,13 +99,11 @@ export class UserSearchComponent implements OnInit {
     }
   }
 
-  async updateSubscriptions(user: UserData): Promise<void>{
-    this.subscriptions.subsCriptions.push({
-      uid: user.uid,
-      url: '',
-      notificationId: await this.createListNotification(user)
-    });
+  async updateSubscriptions(user: UserData): Promise<Subscription>{
+    const subscrition = await this.createSubscription(user);
+    this.subscriptions.subsCriptions.push(subscrition);
     this.db.updateSubscriptions(this.subscriptions);
+    return subscrition;
   }
 
   async createListNotification(userSearch: UserData): Promise<string>{
