@@ -6,6 +6,9 @@ import { Platform } from '@ionic/angular';
 import { BackBtnHistory } from '../models/BackBtnHistory';
 import { ControlHistoryRoutService } from '../services/ControlHistoryRout/control-history-rout.service';
 import { AuthServiceService } from '../services/authService/auth-service.service';
+import { SessionsService } from '../services/sessions/sessions.service';
+import { SendNotification } from '../models/interface';
+import { DatabaseService } from '../services/dataBase/database.service';
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
@@ -17,10 +20,13 @@ export class Tab3Page implements OnInit {
 
   componentUrl: string;
 
+  optionSelect = false;
+
   constructor(private storage: StorageService, private router: Router,
     private oneSignal: OneSignalService, private platform: Platform,
     private controlHistory: ControlHistoryRoutService,
-    private auth: AuthServiceService) {}
+    private auth: AuthServiceService, public sessions: SessionsService,
+    private db: DatabaseService) {}
 
   ngOnInit(): void {
     this.componentUrl = this.router.url;

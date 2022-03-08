@@ -14,7 +14,7 @@
     </div>
   </div>
   
-  <ion-infinite-scroll class="infinite-scroll" 
+  <ion-infinite-scroll class="infinite-scroll" *ngIf="pageName === 'tab1'"
     threshold="80%" (ionInfinite)="loadNewsNotifications($event)">
       <ion-infinite-scroll-content loadingSpinner="bubbles" 
         loadingText="Cargando nuevas nofiticaciones...">
@@ -24,15 +24,21 @@
   </ion-infinite-scroll>
 </div>
 
-<div class="error-message" *ngIf="notification.length === 0">
+<div class="error-message" *ngIf="notification.length === 0 && pageName === 'tab1'">
   <div class="error-message__notifications" *ngIf="subscribedCopy !== null">
     <ion-icon class="error-message__notification-icon" 
     [name]="search ? 'notifications-outline' : 'notifications-off-outline'"></ion-icon>
     <label class="error-message__text">
-      {{ search ? 'Buscando' : 'No hay nuevas'}} notificaciones
+      {{ search ? 'Buscando' : 'No hay nuevas' }} notificaciones
     </label>
   </div>
   <label class="error-message__text" *ngIf="subscribedCopy === null">
     No tienes subscripciones activas
+  </label>
+</div>
+
+<div class="error-message error-message--tab3" *ngIf="noSendNotification && pageName === 'tab3'">
+  <label class="error-message__text" >
+    No ha enviado ninguna notificacion
   </label>
 </div>

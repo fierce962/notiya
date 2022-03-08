@@ -1,11 +1,35 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+  <ion-toolbar color="primary">
+    <div class="title">
+      <ion-fab-button (click)="signOut()" size="small" color="medium">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-fab-button>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" color="light">
-  <button (click)="signOut()">cerrar session</button>
+  <div class="content-perfil">
+    <div class="content-perfil__content-img">
+      <img src="https://www.allianceplast.com/wp-content/uploads/no-image.png" alt="">
+    </div>
+    <div class="content-perfil__header-content">
+      <h1 class="content-perfil__name">{{ sessions.user.displayName }}</h1>
+      <p class="content-perfil__subscriptores">Subscriptores: 0</p>
+    </div>
+  </div>
+  <div class="options">
+    <button class="options__btn" (click)="optionSelect = !optionSelect">
+      Ultima notificacion
+      <div class="options__border" *ngIf="!optionSelect"></div>
+    </button>
+    <button class="options__btn" (click)="optionSelect = !optionSelect">
+      Opciones
+      <div class="options__border" *ngIf="optionSelect"></div>
+    </button>
+  </div>
+  <div class="content">
+    <app-notifications
+      pageName="tab3" *ngIf="!optionSelect"></app-notifications>
+  </div>
 </ion-content>

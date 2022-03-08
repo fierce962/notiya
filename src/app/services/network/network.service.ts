@@ -11,6 +11,8 @@ export class NetworkService {
 
   statusConection = true;
 
+  desconecte = false;
+
   private renderer: Renderer2;
 
   constructor(rendererFactory: RendererFactory2) {
@@ -23,11 +25,13 @@ export class NetworkService {
     return new Promise((resolve)=>{
       if(this.statusConection){
         console.log('true');
+        this.desconecte = false;
         resolve('online');
       }else{
         this.network.subscribe(status=>{
           console.log('termino estatus');
           this.network.observers.pop();
+          this.desconecte = false;
           resolve(status);
         });
       }
@@ -36,7 +40,6 @@ export class NetworkService {
 
   initDetectConnection(): void{
     this.statusConection = navigator.onLine;
-    console.log(this.statusConection);
     this.detectConnection();
     this.detectDisconnection();
   }
@@ -54,6 +57,7 @@ export class NetworkService {
     this.renderer.listen(window, 'offline', ()=>{
       console.log('offline');
       this.statusConection = false;
+      this.desconecte = true;
       this.network.next('offline');
     });
   }

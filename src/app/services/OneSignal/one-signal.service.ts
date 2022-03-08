@@ -66,9 +66,11 @@ export class OneSignalService {
         const resultSend: SendOnsignal = res;
         resolve(resultSend.id);
       }, error => {
-        this.network.getConectionStatus().then(()=>{
-          resolve(this.send(sendNotification, tokens));
-        });
+        if(this.network.desconecte){
+          this.network.getConectionStatus().then(()=>{
+            resolve(this.send(sendNotification, tokens));
+          });
+        }
       });
     });
   }

@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { SessionsService } from '../../services/sessions/sessions.service';
 import { SendNotification, SubsCriptions, Subscription } from '../../models/interface';
 import { AppLauncher } from '@capacitor/app-launcher';
@@ -15,6 +15,8 @@ import { IonInfiniteScroll } from '@ionic/angular';
 })
 export class NotificationsComponent implements OnInit {
 
+  @Input() pageName: string;
+
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   notification: SendNotification[] = [];
@@ -24,13 +26,30 @@ export class NotificationsComponent implements OnInit {
 
   notLoadNotification = false;
 
+  noSendNotification = false;
+
   constructor(private sessions: SessionsService, private database: DatabaseService,
     private ng: NgZone, private storage: StorageService,
     private thumbnail: NotificationThumbnailService) { }
 
   async ngOnInit() {
-    await this.startApp();
-    this.startObservable();
+    if(this.pageName === 'tab1'){
+      await this.startApp();
+      this.startObservable();
+    }else{
+      await this.hasSendNotification();
+    }
+  }
+
+  async hasSendNotification(): Promise<void>{
+    const notificationDb: any = await this.database.getNotifications([this.sessions.user.uid]);
+    if(notificationDb.length !== 0){
+      const notification: SendNotification = notificationDb[0].data();
+      this.thumbnail.set(notification);
+      this.notification.push(notification);
+    }else{
+      this.noSendNotification = true;
+    }
   }
 
   async startApp(): Promise<void>{
