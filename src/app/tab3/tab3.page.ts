@@ -20,7 +20,10 @@ export class Tab3Page implements OnInit {
 
   componentUrl: string;
 
-  optionSelect = false;
+  optionSelect = true;
+
+  options = false;
+  optionsName: string;
 
   constructor(private storage: StorageService, private router: Router,
     private oneSignal: OneSignalService, private platform: Platform,
@@ -42,5 +45,10 @@ export class Tab3Page implements OnInit {
     this.oneSignal.removeExternalid();
     this.auth.logout();
     this.router.navigate(['login']);
+  }
+
+  changeOptions(optionName: string): void{
+    this.optionsName = optionName;
+    this.options = true;
   }
 }

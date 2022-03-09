@@ -1,0 +1,17 @@
+.perfil-options{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__input{
+        width: 80%;
+        margin: 10px 0px;
+    }
+    &__zone-btn{
+        width: 80%;
+    }
+    &__btn{
+        width: calc(50% - 20px);
+        margin: 0px 10px;
+    }
+}

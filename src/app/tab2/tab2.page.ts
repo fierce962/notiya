@@ -56,7 +56,6 @@ export class Tab2Page implements OnInit {
         this.registerLastNotification(sendNotification);
         await this.send(sendNotification, tokens);
         this.sessions.setSendNotification('enviado');
-        this.storage.setItemStore('notification', JSON.stringify(sendNotification));
       }else{
         this.sessions.setSendNotification('Error tiene 0 subscripciones');
       };

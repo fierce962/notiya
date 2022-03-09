@@ -28,6 +28,23 @@ export class DatabaseService {
     await addDoc(collection(this.db, 'userData'), userData);
   };
 
+  async getUserDataName(name: string[]): Promise<boolean>{
+    return await getDocs(query(collection(this.db, 'userData'),
+      where('userName', 'in', name)))
+      .then(results => {
+        if(results.docs.length !== 0){
+          return false;
+        }else{
+          return true;
+        }
+      });
+  }
+
+  setNewUserName(userData: UserData | any): void{
+    const id = '';
+    updateDoc(doc(this.db, 'userData', id), userData);
+  }
+
   async getUserData(user: User): Promise<any>{
     return await getDocs(query(collection(this.db, 'userData'), where('uid', '==', user.uid)))
     .then(results => {

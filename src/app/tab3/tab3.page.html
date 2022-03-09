@@ -19,11 +19,11 @@
     </div>
   </div>
   <div class="options">
-    <button class="options__btn" (click)="optionSelect = !optionSelect">
+    <button class="options__btn" (click)="optionSelect = false">
       Ultima notificacion
       <div class="options__border" *ngIf="!optionSelect"></div>
     </button>
-    <button class="options__btn" (click)="optionSelect = !optionSelect">
+    <button class="options__btn" (click)="optionSelect = true">
       Opciones
       <div class="options__border" *ngIf="optionSelect"></div>
     </button>
@@ -31,5 +31,11 @@
   <div class="content">
     <app-notifications
       pageName="tab3" *ngIf="!optionSelect"></app-notifications>
+    <div class="content__options" *ngIf="optionSelect && optionsName === undefined">
+      <ion-button class="content__btn" (click)="changeOptions('nombre')" color="secondary">Cambio de Nombre</ion-button>
+      <ion-button class="content__btn content__btn-2" (click)="changeOptions('clave')" color="secondary">Cambio de Clave</ion-button>
+    </div>
+    <app-perfil-options class="content__viewOptions"
+      [inputLabel]="optionsName" *ngIf="options && optionSelect"></app-perfil-options>
   </div>
 </ion-content>
