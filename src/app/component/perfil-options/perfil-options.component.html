@@ -1,18 +1,33 @@
 <div class="perfil-options">
-  <ion-item class="perfil-options__input">
-    <ion-label position="floating">{{ inputLabel === 'nombre' ? 'Nuevo' : 'Nueva' }} {{ inputLabel }}</ion-label>
-    <ion-input #input (ionFocus)="errorInput1 = false" [type]="inputType"></ion-input>
-    <div class="perfil-options__error-message" *ngIf="errorInput1">
-      <label>{{ errorMessange1 }}</label>
-    </div>
-  </ion-item>
-  <ion-item class="perfil-options__input" *ngIf="inputLabel === 'clave'">
-    <ion-label position="floating">repita la {{ inputLabel }}</ion-label>
-    <ion-input #input (ionFocus)="errorInput2 = false" [type]="inputType"></ion-input>
-    <div class="perfil-options__error-message" *ngIf="errorInput2">
-      <label>{{ errorMessange2 }}</label>
-    </div>
-  </ion-item>
+  <form [formGroup]="formsChange" class="perfil-options__forms">
+    <ion-item class="perfil-options__input">
+      <ion-label position="floating">{{ inputLabel === 'nombre' ? 'Nuevo' : 'Nueva' }} {{ inputLabel }}</ion-label>
+      <ion-input formControlName="input1" [type]="inputType"></ion-input>
+      <div class="perfil-options__error-message" 
+        *ngIf="formsChange.controls.input1.hasError('nameError')">
+        <label>El nombre es no esta disponible</label>
+      </div>
+      <div class="perfil-options__error-message" 
+        *ngIf="formsChange.controls.input1.hasError('required') &&
+        (formsChange.controls.input1.dirty || formsChange.controls.input1.touched)
+        || formsChange.controls.input1.hasError('nameRequired') 
+        || formsChange.controls.input1.hasError('password')">
+        <label>Debe ingresar {{ inputLabel === 'nombre' ? 'un nombre' : 'una clave' }}</label>
+      </div>
+    </ion-item>
+    <ion-item class="perfil-options__input" *ngIf="inputLabel === 'clave'">
+      <ion-label position="floating">repita la {{ inputLabel }}</ion-label>
+      <ion-input formControlName="input2" (keyup)="comparePassword()" [type]="inputType"></ion-input>
+      <div class="perfil-options__error-message" 
+        *ngIf="formsChange.controls.input2.hasError('diferentPassword')">
+        <label>Las claves no inciden</label>
+      </div>
+      <div class="perfil-options__error-message" 
+        *ngIf="formsChange.controls.input2.hasError('password')">
+        <label>Debe confirmar su clave</label>
+      </div>
+    </ion-item>
+  </form>
   <div class="perfil-options__zone-btn">
     <ion-button class="perfil-options__btn" (click)="change()" color="secondary">Cambiar</ion-button>
     <ion-button class="perfil-options__btn" (click)="close()" color="danger">Cancelar</ion-button>
