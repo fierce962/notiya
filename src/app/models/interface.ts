@@ -5,8 +5,13 @@ export interface User{
     displayName: string;
     emailVerified: boolean;
     notification?: boolean;
+    id?: string;
 }
 
+export interface GetUserData{
+    id: string;
+    name: string;
+}
 export interface UserData{
     uid: string;
     fullName: string;

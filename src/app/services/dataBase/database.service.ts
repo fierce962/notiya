@@ -5,8 +5,9 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, query, where,
   addDoc, updateDoc, increment, deleteDoc, doc, DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { ParseUserNameService } from '../parseUserName/parse-user-name.service';
-import { UserData, User, SubsCriptions, ListNotification, SendNotification } from 'src/app/models/interface';
+import { UserData, User, SubsCriptions, ListNotification, SendNotification, GetUserData } from 'src/app/models/interface';
 import { NetworkService } from '../network/network.service';
+
 
 const app = initializeApp(environment.firebaseConfig);
 
@@ -28,9 +29,10 @@ export class DatabaseService {
     await addDoc(collection(this.db, 'userData'), userData);
   };
 
-  async getUserDataName(name: string[]): Promise<boolean>{
+  async getValidUserName(name: string[]): Promise<boolean>{
+    console.log(name);
     return await getDocs(query(collection(this.db, 'userData'),
-      where('userName', 'in', name)))
+      where('userName', 'array-contains-any', name)))
       .then(results => {
         if(results.docs.length !== 0){
           return false;
@@ -40,16 +42,20 @@ export class DatabaseService {
       });
   }
 
-  setNewUserName(userData: UserData | any): void{
-    const id = '';
-    updateDoc(doc(this.db, 'userData', id), userData);
+  setNewUserName(newUserName: string, id: string): void{
+    const newName = this.parseUser.get(newUserName);
+    updateDoc(doc(this.db, 'userData', id), { userName: newName });
   }
 
-  async getUserData(user: User): Promise<any>{
+  async getUserData(user: User): Promise<GetUserData>{
     return await getDocs(query(collection(this.db, 'userData'), where('uid', '==', user.uid)))
     .then(results => {
       if(results.docs.length !== 0){
-        return results.docs[0].data();
+        const userData: UserData | any = results.docs[0].data();
+        return {
+          id: results.docs[0].id,
+          name: userData.userName[0]
+        };
       }else{
         return undefined;
       }

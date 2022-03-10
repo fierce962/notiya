@@ -14,4 +14,8 @@
         width: calc(50% - 20px);
         margin: 0px 10px;
     }
+    &__error-message{
+        width: 100%;
+        color: red;
+    }
 }

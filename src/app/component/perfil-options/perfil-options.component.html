@@ -1,14 +1,20 @@
 <div class="perfil-options">
   <ion-item class="perfil-options__input">
-    <ion-label>{{ inputLabel === 'nombre' ? 'Nuevo' : 'Nueva' }} {{ inputLabel }}</ion-label>
-    <ion-input #input></ion-input>
+    <ion-label position="floating">{{ inputLabel === 'nombre' ? 'Nuevo' : 'Nueva' }} {{ inputLabel }}</ion-label>
+    <ion-input #input (ionFocus)="errorInput1 = false" [type]="inputType"></ion-input>
+    <div class="perfil-options__error-message" *ngIf="errorInput1">
+      <label>{{ errorMessange1 }}</label>
+    </div>
   </ion-item>
   <ion-item class="perfil-options__input" *ngIf="inputLabel === 'clave'">
-    <ion-label>repita la {{ inputLabel }}</ion-label>
-    <ion-input #input></ion-input>
+    <ion-label position="floating">repita la {{ inputLabel }}</ion-label>
+    <ion-input #input (ionFocus)="errorInput2 = false" [type]="inputType"></ion-input>
+    <div class="perfil-options__error-message" *ngIf="errorInput2">
+      <label>{{ errorMessange2 }}</label>
+    </div>
   </ion-item>
   <div class="perfil-options__zone-btn">
     <ion-button class="perfil-options__btn" (click)="change()" color="secondary">Cambiar</ion-button>
-    <ion-button class="perfil-options__btn" color="danger">Cancelar</ion-button>
+    <ion-button class="perfil-options__btn" (click)="close()" color="danger">Cancelar</ion-button>
   </div>
 </div>

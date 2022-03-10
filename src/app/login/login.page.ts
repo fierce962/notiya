@@ -4,13 +4,12 @@ import { StorageService } from '../services/storage/storage.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DatabaseService } from '../services/dataBase/database.service';
-import { SubsCriptions, User, UserData } from '../models/interface';
+import { SubsCriptions, User, UserData, GetUserData } from '../models/interface';
 import { OneSignalService } from '../services/OneSignal/one-signal.service';
 import { SessionsService } from '../services/sessions/sessions.service';
 import { ControlHistoryRoutService } from '../services/ControlHistoryRout/control-history-rout.service';
 import { Platform } from '@ionic/angular';
 import { BackBtnHistory } from '../models/BackBtnHistory';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -54,11 +53,11 @@ export class LoginPage implements OnInit {
 
   async loginWithGoogle(): Promise<void>{
     this.user = await this.auth.loginGoogle();
-    const userData: UserData | undefined = await this.database.getUserData(this.user);
+    const userData: GetUserData | undefined = await this.database.getUserData(this.user);
     if(userData === undefined){
       this.modalUserName = true;
     }else{
-      this.user.displayName = userData.userName[0];
+      this.user.displayName = userData.name;
       this.setUserStore();
     }
   }
@@ -87,12 +86,9 @@ export class LoginPage implements OnInit {
           this.loginForm.controls.password.value);
     if(typeof(user) === 'object'){
       this.sessions.user = user;
-      const userData: UserData = await this.database.getUserData(this.sessions.user);
-      this.sessions.user.displayName = userData.userName[0];
-
-      if(userData.subsCriptions !== 0){
-        user.notification = true;
-      }
+      const userData: GetUserData = await this.database.getUserData(this.sessions.user);
+      this.sessions.user.displayName = userData.name;
+      this.sessions.user.id = userData.id;
 
       this.oneSignal.setExternalId(this.sessions.user.uid);
 

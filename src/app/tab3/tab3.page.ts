@@ -20,7 +20,7 @@ export class Tab3Page implements OnInit {
 
   componentUrl: string;
 
-  optionSelect = true;
+  optionSelect = false;
 
   options = false;
   optionsName: string;
@@ -28,8 +28,7 @@ export class Tab3Page implements OnInit {
   constructor(private storage: StorageService, private router: Router,
     private oneSignal: OneSignalService, private platform: Platform,
     private controlHistory: ControlHistoryRoutService,
-    private auth: AuthServiceService, public sessions: SessionsService,
-    private db: DatabaseService) {}
+    private auth: AuthServiceService, public sessions: SessionsService) {}
 
   ngOnInit(): void {
     this.componentUrl = this.router.url;
@@ -50,5 +49,10 @@ export class Tab3Page implements OnInit {
   changeOptions(optionName: string): void{
     this.optionsName = optionName;
     this.options = true;
+  }
+
+  closeOptions(close: boolean): void{
+    this.optionsName = undefined;
+    this.options = !close;
   }
 }

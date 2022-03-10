@@ -36,6 +36,7 @@
       <ion-button class="content__btn content__btn-2" (click)="changeOptions('clave')" color="secondary">Cambio de Clave</ion-button>
     </div>
     <app-perfil-options class="content__viewOptions"
-      [inputLabel]="optionsName" *ngIf="options && optionSelect"></app-perfil-options>
+      [inputLabel]="optionsName"  (closeOptions)="closeOptions($event)"
+      *ngIf="options && optionSelect"></app-perfil-options>
   </div>
 </ion-content>
