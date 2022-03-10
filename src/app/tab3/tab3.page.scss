@@ -12,8 +12,8 @@
     box-sizing: border-box;
     background: #fff;
     &__content-img{
-        width: 75px;
-        height: 75px;
+        width: 98px;
+        height: 98px;
         border-radius: 50%;
         background: #fff;
     }
@@ -48,12 +48,11 @@
 
 .content{
     width: 100%;
-    height: calc(100vh - 272px);
+    min-height: calc(100vh - 272px);
     display: flex;
     justify-content: center;
     padding: 5px;
     overflow-y: auto;
-    overflow: hidden;
     &__options{
         width: 100%;
         display: flex;

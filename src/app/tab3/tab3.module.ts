@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { Tab3Page } from './tab3.page';
 import { NotificationsModule } from '../component/notifications/notifications.module';
 import { PerfilOptionsModule } from '../component/perfil-options/perfil-options.module';
+import { ModalAddImgModule } from '../component/modal-add-img/modal-add-img.module';
 
 import { Tab3PageRoutingModule } from './tab3-routing.module';
 
@@ -16,6 +17,7 @@ import { Tab3PageRoutingModule } from './tab3-routing.module';
     FormsModule,
     NotificationsModule,
     PerfilOptionsModule,
+    ModalAddImgModule,
     RouterModule.forChild([{ path: '', component: Tab3Page }]),
     Tab3PageRoutingModule,
   ],
