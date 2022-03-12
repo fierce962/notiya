@@ -1,0 +1,14 @@
+.card-header{
+    display: flex;
+    &__img{
+        width: 98px;
+        height: 98px;
+        border-radius: 50%;
+    }
+    &__title{
+        font-size: 30px;
+    }
+    &__sub-title{
+        margin-left: 15px;
+    }
+}

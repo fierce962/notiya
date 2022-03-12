@@ -18,7 +18,16 @@ export class UserSearchComponent implements OnInit {
 
   ngOnInit() {
     this.subscriptions = JSON.parse(this.store.getItemStore('subscribed'));
+    this.parseImg();
     this.hasStoreSubCription();
+  }
+
+  parseImg(): void{
+    this.searchsUsers.forEach(user =>{
+      if(user.img !== undefined){
+        user.img = JSON.parse(user.img);
+      }
+    });
   }
 
   hasStoreSubCription(): void{
