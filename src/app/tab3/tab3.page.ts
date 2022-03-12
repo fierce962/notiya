@@ -7,8 +7,6 @@ import { BackBtnHistory } from '../models/BackBtnHistory';
 import { ControlHistoryRoutService } from '../services/ControlHistoryRout/control-history-rout.service';
 import { AuthServiceService } from '../services/authService/auth-service.service';
 import { SessionsService } from '../services/sessions/sessions.service';
-import { SendNotification } from '../models/interface';
-import { DatabaseService } from '../services/dataBase/database.service';
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
@@ -37,6 +35,10 @@ export class Tab3Page implements OnInit {
         this.history.backHistory();
       };
     });
+    const img = JSON.parse(this.storage.getItemStore('profileImg'));
+    if(img !== null){
+      this.sessions.imgProfile = img;
+    }
   }
 
   signOut(): void{

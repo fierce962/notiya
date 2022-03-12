@@ -90,6 +90,11 @@ export class LoginPage implements OnInit {
       this.sessions.user.displayName = userData.name;
       this.sessions.user.id = userData.id;
 
+      if(userData.img !== undefined){
+        this.sessions.imgProfile = JSON.parse(userData.img);
+        this.storage.setItemStore('profileImg', userData.img);
+      }
+
       this.oneSignal.setExternalId(this.sessions.user.uid);
 
       const subscritiption: SubsCriptions = await this.database.getSubscriptions(this.sessions.user);

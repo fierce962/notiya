@@ -10,8 +10,8 @@
 
 <ion-content [fullscreen]="true" color="light">
   <div class="content-perfil">
-    <div class="content-perfil__content-img">
-      <img src="https://www.allianceplast.com/wp-content/uploads/no-image.png" alt="">
+    <div class="content-perfil__content-img" id="trigger-button">
+      <img class="content-perfil__img" [src]="sessions.imgProfile" alt="">
     </div>
     <div class="content-perfil__header-content">
       <h1 class="content-perfil__name">{{ sessions.user.displayName }}</h1>
@@ -43,7 +43,7 @@
       *ngIf="options && optionSelect"></app-perfil-options>
   </div>
 
-  <ion-modal [isOpen]="true">
+  <ion-modal trigger="trigger-button">
     <ng-template>
       <app-modal-add-img></app-modal-add-img>
     </ng-template>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { getApp } from 'firebase/app';
-import { getStorage, ref, uploadBytes } from '@firebase/storage';
 import { SessionsService } from 'src/app/services/sessions/sessions.service';
+import { StorageService } from 'src/app/services/storage/storage.service';
+import { DatabaseService } from 'src/app/services/dataBase/database.service';
 
 @Component({
   selector: 'app-modal-add-img',
@@ -12,23 +12,22 @@ export class ModalAddImgComponent implements OnInit {
 
   imgRout: string | ArrayBuffer = './assets/icon/no-image.png';
 
-  file: any;
-
   messageError = '';
 
   validUpload = false;
 
-  constructor(private sessions: SessionsService) { }
+  constructor(private sessions: SessionsService,
+    private storage: StorageService, private database: DatabaseService) { }
 
   ngOnInit() {}
 
   addImg(event: any): void{
+    console.log(event.target.files[0]);
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     reader.onload = (_event) => {
       this.imgRout = reader.result;
     };
-    this.file = event.target.files[0];
     this.validUpload = this.imgValid(event);
   }
 
@@ -45,10 +44,8 @@ export class ModalAddImgComponent implements OnInit {
   }
 
   uploadFile(): void{
-    const storage = getStorage(getApp());
-    const reference = ref(storage, `profile-${this.sessions.user.displayName}`);
-    uploadBytes(reference, this.file).then((snapshot) => {
-      console.log('Uploaded a blob or file!');
-    });
+    this.sessions.imgProfile = this.imgRout;
+    this.database.updateImg(JSON.stringify(this.imgRout), this.sessions.user.id);
+    this.storage.setItemStore('profileImg', JSON.stringify(this.imgRout));
   }
 }

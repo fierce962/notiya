@@ -11,6 +11,7 @@ export interface User{
 export interface GetUserData{
     id: string;
     name: string;
+    img: string;
 }
 export interface UserData{
     uid: string;
@@ -19,6 +20,7 @@ export interface UserData{
     subsCriptions: number;
     subscribe?: boolean;
     awaitSubscribe?: boolean;
+    img?: string;
 }
 
 export interface SubsCriptions{

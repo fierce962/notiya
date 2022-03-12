@@ -1,7 +1,10 @@
 <div class="add-img">
   <div class="add-img__cover-file">
+
     <div class="add-img__desing-file" [class.add-img__desing-file-error]="messageError !== ''">
+
       <img class="add-img__img" [src]="imgRout" alt="">
+      
       <div class="add-img__message">
         <p class="add-img__text">Se recomienda utilizar una 
           imagen de 98x98 píxeles</p>
@@ -10,10 +13,17 @@
         <p class="add-img__text" 
           [class.add-img__error]="messageError === 'errorType'">Usa un archivo PNG</p>
       </div>
+
     </div>
+
   </div>
+
   <input (change)="addImg($event)" #input class="add-img__file" type="file">
 </div>
+
 <div class="upload-btn">
-  <ion-button class="upload-btn__btn" [disabled]="!validUpload" color="secondary">Subir</ion-button>
+  <ion-button class="upload-btn__btn" 
+    (click)="uploadFile()" 
+    [disabled]="!validUpload" 
+    color="secondary">Subir</ion-button>
 </div>

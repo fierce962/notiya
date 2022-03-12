@@ -42,6 +42,10 @@ export class DatabaseService {
       });
   }
 
+  updateImg(image: string, id: string): void{
+    updateDoc(doc(this.db, 'userData', id), { img: image });
+  }
+
   setNewUserName(newUserName: string, id: string): void{
     const newName = this.parseUser.get(newUserName);
     updateDoc(doc(this.db, 'userData', id), { userName: newName });
@@ -54,7 +58,8 @@ export class DatabaseService {
         const userData: UserData | any = results.docs[0].data();
         return {
           id: results.docs[0].id,
-          name: userData.userName[0]
+          name: userData.userName[0],
+          img: userData.img
         };
       }else{
         return undefined;

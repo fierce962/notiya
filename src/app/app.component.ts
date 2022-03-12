@@ -13,6 +13,8 @@ import { NetworkService } from './services/network/network.service';
 })
 export class AppComponent implements OnInit {
 
+  close = true;
+
   errorNetWork: boolean;
 
   constructor(private sessions: SessionsService,
