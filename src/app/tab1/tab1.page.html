@@ -21,7 +21,8 @@
 
 <ion-content [fullscreen]="true" color="light">
   <app-notifications class="content-page__notification" pageName="tab1"
-  [class.content-page__notification-view]="viewNotification"></app-notifications>
+  [class.content-page__notification-view]="viewNotification" *ngIf="!sessions.closeReloadNotification">
+  </app-notifications>
   <app-user-search *ngIf="viewSearch" 
   (subscriptions)="addSubCription($event)" [searchsUsers]="searchsUsers"></app-user-search>
 </ion-content>

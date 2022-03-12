@@ -15,7 +15,6 @@ export class ControlHistoryRoutService {
   constructor() { }
 
   setMainUrl(currentUrl: string): void{
-    console.log('current', currentUrl);
     this.close = false;
     if(currentUrl === '/login'){
       this.mainUrl = '/login';
@@ -23,7 +22,6 @@ export class ControlHistoryRoutService {
       currentUrl = '/tabs/tab1';
       this.mainUrl = '/tabs/tab1';
     };
-    console.log('mainurl', this.mainUrl);
     if(this.mainUrl === currentUrl){
       this.close = true;
     };

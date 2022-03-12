@@ -33,7 +33,6 @@ export class BackBtnHistory{
         }else{
             this.controlUrl.changeUrlwithMain();
         }
-        console.log(this.history);
     }
 
     setColention(colection: HistoryBackBtn): void{

@@ -23,6 +23,8 @@ export class Tab3Page implements OnInit {
   options = false;
   optionsName: string;
 
+  notificationView = true;
+
   constructor(private storage: StorageService, private router: Router,
     private oneSignal: OneSignalService, private platform: Platform,
     private controlHistory: ControlHistoryRoutService,
@@ -35,9 +37,17 @@ export class Tab3Page implements OnInit {
         this.history.backHistory();
       };
     });
+  }
+
+  ionViewWillEnter(): void{
     const img = JSON.parse(this.storage.getItemStore('profileImg'));
     if(img !== null){
       this.sessions.imgProfile = img;
+    }else{
+      this.sessions.imgProfile = './assets/icon/no-image.png';
+    }
+    if(this.notificationView === false){
+      this.notificationView = true;
     }
   }
 
@@ -45,6 +55,8 @@ export class Tab3Page implements OnInit {
     this.storage.clearStore();
     this.oneSignal.removeExternalid();
     this.auth.logout();
+    this.sessions.closeReloadNotification = true;
+    this.notificationView = false;
     this.router.navigate(['login']);
   }
 

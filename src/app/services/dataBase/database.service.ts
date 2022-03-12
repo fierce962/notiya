@@ -30,7 +30,6 @@ export class DatabaseService {
   };
 
   async getValidUserName(name: string[]): Promise<boolean>{
-    console.log(name);
     return await getDocs(query(collection(this.db, 'userData'),
       where('userName', 'array-contains-any', name)))
       .then(results => {
@@ -122,7 +121,6 @@ export class DatabaseService {
   }
 
   async getListenerNotification(uid: string): Promise<string[]>{
-    console.log('listener');
     const results = await getDocs(query(collection(this.db, 'ListenerNotification'),
     where('uidCreator', '==', uid)));
     const tokens: string[] = [];
@@ -130,7 +128,6 @@ export class DatabaseService {
       tokens.push(result.data().token);
     });
     if(results.metadata.fromCache){
-      console.log('esperando');
       await this.network.getConectionStatus();
       return this.getListenerNotification(uid);
     };

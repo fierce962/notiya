@@ -31,7 +31,7 @@
   </div>
 
   <div class="content">
-    <app-notifications pageName="tab3" *ngIf="!optionSelect"></app-notifications>
+    <app-notifications pageName="tab3" *ngIf="!optionSelect && notificationView"></app-notifications>
 
     <div class="content__options" *ngIf="optionSelect && optionsName === undefined">
       <ion-button class="content__btn" (click)="changeOptions('nombre')" color="secondary">Cambio de Nombre</ion-button>

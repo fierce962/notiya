@@ -41,7 +41,6 @@ export class PerfilOptionsComponent implements OnInit {
   }
 
   async changeName(): Promise<void>{
-    console.log(this.formsChange.controls.input1);
     const name = this.formsChange.controls.input1.value;
     if(name !== ''){
       const valid = await this.db.getValidUserName([name]);

@@ -98,7 +98,6 @@ export class NotificationsComponent implements OnInit {
 
   async searchNotifications(subscritions: Subscription[]): Promise<void>{
     if(subscritions !== undefined && subscritions.length !== 0){
-      console.log('search');
       const subscritionId: string[] = [];
       const invalidUrl: object = {};
       let numberChange = 0;

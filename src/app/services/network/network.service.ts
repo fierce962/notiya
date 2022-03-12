@@ -21,15 +21,12 @@ export class NetworkService {
 
 
   async getConectionStatus(): Promise<string>{
-    console.log('detectando estatus', this.statusConection);
     return new Promise((resolve)=>{
       if(this.statusConection){
-        console.log('true');
         this.desconecte = false;
         resolve('online');
       }else{
         this.network.subscribe(status=>{
-          console.log('termino estatus');
           this.network.observers.pop();
           this.desconecte = false;
           resolve(status);
@@ -47,7 +44,6 @@ export class NetworkService {
 
   private detectConnection(): void{
     this.renderer.listen(window, 'online', ()=>{
-      console.log('online');
       this.statusConection = true;
       this.network.next('online');
     });
@@ -55,7 +51,6 @@ export class NetworkService {
 
   private detectDisconnection(): void{
     this.renderer.listen(window, 'offline', ()=>{
-      console.log('offline');
       this.statusConection = false;
       this.desconecte = true;
       this.network.next('offline');

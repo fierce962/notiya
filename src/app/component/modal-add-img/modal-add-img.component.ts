@@ -22,7 +22,6 @@ export class ModalAddImgComponent implements OnInit {
   ngOnInit() {}
 
   addImg(event: any): void{
-    console.log(event.target.files[0]);
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     reader.onload = (_event) => {

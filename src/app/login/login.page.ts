@@ -45,7 +45,6 @@ export class LoginPage implements OnInit {
     this.componentUrl = this.router.url;
     this.platform.backButton.subscribe(()=>{
       if(this.router.url === this.componentUrl){
-        console.log('se disparo el btn de login');
         this.history.backHistory();
       };
     });

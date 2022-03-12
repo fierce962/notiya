@@ -10,7 +10,9 @@ export class SessionsService {
 
   user: User;
 
-  imgProfile: string | ArrayBuffer = './assets/icon/no-image.png';
+  imgProfile: string | ArrayBuffer;
+
+  closeReloadNotification = false;
 
   receivedNotification: SendNotification;
 
@@ -29,9 +31,6 @@ export class SessionsService {
   private newSubsciptions$: Subject<Subscription[]> = new Subject();
 
   private receivedNotification$: Subject<SendNotification> = new Subject();
-
-  private close: Subject<boolean> = new Subject();
-
 
   constructor(private storage: StorageService) { }
 

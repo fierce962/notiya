@@ -41,6 +41,12 @@ export class Tab1Page implements OnInit {
     });
   }
 
+  ionViewWillEnter(): void{
+    if(this.sessions.closeReloadNotification === true){
+      this.sessions.closeReloadNotification = false;
+    }
+  }
+
   async search(event: KeyboardEvent): Promise<void>{
     if(event.key === 'Enter'){
       this.viewSearch = false;

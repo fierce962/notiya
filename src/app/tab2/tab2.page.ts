@@ -142,7 +142,6 @@ export class Tab2Page implements OnInit {
       }
       this.storage.setItemStore('sendNotification', id);
     }else{
-      console.log('update', sendNotification);
       this.db.updateRegisterNotification(sendId, sendNotification);
     }
   }

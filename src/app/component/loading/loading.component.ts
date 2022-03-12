@@ -1,5 +1,4 @@
 import { Component, OnInit, } from '@angular/core';
-import { Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-loading',
@@ -8,7 +7,7 @@ import { Renderer2 } from '@angular/core';
 })
 export class LoadingComponent implements OnInit {
 
-  constructor(private renderer: Renderer2) { }
+  constructor() { }
 
   ngOnInit() {
 

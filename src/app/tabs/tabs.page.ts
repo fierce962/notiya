@@ -8,6 +8,6 @@ import { SessionsService } from '../services/sessions/sessions.service';
 })
 export class TabsPage {
 
-  constructor(private sessions: SessionsService) {}
+  constructor(public sessions: SessionsService) {}
 
 }

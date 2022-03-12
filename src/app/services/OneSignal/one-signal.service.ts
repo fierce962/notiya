@@ -22,7 +22,6 @@ export class OneSignalService {
       OneSignal.setNotificationOpenedHandler((jsonData) => {
         const notification: any = jsonData.notification.additionalData;
         sessions.receivedNotification = notification;
-        console.log(jsonData.notification.additionalData);
       });
 
       OneSignal.setNotificationWillShowInForegroundHandler((received: NotificationReceivedEvent)=>{
@@ -32,7 +31,6 @@ export class OneSignalService {
       });
 
       OneSignal.promptForPushNotificationsWithUserResponse((accepted) => {
-          console.log('User accepted notifications: ' + accepted);
       });
     }
   }
@@ -62,7 +60,6 @@ export class OneSignalService {
           'Authorization': 'Bearer token=\"YTRhZmVkNGYtYjE5Zi00YjhhLThkYmItZDg3OTBiZmZlMGY5\"'
         })
       }).subscribe((res: any) =>{
-        console.log('object onesignal', res);
         const resultSend: SendOnsignal = res;
         resolve(resultSend.id);
       }, error => {
