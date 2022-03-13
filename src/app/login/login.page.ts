@@ -75,7 +75,7 @@ export class LoginPage implements OnInit {
   }
 
   register(): void{
-    this.router.navigate(['/register']);
+    this.router.navigate(['/tabs/register']);
   }
 
   async signIn(): Promise<void>{

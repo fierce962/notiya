@@ -16,9 +16,9 @@ export class ControlHistoryRoutService {
 
   setMainUrl(currentUrl: string): void{
     this.close = false;
-    if(currentUrl === '/login'){
-      this.mainUrl = '/login';
-    }else if(currentUrl === '/' || currentUrl === '/tabs/tab1'){
+    if(currentUrl === '/tabs/login' || currentUrl === '/tabs/register'){
+      this.mainUrl = '/tabs/login';
+    }else if(currentUrl === '/tabs/tab1' || currentUrl === '/'){
       currentUrl = '/tabs/tab1';
       this.mainUrl = '/tabs/tab1';
     };

@@ -57,7 +57,7 @@ export class RegisterPage implements OnInit {
   }
 
   cancel(): void{
-    this.router.navigate(['/login']);
+    this.router.navigate(['/tabs/login']);
   }
 
   verifiedPassword(): void{

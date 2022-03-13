@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
 
   redirect(): void{
     if(this.sessions.user === null){
-      this.router.navigate(['login']);
+      this.router.navigate(['/tabs/login']);
     }
   }
 

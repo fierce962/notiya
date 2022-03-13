@@ -71,7 +71,7 @@ export class Tab3Page implements OnInit {
     this.auth.logout();
     this.sessions.closeReloadNotification = true;
     this.notificationView = false;
-    this.router.navigate(['login']);
+    this.router.navigate(['/tabs/login']);
   }
 
   changeOptions(optionName: string): void{
