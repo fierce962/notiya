@@ -5,7 +5,7 @@ export interface User{
     displayName: string;
     emailVerified: boolean;
     notification?: boolean;
-    id?: string;
+    reference?: string;
 }
 
 export interface GetUserData{
@@ -18,6 +18,7 @@ export interface UserData{
     fullName: string;
     userName: string[];
     subsCriptions: number;
+    reference?: string;
     subscribe?: boolean;
     awaitSubscribe?: boolean;
     img?: string;
@@ -26,6 +27,7 @@ export interface UserData{
 export interface SubsCriptions{
     uid: string;
     subsCriptions: Subscription[];
+    reference?: string;
 }
 
 export interface Subscription{

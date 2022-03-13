@@ -87,7 +87,7 @@ export class LoginPage implements OnInit {
       this.sessions.user = user;
       const userData: GetUserData = await this.database.getUserData(this.sessions.user);
       this.sessions.user.displayName = userData.name;
-      this.sessions.user.id = userData.id;
+      this.sessions.user.reference = userData.id;
 
       if(userData.img !== undefined){
         this.sessions.imgProfile = JSON.parse(userData.img);

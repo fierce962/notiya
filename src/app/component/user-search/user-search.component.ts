@@ -51,7 +51,7 @@ export class UserSearchComponent implements OnInit {
       userSearch.subscribe = true;
       userSearch.awaitSubscribe = undefined;
       userSearch.subsCriptions += 1;
-      this.db.updateUserSubscription(userSearch.uid, 1);
+      this.db.updateUserSubscription(userSearch.uid, 1, userSearch.reference);
       this.store.setItemStore('subscribed', JSON.stringify(this.subscriptions));
     }
   }
@@ -77,7 +77,7 @@ export class UserSearchComponent implements OnInit {
         uid: this.sessions.user.uid,
         subsCriptions: [subscrition]
       };
-      this.db.addSubcriptions(this.subscriptions);
+      this.subscriptions.reference = await this.db.addSubcriptions(this.subscriptions);
     }else{
       this.subscriptions.subsCriptions.push(subscrition);
       this.db.updateSubscriptions(this.subscriptions);
@@ -94,7 +94,7 @@ export class UserSearchComponent implements OnInit {
     });
     this.sessions.setremoveSubscription(user.uid);
     this.db.updateSubscriptions(this.subscriptions);
-    this.db.updateUserSubscription(user.uid, -1);
+    this.db.updateUserSubscription(user.uid, -1, user.reference);
     user.subsCriptions -= 1;
     user.subscribe = undefined;
     this.removeNewSubscription(user);

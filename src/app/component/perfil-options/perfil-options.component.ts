@@ -45,7 +45,7 @@ export class PerfilOptionsComponent implements OnInit {
     if(name !== ''){
       const valid = await this.db.getValidUserName([name]);
       if(valid){
-        this.db.setNewUserName(name, this.sessions.user.id);
+        this.db.setNewUserName(name, this.sessions.user.reference);
         this.sessions.user.displayName = name;
         this.storage.setItemStore('user', JSON.stringify(this.sessions.user));
         this.close();

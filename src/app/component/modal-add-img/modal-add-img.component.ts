@@ -44,7 +44,7 @@ export class ModalAddImgComponent implements OnInit {
 
   uploadFile(): void{
     this.sessions.imgProfile = this.imgRout;
-    this.database.updateImg(JSON.stringify(this.imgRout), this.sessions.user.id);
+    this.database.updateImg(JSON.stringify(this.imgRout), this.sessions.user.reference);
     this.storage.setItemStore('profileImg', JSON.stringify(this.imgRout));
   }
 }

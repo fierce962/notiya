@@ -19,14 +19,14 @@ export class DatabaseService {
 
   constructor(private parseUser: ParseUserNameService, private network: NetworkService) { }
 
-  async setUserData(user: User, name: string): Promise<void>{
+  async setUserData(user: User, name: string): Promise<string>{
     const userData: UserData = {
       uid: user.uid,
       userName: this.parseUser.get(user.displayName),
       fullName: name,
       subsCriptions: 0
     };
-    await addDoc(collection(this.db, 'userData'), userData);
+    return addDoc(collection(this.db, 'userData'), userData).then(results=> results.id );
   };
 
   async getValidUserName(name: string[]): Promise<boolean>{
@@ -71,8 +71,14 @@ export class DatabaseService {
       where('userName', 'array-contains-any', search)))
         .then(results=>{
         const users: UserData[] = [];
-        results.docs.forEach((user: any)=>{
-          users.push(user.data());
+        results.docs.forEach((user)=>{
+          users.push({
+            fullName: user.data().fullName,
+            subsCriptions: user.data().subsCriptions,
+            uid: user.data().uid,
+            userName: user.data().userName,
+            reference: user.id
+          });
         });
         return users;
       });
@@ -82,7 +88,7 @@ export class DatabaseService {
     return await getDocs(query(collection(this.db, 'subscribed'), where('uid', '==', user.uid)))
     .then(results=>{
       if(results.docs.length !== 0){
-        const subscription: any =results.docs[0].data();
+        const subscription: any = results.docs[0].data();
         return subscription;
       }else{
         return undefined;
@@ -90,22 +96,18 @@ export class DatabaseService {
     });
   }
 
-  async addSubcriptions(subscriptions: SubsCriptions): Promise<void>{
-    await addDoc(collection(this.db, 'subscribed'), subscriptions);
+  async addSubcriptions(subscriptions: SubsCriptions): Promise<string>{
+    return await addDoc(collection(this.db, 'subscribed'), subscriptions)
+    .then(resuls => resuls.id);
   }
 
   async updateSubscriptions(subscriptions: SubsCriptions): Promise<void>{
-    await getDocs(query(collection(this.db, 'subscribed'), where('uid', '==', subscriptions.uid)))
-    .then(results=>{
-      updateDoc(results.docs[0].ref, { subsCriptions: subscriptions.subsCriptions });
-    });
+    updateDoc(doc(this.db, 'subscribed', subscriptions.reference), 
+    { subsCriptions: subscriptions.subsCriptions });
   }
 
-  async updateUserSubscription(uid: string, incrementSub: number): Promise<void>{
-    await getDocs(query(collection(this.db, 'userData'), where('uid', '==', uid)))
-    .then(results=>{
-      updateDoc(results.docs[0].ref, { subsCriptions: increment(incrementSub) });
-    });
+  async updateUserSubscription(uid: string, incrementSub: number, reference: string): Promise<void>{
+    updateDoc(doc(this.db, 'userData', reference), { subsCriptions: increment(incrementSub) });
   }
 
   async addListNotification(list: ListNotification): Promise<string>{

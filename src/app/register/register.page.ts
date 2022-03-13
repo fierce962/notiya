@@ -72,11 +72,14 @@ export class RegisterPage implements OnInit {
       this.registerFrom.controls.fisrtPassword.value)
       .then(user=>{
         user.displayName = this.registerFrom.controls.userName.value;
-        this.database.setUserData(user, this.registerFrom.controls.fullName.value);
-        this.storage.setItemStore('user', JSON.stringify(user));
-        this.sessions.user = user;
-        this.onesignal.setExternalId(user.uid);
-        this.router.navigate(['']);
+        this.database.setUserData(user, this.registerFrom.controls.fullName.value)
+        .then(reference => {
+          user.reference = reference;
+          this.storage.setItemStore('user', JSON.stringify(user));
+          this.sessions.user = user;
+          this.onesignal.setExternalId(user.uid);
+          this.router.navigate(['']);
+        });
       }).catch(error=>{
         if(error === 'auth/email-already-in-use'){
           this.emailInUsed = true;
