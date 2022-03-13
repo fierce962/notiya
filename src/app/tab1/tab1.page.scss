@@ -35,3 +35,35 @@ ion-searchbar{
         display: block;
     }
 }
+
+.load-search{
+    width: 0%;
+    height: 5px;
+    background: red;
+    position: absolute;
+    animation: first-load 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.load-search--end{
+    animation: load-complete 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes first-load {
+    from{
+        width: 0%;
+    }
+    to{
+        width: 30%;
+    }
+}
+
+@keyframes load-complete{
+    from{
+        width: 30%;
+    }
+    to{
+        width: 100%;
+    }
+}

@@ -12,15 +12,20 @@ export class UserSearchComponent implements OnInit {
   @Input() searchsUsers: UserData[];
   subscriptions: SubsCriptions | null;
 
+  errorView = false;
+
   constructor(public sessions: SessionsService,
     private store: StorageService,
     private db: DatabaseService) { }
 
   ngOnInit() {
-    console.log(this.searchsUsers);
-    this.subscriptions = JSON.parse(this.store.getItemStore('subscribed'));
-    this.parseImg();
-    this.hasStoreSubCription();
+    if(this.searchsUsers.length !== 0){
+      this.subscriptions = JSON.parse(this.store.getItemStore('subscribed'));
+      this.parseImg();
+      this.hasStoreSubCription();
+    }else{
+      this.errorView = true;
+    }
   }
 
   parseImg(): void{

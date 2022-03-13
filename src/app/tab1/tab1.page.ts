@@ -25,6 +25,9 @@ export class Tab1Page implements OnInit {
   history = new BackBtnHistory(this, this.controlHistory);
   componentUrl: string;
 
+  viewSearchLoad = false;
+  viewSearchComplete = false;
+
   constructor(private db: DatabaseService,
     private parserUsername: ParseUserNameService,
     private sessions: SessionsService,
@@ -52,25 +55,33 @@ export class Tab1Page implements OnInit {
       this.viewSearch = false;
       const search: string = this.searchbar.nativeElement.querySelector('.searchbar-input').value;
       if(search !== ''){
+        this.viewSearchLoad = true;
         this.searchsUsers = await this.db.shearchUsers(this.parserUsername.get(search));
-        if(this.searchsUsers.length !== 0){
-          this.viewSearch = true;
-          this.viewNotification = false;
-          this.history.setColention({
-            nameHistory: 'search',
-            nameVar: 'viewNotification',
-            initialValue: true,
-            type: 'primitive'
-          });
-          this.history.setColention({
-            nameHistory: 'search',
-            nameVar: 'viewSearch',
-            initialValue: false,
-            type: 'primitive'
-          });
-        };
+        this.viewLoadComplete();
+        this.viewSearch = true;
+        this.viewNotification = false;
+        this.history.setColention({
+          nameHistory: 'search',
+          nameVar: 'viewNotification',
+          initialValue: true,
+          type: 'primitive'
+        });
+        this.history.setColention({
+          nameHistory: 'search',
+          nameVar: 'viewSearch',
+          initialValue: false,
+          type: 'primitive'
+        });
       }
     }
+  }
+
+  viewLoadComplete(): void{
+    this.viewSearchComplete = true;
+    setTimeout(() => {
+      this.viewSearchLoad = false;
+      this.viewSearchComplete = false;
+    }, 500);
   }
 
   focusInputSearch(): void{
