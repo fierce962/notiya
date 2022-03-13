@@ -11,6 +11,9 @@ export class ParseUserNameService {
     const longStart: number = userName.length / 2;
     const startText: string = userName.slice(0, longStart);
     const endText: string = userName.slice(longStart);
-    return [userName, startText, endText];
+    return [userName,
+      userName.toLowerCase(),
+      startText.toLocaleLowerCase(),
+      endText.toLocaleLowerCase()];
   }
 }

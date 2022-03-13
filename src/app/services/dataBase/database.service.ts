@@ -29,6 +29,14 @@ export class DatabaseService {
     return addDoc(collection(this.db, 'userData'), userData).then(results=> results.id );
   };
 
+  async getNumberSubscription(user: User): Promise<number>{
+    return await getDocs(query(collection(this.db, 'userData'), where('uid', '==', user.uid)))
+    .then(results => {
+      const userData: UserData | any = results.docs[0].data();
+      return userData.subsCriptions;
+    });
+  }
+
   async getValidUserName(name: string[]): Promise<boolean>{
     return await getDocs(query(collection(this.db, 'userData'),
       where('userName', 'array-contains-any', name)))
@@ -77,7 +85,8 @@ export class DatabaseService {
             subsCriptions: user.data().subsCriptions,
             uid: user.data().uid,
             userName: user.data().userName,
-            reference: user.id
+            reference: user.id,
+            img: user.data().img
           });
         });
         return users;
@@ -88,8 +97,11 @@ export class DatabaseService {
     return await getDocs(query(collection(this.db, 'subscribed'), where('uid', '==', user.uid)))
     .then(results=>{
       if(results.docs.length !== 0){
-        const subscription: any = results.docs[0].data();
-        return subscription;
+        return {
+          uid: results.docs[0].data().uid,
+          subsCriptions: results.docs[0].data().subsCriptions,
+          reference: results.docs[0].id
+        };
       }else{
         return undefined;
       }
@@ -102,11 +114,11 @@ export class DatabaseService {
   }
 
   async updateSubscriptions(subscriptions: SubsCriptions): Promise<void>{
-    updateDoc(doc(this.db, 'subscribed', subscriptions.reference), 
+    updateDoc(doc(this.db, 'subscribed', subscriptions.reference),
     { subsCriptions: subscriptions.subsCriptions });
   }
 
-  async updateUserSubscription(uid: string, incrementSub: number, reference: string): Promise<void>{
+  async updateUserSubscription(incrementSub: number, reference: string): Promise<void>{
     updateDoc(doc(this.db, 'userData', reference), { subsCriptions: increment(incrementSub) });
   }
 

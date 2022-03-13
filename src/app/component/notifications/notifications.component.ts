@@ -54,6 +54,7 @@ export class NotificationsComponent implements OnInit {
 
   async startApp(): Promise<void>{
     this.subscribedCopy = JSON.parse(this.storage.getItemStore('subscribed'));
+    this.hasSubscriptions();
     if(this.sessions.receivedNotification !== undefined){
       this.thumbnail.set(this.sessions.receivedNotification);
       this.notification.push(this.sessions.receivedNotification);
@@ -63,6 +64,12 @@ export class NotificationsComponent implements OnInit {
       this.searchNotifications([... this.subscribedCopy.subsCriptions]);
     };
     await this.thumbnail.start();
+  }
+
+  hasSubscriptions(): void{
+    if(this.subscribedCopy !== null && this.subscribedCopy.subsCriptions.length === 0){
+      this.subscribedCopy = null;
+    };
   }
 
   startObservable(): void{
@@ -76,6 +83,12 @@ export class NotificationsComponent implements OnInit {
     this.sessions.getNewSubscriptions().subscribe(newSubscritions=>{
       this.ng.run(()=>{
         if(newSubscritions.length !== 0){
+          if(this.subscribedCopy === null){
+            this.subscribedCopy = {
+              uid: this.sessions.user.uid,
+              subsCriptions: []
+            };
+          }
           newSubscritions.forEach(subscribed=>{
             this.subscribedCopy.subsCriptions.unshift(subscribed);
           });
@@ -89,9 +102,9 @@ export class NotificationsComponent implements OnInit {
 
     this.sessions.removeSubscription$.subscribe(idUser =>{
       this.ng.run(()=>{
-        this.removePerIdUser(this.notification, idUser);
-
+        //this.removePerIdUser(this.notification, idUser);
         this.removePerIdUser(this.subscribedCopy.subsCriptions, idUser);
+        this.hasSubscriptions();
       });
     });
   }

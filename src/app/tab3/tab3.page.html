@@ -10,24 +10,24 @@
 
 <ion-content [fullscreen]="true" color="light">
   <div class="content-perfil">
-    <div class="content-perfil__content-img" id="trigger-button">
+    <div class="content-perfil__content-img" (click)="ionModalDidDismiss(true)">
       <img class="content-perfil__img" [src]="sessions.imgProfile" alt="">
     </div>
     <div class="content-perfil__header-content">
       <h1 class="content-perfil__name">{{ sessions.user.displayName }}</h1>
-      <p class="content-perfil__subscriptores">Subscriptores: 0</p>
+      <p class="content-perfil__subscriptores">Subscriptores: {{ numberSubscription }}</p>
     </div>
   </div>
 
   <div class="options">
-    <button class="options__btn" (click)="optionSelect = false">
+    <div class="options__btn" (click)="optionSelect = false">
       Ultima notificacion
       <div class="options__border" *ngIf="!optionSelect"></div>
-    </button>
-    <button class="options__btn" (click)="optionSelect = true">
+    </div>
+    <div class="options__btn" (click)="optionSelect = true">
       Opciones
       <div class="options__border" *ngIf="optionSelect"></div>
-    </button>
+    </div>
   </div>
 
   <div class="content">
@@ -43,7 +43,7 @@
       *ngIf="options && optionSelect"></app-perfil-options>
   </div>
 
-  <ion-modal trigger="trigger-button">
+  <ion-modal [isOpen]="isModalOpen" (ionModalDidDismiss)="ionModalDidDismiss(false)">
     <ng-template>
       <app-modal-add-img></app-modal-add-img>
     </ng-template>

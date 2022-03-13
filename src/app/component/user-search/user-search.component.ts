@@ -17,6 +17,7 @@ export class UserSearchComponent implements OnInit {
     private db: DatabaseService) { }
 
   ngOnInit() {
+    console.log(this.searchsUsers);
     this.subscriptions = JSON.parse(this.store.getItemStore('subscribed'));
     this.parseImg();
     this.hasStoreSubCription();
@@ -51,7 +52,7 @@ export class UserSearchComponent implements OnInit {
       userSearch.subscribe = true;
       userSearch.awaitSubscribe = undefined;
       userSearch.subsCriptions += 1;
-      this.db.updateUserSubscription(userSearch.uid, 1, userSearch.reference);
+      this.db.updateUserSubscription(1, userSearch.reference);
       this.store.setItemStore('subscribed', JSON.stringify(this.subscriptions));
     }
   }
@@ -94,7 +95,7 @@ export class UserSearchComponent implements OnInit {
     });
     this.sessions.setremoveSubscription(user.uid);
     this.db.updateSubscriptions(this.subscriptions);
-    this.db.updateUserSubscription(user.uid, -1, user.reference);
+    this.db.updateUserSubscription(-1, user.reference);
     user.subsCriptions -= 1;
     user.subscribe = undefined;
     this.removeNewSubscription(user);
