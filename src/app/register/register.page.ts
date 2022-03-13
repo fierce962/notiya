@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthServiceService } from '../services/authService/auth-service.service';
@@ -15,6 +15,9 @@ import { BackBtnHistory } from '../models/BackBtnHistory';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
+
+  @ViewChild('fisrtPassword', { read: ElementRef }) first: ElementRef;
+  @ViewChild('verified', { read: ElementRef }) verified: ElementRef;
 
   registerFrom = new FormGroup({
     userName: new FormControl('', [Validators.required]),
@@ -58,7 +61,7 @@ export class RegisterPage implements OnInit {
   }
 
   verifiedPassword(): void{
-    if(this.registerFrom.controls.fisrtPassword.value !== this.registerFrom.controls.verifiedPassword.value){
+    if(this.first.nativeElement.value !== this.verified.nativeElement.value){
       this.equalPassword = true;
       this.registerFrom.controls.verifiedPassword.setErrors({ error: true });
     }else{

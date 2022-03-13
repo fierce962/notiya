@@ -46,7 +46,8 @@
       </ion-item>
       <ion-item class="content__input">
         <ion-label position="floating">Password</ion-label>
-        <ion-input type="password" (keyup)="verifiedPassword()" formControlName="fisrtPassword"></ion-input>
+        <ion-input type="password" #fisrtPassword 
+          (keyup)="verifiedPassword()" formControlName="fisrtPassword"></ion-input>
         <div class="content__error" 
           *ngIf="registerFrom.controls.fisrtPassword.hasError('required') && 
             (registerFrom.controls.fisrtPassword.dirty || registerFrom.controls.fisrtPassword.touched)">
@@ -55,7 +56,7 @@
       </ion-item>
       <ion-item class="content__input">
         <ion-label position="floating">Verified Password</ion-label>
-        <ion-input type="password" (keyup)="verifiedPassword()" formControlName="verifiedPassword"></ion-input>
+        <ion-input type="password" #verified (keyup)="verifiedPassword()" formControlName="verifiedPassword"></ion-input>
         <div class="content__error" 
           *ngIf="registerFrom.controls.verifiedPassword.hasError('required') && 
             (registerFrom.controls.verifiedPassword.dirty || registerFrom.controls.verifiedPassword.touched)">

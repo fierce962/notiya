@@ -102,7 +102,7 @@ export class NotificationsComponent implements OnInit {
 
     this.sessions.removeSubscription$.subscribe(idUser =>{
       this.ng.run(()=>{
-        //this.removePerIdUser(this.notification, idUser);
+        this.removePerIdUser(this.notification, idUser);
         this.removePerIdUser(this.subscribedCopy.subsCriptions, idUser);
         this.hasSubscriptions();
       });

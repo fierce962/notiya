@@ -87,4 +87,13 @@ export class Tab3Page implements OnInit {
   ionModalDidDismiss(value: boolean): void{
     this.isModalOpen = value;
   }
+
+  setColectionHistory(): void{
+    this.history.setColention({
+      nameVar: 'isModalOpen',
+      type: 'primitive',
+      initialValue: false,
+      nameHistory: 'modal'
+    });
+  }
 }

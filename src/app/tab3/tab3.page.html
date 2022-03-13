@@ -10,7 +10,7 @@
 
 <ion-content [fullscreen]="true" color="light">
   <div class="content-perfil">
-    <div class="content-perfil__content-img" (click)="ionModalDidDismiss(true)">
+    <div class="content-perfil__content-img" (click)="ionModalDidDismiss(true); setColectionHistory()">
       <img class="content-perfil__img" [src]="sessions.imgProfile" alt="">
     </div>
     <div class="content-perfil__header-content">
