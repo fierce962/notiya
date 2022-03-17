@@ -4,6 +4,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    &__img{
+        width: 98px;
+        height: 98px;
+        border-radius: 50%;
+    }
     &__form{
         width: 100%;
         padding: 0px 10px;

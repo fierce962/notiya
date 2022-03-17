@@ -6,6 +6,9 @@
 
 <ion-content color="light">
   <div class="content">
+    <div (click)="isModalOpen = true">
+      <img class="content__img" [src]="imgPerfil" alt="">
+    </div>
     <form class="content__form" [formGroup]="registerFrom">
       <ion-item class="content__input">
         <ion-label position="floating">User Name</ion-label>
@@ -75,4 +78,11 @@
       <ion-button class="content__btn" color="danger" (click)="cancel()">Cancelar</ion-button>
     </div>
   </div>
+
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <app-modal-add-img (file)="addFile($event)"></app-modal-add-img>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>

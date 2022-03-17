@@ -19,12 +19,13 @@ export class DatabaseService {
 
   constructor(private parseUser: ParseUserNameService, private network: NetworkService) { }
 
-  async setUserData(user: User, name: string): Promise<string>{
+  async setUserData(user: User, name: string, imgFile?: string): Promise<string>{
     const userData: UserData = {
       uid: user.uid,
       userName: this.parseUser.get(user.displayName),
       fullName: name,
-      subsCriptions: 0
+      subsCriptions: 0,
+      img: imgFile
     };
     return addDoc(collection(this.db, 'userData'), userData).then(results=> results.id );
   };

@@ -36,6 +36,10 @@ export class RegisterPage implements OnInit {
 
   componentUrl: string;
 
+  imgPerfil = './assets/icon/no-image.png';
+
+  isModalOpen = false;
+
   history = new BackBtnHistory(this, this.controlHistory);
 
   constructor(private router: Router,
@@ -75,12 +79,13 @@ export class RegisterPage implements OnInit {
       this.registerFrom.controls.fisrtPassword.value)
       .then(user=>{
         user.displayName = this.registerFrom.controls.userName.value;
-        this.database.setUserData(user, this.registerFrom.controls.fullName.value)
+        this.database.setUserData(user, this.registerFrom.controls.fullName.value, this.imgPerfil)
         .then(reference => {
           user.reference = reference;
           this.storage.setItemStore('user', JSON.stringify(user));
           this.sessions.user = user;
           this.onesignal.setExternalId(user.uid);
+          this.hasImg();
           this.router.navigate(['']);
         });
       }).catch(error=>{
@@ -90,4 +95,14 @@ export class RegisterPage implements OnInit {
       });
   };
 
+  hasImg(): void{
+    if(this.imgPerfil !== undefined){
+      this.storage.setItemStore('profileImg', JSON.stringify(this.imgPerfil));
+    }
+  }
+
+  addFile(file: string){
+    this.imgPerfil = file;
+    this.isModalOpen = false;
+  }
 }

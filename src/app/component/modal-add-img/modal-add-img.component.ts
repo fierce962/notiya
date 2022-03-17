@@ -1,7 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { SessionsService } from 'src/app/services/sessions/sessions.service';
-import { StorageService } from 'src/app/services/storage/storage.service';
-import { DatabaseService } from 'src/app/services/dataBase/database.service';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-modal-add-img',
@@ -10,14 +7,15 @@ import { DatabaseService } from 'src/app/services/dataBase/database.service';
 })
 export class ModalAddImgComponent implements OnInit {
 
+  @Output() file: EventEmitter<string | ArrayBuffer> = new EventEmitter();
+
   imgRout: string | ArrayBuffer = './assets/icon/no-image.png';
 
   messageError = '';
 
   validUpload = false;
 
-  constructor(private sessions: SessionsService,
-    private storage: StorageService, private database: DatabaseService) { }
+  constructor() { }
 
   ngOnInit() {}
 
@@ -43,9 +41,6 @@ export class ModalAddImgComponent implements OnInit {
   }
 
   uploadFile(): void{
-    this.sessions.imgProfile = this.imgRout;
-    this.database.updateImg(JSON.stringify(this.imgRout), this.sessions.user.reference);
-    this.storage.setItemStore('profileImg', JSON.stringify(this.imgRout));
-    this.sessions.setModalCloseImg();
+    this.file.emit(this.imgRout);
   }
 }

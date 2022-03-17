@@ -43,9 +43,6 @@ export class Tab3Page implements OnInit {
         this.history.backHistory();
       };
     });
-    this.sessions.getCloseModalImg().subscribe(close=>{
-      this.ionModalDidDismiss(close);
-    });
   }
 
   async ionViewWillEnter(): Promise<void>{
@@ -95,5 +92,12 @@ export class Tab3Page implements OnInit {
       initialValue: false,
       nameHistory: 'modal'
     });
+  }
+
+  uploadFile(file: string): void{
+    this.sessions.imgProfile = file;
+    this.db.updateImg(JSON.stringify(file), this.sessions.user.reference);
+    this.storage.setItemStore('profileImg', JSON.stringify(file));
+    this.ionModalDidDismiss(false);
   }
 }

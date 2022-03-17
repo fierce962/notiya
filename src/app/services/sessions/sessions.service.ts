@@ -32,8 +32,6 @@ export class SessionsService {
 
   private receivedNotification$: Subject<SendNotification> = new Subject();
 
-  private closeModalImg: Subject<boolean> = new Subject();
-
   constructor(private storage: StorageService) { }
 
   getUserLogin(): void{
@@ -73,13 +71,5 @@ export class SessionsService {
 
   getSendNotification(): Observable<string>{
     return this.sendNotification;
-  }
-
-  setModalCloseImg(): void{
-    this.closeModalImg.next(false);
-  }
-
-  getCloseModalImg(): Observable<boolean>{
-    return this.closeModalImg;
   }
 }

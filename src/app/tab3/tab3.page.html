@@ -45,7 +45,7 @@
 
   <ion-modal [isOpen]="isModalOpen" (ionModalDidDismiss)="ionModalDidDismiss(false)">
     <ng-template>
-      <app-modal-add-img></app-modal-add-img>
+      <app-modal-add-img (file)="uploadFile($event)"></app-modal-add-img>
     </ng-template>
   </ion-modal>
 </ion-content>
