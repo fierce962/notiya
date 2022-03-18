@@ -60,7 +60,12 @@ export class RegisterPage implements OnInit {
     });
   }
 
+  ionModalDidDismiss(value: boolean): void{
+    this.isModalOpen = value;
+  }
+
   cancel(): void{
+    this.imgPerfil = './assets/icon/no-image.png';
     this.router.navigate(['/tabs/login']);
   }
 

@@ -1,3 +1,7 @@
+.fab{
+    position: absolute;
+    pointer-events: all;
+}
 .add-img{
     width: 100%;
     height: calc(100% - 50px);
@@ -24,6 +28,15 @@
         justify-content: center;
         align-items: center;
         border: 5px dashed #666666ea;
+    }
+    &__content-img{
+        position: relative;
+    }
+    &__fab{
+        position: absolute;
+        top: -22px;
+        right: -35px;
+        pointer-events: all;
     }
     &__desing-file-error{
         border: 5px dashed red;

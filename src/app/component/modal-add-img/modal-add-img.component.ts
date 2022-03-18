@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { SessionsService } from 'src/app/services/sessions/sessions.service';
 
 @Component({
   selector: 'app-modal-add-img',
@@ -15,9 +16,17 @@ export class ModalAddImgComponent implements OnInit {
 
   validUpload = false;
 
-  constructor() { }
+  constructor(private sessions: SessionsService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.hasImg();
+  }
+
+  hasImg(): void{
+    if(this.sessions.imgProfile !== undefined && this.sessions.imgProfile !== this.imgRout){
+      this.imgRout = this.sessions.imgProfile;
+    }
+  }
 
   addImg(event: any): void{
     const reader = new FileReader();
@@ -42,5 +51,10 @@ export class ModalAddImgComponent implements OnInit {
 
   uploadFile(): void{
     this.file.emit(this.imgRout);
+  }
+
+  deleteImg(): void{
+    this.imgRout = './assets/icon/no-image.png';
+    this.validUpload = true;
   }
 }

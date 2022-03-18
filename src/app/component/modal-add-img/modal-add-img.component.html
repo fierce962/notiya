@@ -1,9 +1,19 @@
+
+
 <div class="add-img">
   <div class="add-img__cover-file">
-
     <div class="add-img__desing-file" [class.add-img__desing-file-error]="messageError !== ''">
 
-      <img class="add-img__img" [src]="imgRout" alt="">
+      <div class="add-img__content-img">
+        <ion-fab class="add-img__fab" (click)="deleteImg()" 
+          *ngIf="imgRout !== './assets/icon/no-image.png' ">
+          <ion-fab-button size="small">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+  
+        <img class="add-img__img" [src]="imgRout" alt="">
+      </div>
       
       <div class="add-img__message">
         <p class="add-img__text">Se recomienda utilizar una 
