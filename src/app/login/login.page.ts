@@ -61,6 +61,10 @@ export class LoginPage implements OnInit {
     }
   }
 
+  ionViewWillLeave(): void{
+    this.clearInput();
+  }
+
   async setUsername(userName: string): Promise<void>{
     if(userName !== ''){
       this.user.displayName = userName;
@@ -118,5 +122,9 @@ export class LoginPage implements OnInit {
         this.loading = false;
       }
     }, 4000);
+  }
+
+  clearInput(): void{
+    this.loginForm.reset();
   }
 }
