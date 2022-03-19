@@ -64,6 +64,10 @@ export class RegisterPage implements OnInit {
     this.isModalOpen = value;
   }
 
+  ionViewWillLeave(): void{
+    this.imgPerfil = './assets/icon/no-image.png';
+  }
+
   cancel(): void{
     this.imgPerfil = './assets/icon/no-image.png';
     this.router.navigate(['/tabs/login']);
@@ -109,5 +113,6 @@ export class RegisterPage implements OnInit {
   addFile(file: string){
     this.imgPerfil = file;
     this.isModalOpen = false;
+    this.sessions.imgProfile = this.imgPerfil;
   }
 }

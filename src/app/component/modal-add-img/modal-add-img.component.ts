@@ -9,6 +9,7 @@ import { SessionsService } from 'src/app/services/sessions/sessions.service';
 export class ModalAddImgComponent implements OnInit {
 
   @Output() file: EventEmitter<string | ArrayBuffer> = new EventEmitter();
+  @Output() cancel: EventEmitter<boolean> = new EventEmitter();
 
   imgRout: string | ArrayBuffer = './assets/icon/no-image.png';
 
@@ -56,5 +57,9 @@ export class ModalAddImgComponent implements OnInit {
   deleteImg(): void{
     this.imgRout = './assets/icon/no-image.png';
     this.validUpload = true;
+  }
+
+  closeModal(): void{
+    this.cancel.emit(false);
   }
 }
